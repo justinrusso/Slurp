@@ -1,8 +1,13 @@
+import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
 import ProfileButton from "./ProfileButton";
 import { useSessionUser } from "../../store/session";
 
+/**
+ *
+ * @param {{isLoaded: boolean}} props
+ */
 const Navigation = ({ isLoaded }) => {
   const sessionUser = useSessionUser();
 
@@ -28,6 +33,10 @@ const Navigation = ({ isLoaded }) => {
       </li>
     </ul>
   );
+};
+
+Navigation.propTypes = {
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 export default Navigation;
