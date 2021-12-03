@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
+import { LoginFormModal } from "../login/LoginFormModal";
 import ProfileButton from "./ProfileButton";
 import { useSessionUser } from "../../store/session";
 
@@ -17,7 +18,7 @@ const Navigation = ({ isLoaded }) => {
   } else {
     sessionLinks = (
       <>
-        <NavLink to="/login">Log In</NavLink>
+        <LoginFormModal />
         <NavLink to="/signup">Sign Up</NavLink>
       </>
     );

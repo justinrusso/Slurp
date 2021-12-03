@@ -1,25 +1,21 @@
+import "./LoginForm.css";
+
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router";
-import { login, useSessionUser } from "../../store/session";
+import { login } from "../../store/session";
 
-const LoginFormPage = () => {
+export const LoginForm = () => {
   const dispatch = useDispatch();
-  const sessionUser = useSessionUser();
 
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
 
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) {
-    return <Redirect to="/" />;
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
-    return dispatch(login(credential, password)).catch(async (res) => {
+    return dispatch(login({ credential, password })).catch(async (res) => {
       const data = await res.json();
       if (data && data.errors) setErrors(data.errors);
     });
@@ -54,5 +50,3 @@ const LoginFormPage = () => {
     </form>
   );
 };
-
-export default LoginFormPage;
