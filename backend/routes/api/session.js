@@ -30,6 +30,31 @@ router.get("/", restoreUser, (req, res) => {
   return res.json({});
 });
 
+// Demo Login
+router.get(
+  "/demo",
+  asyncHandler(async (req, res, next) => {
+    const user = await User.login({
+      credential: "demo@user.io",
+      password: "password",
+    });
+
+    if (!user) {
+      const err = new Error("Login failed");
+      err.status = 401;
+      err.title = "Login failed";
+      err.errors = ["The provided credentials were invalid."];
+      return next(err);
+    }
+
+    setTokenCookie(res, user);
+
+    return res.json({
+      user,
+    });
+  })
+);
+
 // Log in
 router.post(
   "/",

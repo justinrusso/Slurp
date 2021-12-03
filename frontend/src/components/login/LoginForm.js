@@ -2,7 +2,7 @@ import "./LoginForm.css";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../../store/session";
+import { login, loginDemo } from "../../store/session";
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -21,32 +21,45 @@ export const LoginForm = () => {
     });
   };
 
+  const handleDemoLogin = () => {
+    setErrors([]);
+    return dispatch(loginDemo()).catch(async (res) => {
+      const data = await res.json();
+      if (data && data.errors) setErrors(data.errors);
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <ul>
-        {errors.map((error, idx) => (
-          <li key={idx}>{error}</li>
-        ))}
-      </ul>
-      <label>
-        Username or Email
-        <input
-          type="text"
-          value={credential}
-          onChange={(e) => setCredential(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Password
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <button type="submit">Log In</button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <ul>
+          {errors.map((error, idx) => (
+            <li key={idx}>{error}</li>
+          ))}
+        </ul>
+        <label>
+          Username or Email
+          <input
+            type="text"
+            value={credential}
+            onChange={(e) => setCredential(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit">Log In</button>
+      </form>
+      <p>
+        Not a user? <span onClick={handleDemoLogin}>Login as Demo</span>
+      </p>
+    </>
   );
 };
