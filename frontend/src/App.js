@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 
 import Navigation from "./components/Navigation";
 import { restoreUser } from "./store/session";
+import HomePage from "./components/home/HomePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -15,7 +16,13 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Switch></Switch>}
+      {isLoaded && (
+        <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
+        </Switch>
+      )}
     </>
   );
 }
