@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 import { signup, useSessionUser } from "../../store/session";
 
-const SignupFormPage = () => {
+const SignupForm = () => {
   const dispatch = useDispatch();
   const sessionUser = useSessionUser();
 
@@ -82,4 +82,4 @@ const SignupFormPage = () => {
   );
 };
 
-export default SignupFormPage;
+export default SignupForm;
