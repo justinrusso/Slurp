@@ -27,5 +27,5 @@ export const Button = styled.button.attrs(getStyling)`
   border: ${(props) => props.border};
   border-radius: ${(props) => props.theme.borderRadius}px;
   background-color: ${(props) => props.backgroundColor};
-  pointer: cursor;
+  cursor: pointer;
 `;
