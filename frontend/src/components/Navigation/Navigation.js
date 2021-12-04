@@ -1,10 +1,40 @@
-import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import logo from "../../images/logo.png";
 
-import { LoginFormModal } from "../login/LoginFormModal";
-import SignupFormModal from "../signup/SignupFormModal";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Link, useLocation } from "react-router-dom";
+
 import ProfileButton from "./ProfileButton";
+import SignupFormModal from "../signup/SignupFormModal";
+import { ContainerContent, ContainerWrapper } from "../styled/Container";
+import { LoginFormModal } from "../login/LoginFormModal";
 import { useSessionUser } from "../../store/session";
+
+const Nav = styled(ContainerWrapper)`
+  height: 64px;
+  padding: 2px 0;
+  position: ${(props) => props.position};
+`;
+
+const NavContent = styled(ContainerContent)`
+  display: flex;
+  justify-content: ${(props) => props.justifyContent};
+`;
+
+const LogoContainer = styled(Link)`
+  align-items: center;
+  display: flex;
+`;
+
+const RightNavContainer = styled.div`
+  align-items: center;
+  display: flex;
+`;
+
+const Logo = styled.img`
+  height: 60px;
+  width: 60px;
+`;
 
 /**
  *
@@ -12,6 +42,10 @@ import { useSessionUser } from "../../store/session";
  */
 const Navigation = ({ isLoaded }) => {
   const sessionUser = useSessionUser();
+
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
 
   let sessionLinks;
   if (sessionUser) {
@@ -26,14 +60,17 @@ const Navigation = ({ isLoaded }) => {
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">
-          Home
-        </NavLink>
-        {isLoaded && sessionLinks}
-      </li>
-    </ul>
+    <Nav position={isHomePage ? "absolute" : "static"}>
+      <NavContent justifyContent={isHomePage ? "end" : "space-between"}>
+        {!isHomePage && (
+          <LogoContainer to="/">
+            <span>Slurp</span>
+            <Logo src={logo} alt="" />
+          </LogoContainer>
+        )}
+        <RightNavContainer>{isLoaded && sessionLinks}</RightNavContainer>
+      </NavContent>
+    </Nav>
   );
 };
 
