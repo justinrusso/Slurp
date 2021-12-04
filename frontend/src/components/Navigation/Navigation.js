@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
 import { LoginFormModal } from "../login/LoginFormModal";
+import SignupFormModal from "../signup/SignupFormModal";
 import ProfileButton from "./ProfileButton";
 import { useSessionUser } from "../../store/session";
 
@@ -19,7 +20,7 @@ const Navigation = ({ isLoaded }) => {
     sessionLinks = (
       <>
         <LoginFormModal />
-        <NavLink to="/signup">Sign Up</NavLink>
+        <SignupFormModal />
       </>
     );
   }

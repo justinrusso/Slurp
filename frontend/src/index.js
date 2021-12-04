@@ -1,3 +1,4 @@
+import "normalize.css";
 import "./index.css";
 
 import React from "react";
@@ -7,6 +8,7 @@ import { Provider as ReduxProvider } from "react-redux";
 
 import App from "./App";
 import configureStore from "./store";
+import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { ModalProvider } from "./context/modal";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
@@ -24,11 +26,13 @@ if (process.env.NODE_ENV !== "production") {
 function Root() {
   return (
     <ReduxProvider store={store}>
-      <ModalProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ModalProvider>
+      <ThemeProvider>
+        <ModalProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ModalProvider>
+      </ThemeProvider>
     </ReduxProvider>
   );
 }
