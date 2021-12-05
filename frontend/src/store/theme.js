@@ -31,7 +31,21 @@ const initialState = () => {
       },
     },
     borderRadius: 4,
-    spacing: (factor) => `${8 * factor}px`,
+
+    /**
+     *
+     * @param {number} factor1
+     * @param {number | undefined} factor2
+     * @param {number | undefined} factor3
+     * @param {number | undefined} factor4
+     */
+    spacing: (factor1, factor2, factor3, factor4) => {
+      const factors = [factor1, factor2, factor3, factor4];
+      return factors
+        .filter((factor) => factor !== undefined && factor !== null)
+        .map((factor) => `${8 * factor}px`)
+        .join(" ");
+    },
   };
 };
 

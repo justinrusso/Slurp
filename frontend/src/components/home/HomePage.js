@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { ContainerWrapper } from "../styled/Container";
+import SearchForm from "../search/SearchForm";
+
+import Container, { ContainerWrapper } from "../styled/Container";
 
 const Hero = styled.div`
   background-image: url(${(props) => props.image});
@@ -12,11 +14,21 @@ const Hero = styled.div`
   width: 100%;
 `;
 
+const HeroContentWrapper = styled.div`
+  padding-top: ${(props) => props.theme.spacing(10)};
+`;
+
 const HomePage = () => {
   return (
     <>
       <ContainerWrapper>
-        <Hero />
+        <Hero>
+          <HeroContentWrapper>
+            <Container>
+              <SearchForm />
+            </Container>
+          </HeroContentWrapper>
+        </Hero>
       </ContainerWrapper>
     </>
   );
