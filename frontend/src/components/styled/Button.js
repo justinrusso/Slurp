@@ -28,4 +28,9 @@ export const Button = styled.button.attrs(getStyling)`
   border-radius: ${(props) => props.theme.borderRadius}px;
   background-color: ${(props) => props.backgroundColor};
   cursor: pointer;
+
+  &:not(style) + :not(style) {
+    margin: 0;
+    margin-left: ${(props) => props.theme.spacing(2)};
+  }
 `;
