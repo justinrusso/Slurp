@@ -4,14 +4,22 @@
   "description": "",
   "scripts": {
     "heroku-postbuild": "npm run build --prefix frontend",
-    "install": "npm --prefix backend install backend && npm --prefix frontend install frontend",
+    "install": "npm install && npm --prefix backend install backend && npm --prefix frontend install frontend",
     "dev:backend": "npm start --prefix backend start",
     "dev:frontend": "npm start --prefix frontend start",
     "sequelize": "npm run --prefix backend sequelize",
     "sequelize-cli": "npm run --prefix backend sequelize-cli",
-    "start": "npm start --prefix backend"
+    "start": "npm start --prefix backend",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@types/jest": "^27.0.3",
+    "jest": "^27.4.3"
+  }
 }
