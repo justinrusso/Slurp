@@ -15,7 +15,7 @@ const Hero = styled.div`
 `;
 
 const HeroContentWrapper = styled.div`
-  padding-top: ${(props) => props.theme.spacing(10)};
+  padding-top: ${(props) => props.theme.spacing.gen(10)};
 `;
 
 const HomePage = () => {

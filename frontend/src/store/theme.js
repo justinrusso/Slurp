@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-
 const initialState = () => {
   const mode = "light"; // "light" | "dark"
 
@@ -31,25 +29,11 @@ const initialState = () => {
       },
     },
     borderRadius: 4,
-
-    /**
-     *
-     * @param {number} factor1
-     * @param {number | undefined} factor2
-     * @param {number | undefined} factor3
-     * @param {number | undefined} factor4
-     */
-    spacing: (factor1, factor2, factor3, factor4) => {
-      const factors = [factor1, factor2, factor3, factor4];
-      return factors
-        .filter((factor) => factor !== undefined && factor !== null)
-        .map((factor) => `${8 * factor}px`)
-        .join(" ");
+    spacing: {
+      base: 8,
     },
   };
 };
-
-export const useTheme = () => useSelector((state) => state.theme);
 
 export const themeReducer = (state = initialState(), action) => {
   switch (action.type) {

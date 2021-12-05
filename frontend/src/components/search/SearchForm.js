@@ -1,7 +1,6 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
-import { useTheme } from "../../store/theme";
+import styled, { useTheme } from "styled-components";
 import Box from "../styled/Box";
 import { Button } from "../styled/Button";
 
@@ -14,14 +13,14 @@ const LabelWrapper = styled.div`
 const Label = styled(Box).attrs({ as: "label" })`
   background-color: #fff;
   display: block;
-  padding: ${(props) => props.theme.spacing(1.5)};
+  padding: ${(props) => props.theme.spacing.gen(1.5)};
   position: relative;
   width: 100%;
 `;
 
 const LabelText = styled.span`
   font-weight: 700;
-  margin-right: ${(props) => props.theme.spacing(1.5)};
+  margin-right: ${(props) => props.theme.spacing.gen(1.5)};
   user-select: none;
 `;
 
@@ -33,11 +32,11 @@ const InputWrapper = styled.div`
 const LeftInputWrapper = styled(InputWrapper)`
   &::after {
     background-color: ${(props) => props.theme.palette.divider};
-    bottom: ${(props) => props.theme.spacing(1)};
+    bottom: ${(props) => props.theme.spacing.gen(1)};
     content: "";
     position: absolute;
     right: 0;
-    top: ${(props) => props.theme.spacing(1)};
+    top: ${(props) => props.theme.spacing.gen(1)};
     width: 1px;
   }
 `;
@@ -52,8 +51,8 @@ const Input = styled.input`
 const SearchButton = styled(Button)`
   border-radius: ${(props) =>
     `0 ${props.theme.borderRadius}px ${props.theme.borderRadius}px 0`};
-  font-size: ${(props) => props.theme.spacing(2.5)};
-  padding: ${(props) => props.theme.spacing(1, 2.5)};
+  font-size: ${(props) => props.theme.spacing.gen(2.5)};
+  padding: ${(props) => props.theme.spacing.gen(1, 2.5)};
 `;
 
 const SearchForm = () => {

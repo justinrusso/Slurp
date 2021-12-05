@@ -31,6 +31,6 @@ export const Button = styled.button.attrs(getStyling)`
 
   &:not(style) + :not(style) {
     margin: 0;
-    margin-left: ${(props) => props.theme.spacing(2)};
+    margin-left: ${(props) => props.theme.spacing.gen(2)};
   }
 `;
