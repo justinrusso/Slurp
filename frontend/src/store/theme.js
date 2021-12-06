@@ -20,6 +20,12 @@ const initialState = () => {
         dark: "#000722",
         contrastText: "#fff",
       },
+      error: {
+        main: "#d32f2f",
+        light: "#ef5350",
+        dark: "#c62828",
+        contrastText: "#fff",
+      },
       text: {
         primary: "rgba(0, 0, 0, 0.87)",
         secondary: "rgba(0, 0, 0, 0.6)",
@@ -40,6 +46,7 @@ const initialState = () => {
     transitions: {
       easing: {
         easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
+        easeOut: "cubic-bezier(0, 0, 0.2, 1)",
       },
     },
     zIndex: {

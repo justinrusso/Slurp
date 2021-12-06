@@ -1,6 +1,36 @@
+import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, loginDemo } from "../../store/session";
+import { Button } from "../styled/Button";
+import HelperText from "../styled/HelperText";
+import InputField from "../common/InputField";
+
+const InputWrapper = styled.div`
+  margin: 8px 0;
+  display: inline-flex;
+  width: 100%;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-top: ${(props) => props.theme.spacing.gen(2)};
+`;
+
+const DemoHelperText = styled(HelperText)`
+  margin: 0;
+  padding: ${(props) => props.theme.spacing.gen(1, 0)};
+`;
+
+const DemoLoginButton = styled.button`
+  background: none;
+  border: none;
+  color: ${(props) => props.theme.palette.primary.main};
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+`;
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
@@ -13,7 +43,7 @@ export const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
-    return dispatch(login({ credential, password })).catch(async (res) => {
+    return dispatch(login(credential, password)).catch(async (res) => {
       const data = await res.json();
       if (data && data.errors) setErrors(data.errors);
     });
@@ -29,35 +59,50 @@ export const LoginForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form>
         <ul>
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
         </ul>
-        <label>
-          Username or Email
-          <input
-            type="text"
+        <InputWrapper>
+          <InputField
+            label="Username or Email"
+            fullWidth
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            required
+            inputProps={{
+              autoFocus: true,
+              required: true,
+              type: "text",
+            }}
           />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
+        </InputWrapper>
+        <InputWrapper>
+          <InputField
+            label="Password"
+            fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            inputProps={{
+              required: true,
+              type: "password",
+            }}
           />
-        </label>
-        <button type="submit">Log In</button>
+        </InputWrapper>
       </form>
-      <p>
-        Not a user? <span onClick={handleDemoLogin}>Login as Demo</span>
-      </p>
+      <DemoHelperText>
+        Looking to try out the website?{" "}
+        <DemoLoginButton onClick={handleDemoLogin}>
+          Login as Demo
+        </DemoLoginButton>
+      </DemoHelperText>
+      <Actions>
+        <Button variant="text">Create Account</Button>
+        <Button type="submit" onClick={handleSubmit}>
+          Log In
+        </Button>
+      </Actions>
     </>
   );
 };
