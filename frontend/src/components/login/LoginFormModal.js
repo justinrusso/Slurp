@@ -1,15 +1,27 @@
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 
 import Modal from "../Modal";
 import { Button } from "../styled/Button";
 import { LoginForm } from "./LoginForm";
 
-export const LoginFormModal = () => {
+/**
+ *
+ * @param {{isHomePage: boolean}} props
+ * @returns
+ */
+const LoginFormModal = ({ isHomePage }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Log In</Button>
+      <Button
+        variant={isHomePage ? "text" : "outlined"}
+        color={isHomePage ? "white" : "black"}
+        onClick={() => setShowModal(true)}
+      >
+        Log In
+      </Button>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
           <LoginForm />
@@ -18,3 +30,9 @@ export const LoginFormModal = () => {
     </>
   );
 };
+
+LoginFormModal.propTypes = {
+  isHomePage: PropTypes.bool.isRequired,
+};
+
+export default LoginFormModal;
