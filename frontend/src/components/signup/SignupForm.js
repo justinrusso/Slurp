@@ -72,6 +72,7 @@ const SignupForm = () => {
             fullWidth
             label="Email"
             value={email}
+            id="email"
             onChange={(e) => setEmail(e.target.value)}
             inputProps={{
               autoFocus: true,
@@ -85,6 +86,7 @@ const SignupForm = () => {
             fullWidth
             label="Username"
             value={username}
+            id="username"
             onChange={(e) => setUsername(e.target.value)}
             inputProps={{
               required: true,
@@ -98,6 +100,7 @@ const SignupForm = () => {
               fullWidth
               label="Password"
               value={password}
+              id="password"
               onChange={(e) => setPassword(e.target.value)}
               inputProps={{
                 required: true,
@@ -111,6 +114,7 @@ const SignupForm = () => {
               fullWidth
               label="Confirm Password"
               value={confirmPassword}
+              id="confirm-password"
               onChange={(e) => setConfirmPassword(e.target.value)}
               inputProps={{
                 required: true,

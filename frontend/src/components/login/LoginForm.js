@@ -64,6 +64,7 @@ export const LoginForm = () => {
           <InputField
             label="Username or Email"
             fullWidth
+            id="credential"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             inputProps={{
@@ -79,6 +80,7 @@ export const LoginForm = () => {
           <InputField
             label="Password"
             fullWidth
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             inputProps={{

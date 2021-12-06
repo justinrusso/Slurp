@@ -160,7 +160,7 @@ const InputField = ({
         error={error}
         hasValue={hasValue}
         id={`${id}-label`}
-        for={id}
+        htmlFor={id}
       >
         {label}
       </InputLabel>
