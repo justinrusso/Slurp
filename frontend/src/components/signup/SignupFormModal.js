@@ -20,13 +20,13 @@ const SignupButton = styled(Button).attrs((props) => {
     const rawSpacing = props.theme.spacing.raw(0.75, 2);
     builder.css.padding = rawSpacing.map((space) => `${space - 2}px`).join(" ");
 
-    builder.cssSelectors["&:hover"] = {
-      ...builder.cssSelectors["&:hover"],
+    builder.css["&:hover"] = {
+      ...builder.css["&:hover"],
       backgroundColor: builder.colorPalette.main,
       color: builder.theme.palette.text.primary,
     };
   }
-  return builder.newProps;
+  return builder.css;
 })`
   border-width: 2px;
 `;

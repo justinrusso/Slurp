@@ -9,10 +9,7 @@ export default class StyleBuilderBase {
    */
   constructor(props, color) {
     this.props = props;
-    this.newProps = {
-      css: this.props.css || {},
-      cssSelectors: this.props.cssSelectors || {},
-    };
+    this.css = this.props.css || {};
 
     if (color) {
       if (color === "white" || color === "black") {
@@ -22,17 +19,8 @@ export default class StyleBuilderBase {
       }
     }
   }
-
   get theme() {
     return this.props.theme;
-  }
-
-  get css() {
-    return this.newProps.css;
-  }
-
-  get cssSelectors() {
-    return this.newProps.cssSelectors;
   }
 
   get colorPalette() {

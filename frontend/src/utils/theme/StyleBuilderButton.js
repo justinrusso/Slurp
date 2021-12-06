@@ -71,7 +71,7 @@ export default class StyleBuilderButton extends StyleBuilderBase {
       hoverProps.backgroundColor = this.colorPalette.dark;
     }
 
-    this.cssSelectors["&:hover"] = hoverProps;
+    this.css["&:hover"] = hoverProps;
     return this;
   }
 }

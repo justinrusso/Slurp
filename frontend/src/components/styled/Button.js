@@ -12,12 +12,12 @@ const getStyling = (props) => {
 
   builder.setFontColor().setBorder().setBackground().setPadding().setHover();
 
-  return builder.newProps;
+  return builder.css;
 };
 
 export const Button = styled(Base).attrs((props) => ({
   as: "button",
-  ...getStyling(props),
+  css: getStyling(props),
 }))`
   cursor: pointer;
 
