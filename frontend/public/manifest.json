@@ -1,8 +1,8 @@
 {
-  "short_name": "React Template",
-  "name": "Create React App Template",
+  "short_name": "Slurp",
+  "name": "Slurp",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#D62828",
   "background_color": "#ffffff"
 }
