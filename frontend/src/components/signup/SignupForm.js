@@ -1,7 +1,28 @@
+import styled from "styled-components";
+import { Redirect } from "react-router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router";
+
+import { Button } from "../styled/Button";
+import InputField from "../common/InputField";
 import { signup, useSessionUser } from "../../store/session";
+
+const InputsWrapper = styled.div`
+  gap: 8px;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+`;
+
+const InputWrapper = styled.div`
+  flex: 1;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-top: ${(props) => props.theme.spacing.gen(2)};
+`;
 
 const SignupForm = () => {
   const dispatch = useDispatch();
@@ -35,50 +56,68 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <ul>
-        {errors.map((error, i) => (
-          <li key={i}>{error}</li>
-        ))}
-      </ul>
-      <label>
-        Email
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Username
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Password
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Confirm Password
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-      </label>
-      <button type="submit">Sign Up</button>
-    </form>
+    <>
+      <form>
+        <ul>
+          {errors.map((error, i) => (
+            <li key={i}>{error}</li>
+          ))}
+        </ul>
+        <InputsWrapper>
+          <InputField
+            fullWidth
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            inputProps={{
+              autoFocus: true,
+              required: true,
+              type: "text",
+            }}
+          />
+          <InputField
+            fullWidth
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            inputProps={{
+              required: true,
+              type: "text",
+            }}
+          />
+          <InputWrapper>
+            <InputField
+              fullWidth
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              inputProps={{
+                required: true,
+                type: "password",
+              }}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              fullWidth
+              label="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              inputProps={{
+                required: true,
+                type: "password",
+              }}
+            />
+          </InputWrapper>
+        </InputsWrapper>
+      </form>
+      <Actions>
+        <Button variant="text">Sign in instead</Button>
+        <Button type="submit" onClick={handleSubmit}>
+          Sign Up
+        </Button>
+      </Actions>
+    </>
   );
 };
 
