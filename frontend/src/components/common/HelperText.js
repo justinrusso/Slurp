@@ -21,7 +21,7 @@ const HelperTextIcon = styled(FontAwesomeIcon)`
 `;
 
 /**
- * InputField props type definition
+ * HelperText props type definition
  * @typedef {Object} HelperTextProps
  * @property {React.ReactNode | React.ReactNode[]} children
  * @property {string} className
