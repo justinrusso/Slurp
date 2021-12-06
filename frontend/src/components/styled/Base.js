@@ -7,9 +7,9 @@ import { camelToKebabCase } from "../../utils";
  * @returns {string}
  */
 const cssPropToCss = (prop) => {
-  return Object.entries(prop).map(
-    ([cssKey, cssVal]) => `${camelToKebabCase(cssKey)}: ${cssVal};`
-  );
+  return Object.entries(prop)
+    .map(([cssKey, cssVal]) => `${camelToKebabCase(cssKey)}: ${cssVal};`)
+    .join("");
 };
 
 /**
@@ -18,10 +18,12 @@ const cssPropToCss = (prop) => {
  * @returns {string}
  */
 const selectorsPropToCss = (prop) => {
-  return Object.entries(prop).map(
-    ([selector, selectorProps]) =>
-      `${selector} {${cssPropToCss(selectorProps)}}`
-  );
+  return Object.entries(prop)
+    .map(
+      ([selector, selectorProps]) =>
+        `${selector} {${cssPropToCss(selectorProps)}}`
+    )
+    .join("");
 };
 
 const acceptedProps = new Map([
