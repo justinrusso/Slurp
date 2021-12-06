@@ -122,7 +122,7 @@ const SignupForm = () => {
           {(errors.password || errors.confirmPassword) && (
             <PasswordHelperTextWrapper>
               <HelperText error showIcon>
-                {errors.password.toLowerCase() === "enter a password"
+                {errors.password?.toLowerCase() === "enter a password"
                   ? errors.password
                   : errors.confirmPassword || errors.password}
               </HelperText>
