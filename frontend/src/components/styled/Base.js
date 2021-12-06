@@ -36,15 +36,17 @@ const acceptedProps = new Map([
  * @param {[propKey, propValue]} propPair
  * @returns {string}
  */
-const propsToCss = ([propKey, prop]) => {
+const rootPropToCss = ([propKey, prop]) => {
   return acceptedProps.get(propKey)(prop);
 };
 
 const filterAcceptedProps = ([propKey]) => acceptedProps.has(propKey);
 
+const propsToCss = (props) =>
+  Object.entries(props).filter(filterAcceptedProps).map(rootPropToCss);
+
 const Base = styled.div`
-  ${(props) =>
-    Object.entries(props).filter(filterAcceptedProps).map(propsToCss)}
+  ${(props) => propsToCss(props)}
 `;
 
 export default Base;
