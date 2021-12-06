@@ -1,32 +1,24 @@
 import styled from "styled-components";
+import StyleBuilderButton from "../../utils/theme/StyleBuilderButton";
+import Base from "./Base";
 
 const getStyling = (props) => {
-  const newProps = {};
+  const builder = new StyleBuilderButton(
+    props,
+    props.color,
+    props.variant,
+    props.rounded
+  );
 
-  const colorPalette = props.theme.palette[props.color || "primary"];
-  const variant = props.variant || "contained";
+  builder.setFontColor().setBorder().setBackground().setPadding().setHover();
 
-  // Font Color
-  if (variant === "contained") {
-    newProps.color = colorPalette.contrastText;
-  } else {
-    newProps.color = colorPalette.main;
-  }
-
-  newProps.border =
-    variant === "outlined" ? `1px solid ${colorPalette.main}` : "none";
-
-  newProps.backgroundColor =
-    variant === "contained" ? colorPalette.main : "transparent";
-
-  return newProps;
+  return builder.newProps;
 };
 
-export const Button = styled.button.attrs(getStyling)`
-  color: ${(props) => props.color};
-  border: ${(props) => props.border};
-  border-radius: ${(props) => props.theme.borderRadius}px;
-  background-color: ${(props) => props.backgroundColor};
+export const Button = styled(Base).attrs((props) => ({
+  as: "button",
+  ...getStyling(props),
+}))`
   cursor: pointer;
 
   &:not(style) + :not(style) {

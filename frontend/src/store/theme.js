@@ -10,10 +10,14 @@ const initialState = () => {
       },
       primary: {
         main: "#D62828",
+        light: "#ff6152", // TODO: This should have a black text when used
+        dark: "#9c0000",
         contrastText: "#fff",
       },
       secondary: {
         main: "#003049",
+        light: "#355975",
+        dark: "#000722",
         contrastText: "#fff",
       },
       text: {
@@ -26,6 +30,7 @@ const initialState = () => {
       action: {
         active: "rgba(0, 0, 0, 0.54)",
         hover: "rgba(0, 0, 0, 0.04)",
+        hoverOpacity: 0.04,
       },
     },
     borderRadius: 4,
