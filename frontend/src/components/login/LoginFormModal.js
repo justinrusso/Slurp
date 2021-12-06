@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import Modal from "../Modal";
 import { Button } from "../styled/Button";
+import ModalContent from "../styled/ModalContent";
 import { LoginForm } from "./LoginForm";
 
 /**
@@ -24,7 +25,9 @@ const LoginFormModal = ({ isHomePage }) => {
       </Button>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
-          <LoginForm />
+          <ModalContent>
+            <LoginForm />
+          </ModalContent>
         </Modal>
       )}
     </>

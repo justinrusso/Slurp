@@ -37,6 +37,14 @@ const initialState = () => {
     spacing: {
       base: 8,
     },
+    transitions: {
+      easing: {
+        easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
+      },
+    },
+    zIndex: {
+      modal: 1300,
+    },
   };
 };
 

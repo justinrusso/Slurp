@@ -5,6 +5,7 @@ import StyleBuilderButton from "../../utils/theme/StyleBuilderButton";
 
 import Modal from "../Modal";
 import { Button } from "../styled/Button";
+import ModalContent from "../styled/ModalContent";
 import SignupForm from "./SignupForm";
 
 const SignupButton = styled(Button).attrs((props) => {
@@ -49,7 +50,9 @@ const SignupFormModal = ({ isHomePage }) => {
       </SignupButton>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
-          <SignupForm />
+          <ModalContent>
+            <SignupForm />
+          </ModalContent>
         </Modal>
       )}
     </>
