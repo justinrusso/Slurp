@@ -66,7 +66,7 @@ const SignupForm = () => {
 
   return (
     <>
-      <form>
+      <form id="signup" onSubmit={handleSubmit}>
         <InputsWrapper>
           <InputField
             fullWidth
@@ -136,7 +136,7 @@ const SignupForm = () => {
       </form>
       <Actions>
         <Button variant="text">Sign in instead</Button>
-        <Button type="submit" onClick={handleSubmit}>
+        <Button form="signup" type="submit">
           Sign Up
         </Button>
       </Actions>

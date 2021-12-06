@@ -59,7 +59,7 @@ export const LoginForm = () => {
 
   return (
     <>
-      <form>
+      <form id="login" onSubmit={handleSubmit}>
         <InputWrapper>
           <InputField
             label="Username or Email"
@@ -107,7 +107,7 @@ export const LoginForm = () => {
       </DemoHelperText>
       <Actions>
         <Button variant="text">Create Account</Button>
-        <Button type="submit" onClick={handleSubmit}>
+        <Button form="login" type="submit">
           Log In
         </Button>
       </Actions>
