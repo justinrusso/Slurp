@@ -7,15 +7,15 @@ import { Button } from "../styled/Button";
 import SignupForm from "./SignupForm";
 
 const SignupButton = styled(Button).attrs((props) => {
-  const newProps = {};
+  const cssProps = props.css || {};
 
   const variant = props.variant || "contained";
 
   if (variant === "outlined") {
     const rawSpacing = props.theme.spacing.raw(0.75, 2);
-    newProps.padding = rawSpacing.map((space) => `${space - 2}px`).join(" ");
+    cssProps.padding = rawSpacing.map((space) => `${space - 2}px`).join(" ");
   }
-  return newProps;
+  return { css: cssProps };
 })`
   border-width: 2px;
 `;
