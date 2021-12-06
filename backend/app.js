@@ -13,7 +13,9 @@ const isProduction = environment === "production";
 
 const app = express();
 
-app.use(morgan("dev"));
+if (environment !== "test") {
+  app.use(morgan("dev"));
+}
 app.use(cookieParser());
 app.use(express.json());
 
@@ -65,7 +67,11 @@ app.use((err, _req, _res, next) => {
 // Error formatter
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
-  console.error(err);
+
+  if (!environment === "test") {
+    console.error(err);
+  }
+
   res.json({
     title: err.title || "Server Error",
     message: err.message,

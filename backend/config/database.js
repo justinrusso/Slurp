@@ -26,4 +26,13 @@ module.exports = {
       },
     },
   },
+  test: {
+    username,
+    password,
+    database,
+    host,
+    dialect: "postgres",
+    seederStorage: "sequelize",
+    logging: false,
+  },
 };

@@ -12,7 +12,7 @@
     "sequelize": "npm run --prefix backend sequelize",
     "sequelize-cli": "npm run --prefix backend sequelize-cli",
     "start": "npm start --prefix backend",
-    "test": "jest"
+    "test": "dotenv -e ./backend/.env jest"
   },
   "keywords": [],
   "author": "",
@@ -20,9 +20,13 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.4",
     "@types/jest": "^26.0.24",
-    "jest": "26.6.0"
+    "@types/supertest": "^2.0.11",
+    "dotenv-cli": "^4.1.1",
+    "jest": "26.6.0",
+    "supertest": "^6.1.6"
   },
   "dependencies": {
     "npm-run-all": "^4.1.5"
