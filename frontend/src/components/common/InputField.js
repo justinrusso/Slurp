@@ -5,13 +5,13 @@ import { useRef, useState } from "react";
 import HelperText from "../styled/HelperText";
 
 const InputFieldRoot = styled.div`
-  /* flex-direction: column; */
-  /* vertical-align: top; */
+  border: 0;
   display: inline-flex;
-  position: relative;
+  flex-direction: column;
   min-width: 0;
   padding: 0;
-  border: 0;
+  position: relative;
+  vertical-align: top;
   width: ${(props) => props.fullWidth && "100%"};
 `;
 
