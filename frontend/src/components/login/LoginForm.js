@@ -38,11 +38,11 @@ export const LoginForm = () => {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
 
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors([]);
+    setErrors({});
     return dispatch(login(credential, password)).catch(async (res) => {
       const data = await res.json();
       if (data && data.errors) setErrors(data.errors);
@@ -50,7 +50,7 @@ export const LoginForm = () => {
   };
 
   const handleDemoLogin = () => {
-    setErrors([]);
+    setErrors({});
     return dispatch(loginDemo()).catch(async (res) => {
       const data = await res.json();
       if (data && data.errors) setErrors(data.errors);
@@ -60,11 +60,6 @@ export const LoginForm = () => {
   return (
     <>
       <form>
-        <ul>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul>
         <InputWrapper>
           <InputField
             label="Username or Email"
@@ -76,6 +71,8 @@ export const LoginForm = () => {
               required: true,
               type: "text",
             }}
+            error={!!errors.credential || !!errors.credentials}
+            helperText={errors.credential}
           />
         </InputWrapper>
         <InputWrapper>
@@ -88,8 +85,17 @@ export const LoginForm = () => {
               required: true,
               type: "password",
             }}
+            error={!!errors.password || !!errors.credentials}
+            helperText={errors.password}
           />
         </InputWrapper>
+        {errors.credentials && (
+          <InputWrapper>
+            <HelperText error showIcon>
+              {errors.credentials}
+            </HelperText>
+          </InputWrapper>
+        )}
       </form>
       <DemoHelperText>
         Looking to try out the website?{" "}

@@ -9,11 +9,12 @@ const { User } = require("../../db/models");
 const validateLogin = [
   check("credential")
     .exists({ checkFalsy: true })
+    .withMessage("Enter an email or username")
     .notEmpty()
-    .withMessage("Please provide a valid email or username."),
+    .withMessage("Enter a valid email or username"),
   check("password")
     .exists({ checkFalsy: true })
-    .withMessage("Please provide a password."),
+    .withMessage("Enter a password"),
   handleValidationErrors,
 ];
 
@@ -43,7 +44,7 @@ router.get(
       const err = new Error("Login failed");
       err.status = 401;
       err.title = "Login failed";
-      err.errors = ["The provided credentials were invalid."];
+      err.errors = { credentials: "The provided credentials were invalid." };
       return next(err);
     }
 
@@ -68,7 +69,7 @@ router.post(
       const err = new Error("Login failed");
       err.status = 401;
       err.title = "Login failed";
-      err.errors = ["The provided credentials were invalid."];
+      err.errors = { credentials: "The provided credentials were invalid." };
       return next(err);
     }
 

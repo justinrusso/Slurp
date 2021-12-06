@@ -3,8 +3,9 @@ import { Redirect } from "react-router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { Button } from "../styled/Button";
+import HelperText from "../common/HelperText";
 import InputField from "../common/InputField";
+import { Button } from "../styled/Button";
 import { signup, useSessionUser } from "../../store/session";
 
 const InputsWrapper = styled.div`
@@ -16,12 +17,17 @@ const InputsWrapper = styled.div`
 
 const InputWrapper = styled.div`
   flex: 1;
+  flex-basis: fit-content;
 `;
 
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: ${(props) => props.theme.spacing.gen(2)};
+`;
+
+const PasswordHelperTextWrapper = styled.div`
+  width: 100%;
 `;
 
 const SignupForm = () => {
@@ -33,7 +39,7 @@ const SignupForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   if (sessionUser) {
     return <Redirect to="/" />;
@@ -42,27 +48,25 @@ const SignupForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      setErrors([]);
-      return dispatch(signup({ email, username, password })).catch(
+      setErrors({});
+      return dispatch(signup(username, email, password, confirmPassword)).catch(
         async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
         }
       );
     }
-    return setErrors([
-      "Confirm Password field must be the same as the Password field",
-    ]);
+    return setErrors({
+      confirmPassword:
+        confirmPassword.length > 0
+          ? "Those passwords didn't match. Try again."
+          : "Confirm your password",
+    });
   };
 
   return (
     <>
       <form>
-        <ul>
-          {errors.map((error, i) => (
-            <li key={i}>{error}</li>
-          ))}
-        </ul>
         <InputsWrapper>
           <InputField
             fullWidth
@@ -74,6 +78,8 @@ const SignupForm = () => {
               required: true,
               type: "text",
             }}
+            error={!!errors.email}
+            helperText={errors.email}
           />
           <InputField
             fullWidth
@@ -84,6 +90,8 @@ const SignupForm = () => {
               required: true,
               type: "text",
             }}
+            error={!!errors.username}
+            helperText={errors.username}
           />
           <InputWrapper>
             <InputField
@@ -95,6 +103,7 @@ const SignupForm = () => {
                 required: true,
                 type: "password",
               }}
+              error={!!errors.password}
             />
           </InputWrapper>
           <InputWrapper>
@@ -107,8 +116,18 @@ const SignupForm = () => {
                 required: true,
                 type: "password",
               }}
+              error={!!errors.confirmPassword}
             />
           </InputWrapper>
+          {(errors.password || errors.confirmPassword) && (
+            <PasswordHelperTextWrapper>
+              <HelperText error showIcon>
+                {errors.password.toLowerCase() === "enter a password"
+                  ? errors.password
+                  : errors.confirmPassword || errors.password}
+              </HelperText>
+            </PasswordHelperTextWrapper>
+          )}
         </InputsWrapper>
       </form>
       <Actions>
