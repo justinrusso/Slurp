@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, loginDemo } from "../../store/session";
 import { Button } from "../styled/Button";
-import HelperText from "../styled/HelperText";
+import HelperText from "../common/HelperText";
 import InputField from "../common/InputField";
 
 const InputWrapper = styled.div`

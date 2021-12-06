@@ -2,9 +2,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useRef, useState } from "react";
 
-import HelperText from "../styled/HelperText";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import HelperText from "./HelperText";
 
 const InputFieldRoot = styled.div`
   border: 0;
@@ -120,11 +118,6 @@ const Legend = styled.legend`
   }
 `;
 
-const HelperTextIcon = styled(FontAwesomeIcon)`
-  margin-right: ${(props) => props.theme.spacing.gen(1)};
-  margin-left: -10px;
-`;
-
 /**
  * InputField props type definition
  * @typedef {Object} InputFieldProps
@@ -190,8 +183,7 @@ const InputField = ({
         </InputFieldset>
       </InputRoot>
       {helperText && (
-        <HelperText error={error}>
-          <HelperTextIcon icon={faExclamationCircle} />
+        <HelperText error={error} showIcon={error}>
           {helperText}
         </HelperText>
       )}
