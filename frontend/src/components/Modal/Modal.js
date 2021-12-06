@@ -1,7 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-import { useModal } from "../../context/modal";
 
 const ModalRoot = styled.div`
   align-items: center;
@@ -33,16 +32,12 @@ const ModalContent = styled.div`
  * @param {{children: React.ReactNode, onClose: () => void}} props
  */
 const Modal = ({ children, onClose }) => {
-  const modalNode = useModal();
-
-  if (!modalNode) return null;
-
   return createPortal(
     <ModalRoot>
       <ModalBackground onClick={onClose} />
       <ModalContent>{children}</ModalContent>
     </ModalRoot>,
-    modalNode
+    document.body
   );
 };
 
