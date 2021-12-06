@@ -1,27 +1,21 @@
 import styled from "styled-components";
 
-import { stringToKebabCase } from "../../utils";
+import Base from "./Base";
 
-const ignoredProps = ["as", "theme"];
+const ignoredProps = new Set(["as", "children", "theme"]);
 
 const parseProps = (props) => {
-  const newProps = {};
+  const cssProps = {};
   Object.keys(props).forEach((propKey) => {
-    if (ignoredProps.includes(propKey)) {
+    if (ignoredProps.has(propKey)) {
       return;
     }
-    newProps[stringToKebabCase(propKey)] = props[propKey];
+    cssProps[propKey] = props[propKey];
     delete props[propKey];
   });
-  return newProps;
+  return { css: cssProps };
 };
 
-const Box = styled.div.attrs(parseProps)`
-  ${(props) =>
-    Object.entries(props).map(
-      (propPair) =>
-        !ignoredProps.includes(propPair[0]) && `${propPair[0]}: ${propPair[1]};`
-    )}
-`;
+const Box = styled(Base).attrs(parseProps)``;
 
 export default Box;
