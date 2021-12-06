@@ -4,7 +4,11 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
-const HelperTextWrapper = styled.p`
+const HelperTextWrapper = styled.p.attrs((props) => {
+  return {
+    className: props.className,
+  };
+})`
   color: ${(props) =>
     props.error
       ? props.theme.palette.error.main
