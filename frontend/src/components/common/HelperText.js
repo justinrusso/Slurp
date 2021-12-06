@@ -24,6 +24,7 @@ const HelperTextIcon = styled(FontAwesomeIcon)`
  * InputField props type definition
  * @typedef {Object} HelperTextProps
  * @property {React.ReactNode | React.ReactNode[]} children
+ * @property {string} className
  * @property {boolean} [error] Indicates if there is an error for this input field
  * @property {boolean} [showIcon]
  */
@@ -33,9 +34,9 @@ const HelperTextIcon = styled(FontAwesomeIcon)`
  * @param {HelperTextProps} props
  * @returns
  */
-const HelperText = ({ children, error, showIcon }) => {
+const HelperText = ({ children, className, error, showIcon }) => {
   return (
-    <HelperTextWrapper error={error}>
+    <HelperTextWrapper className={className} error={error}>
       {showIcon && <HelperTextIcon icon={faExclamationCircle} />}
       {children}
     </HelperTextWrapper>
@@ -47,6 +48,7 @@ HelperText.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
+  className: PropTypes.string,
   error: PropTypes.bool,
   showIcon: PropTypes.bool,
 };

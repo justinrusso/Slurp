@@ -19,7 +19,7 @@ const Actions = styled.div`
 `;
 
 const DemoHelperText = styled(HelperText)`
-  margin: 0;
+  margin: 0 !important;
   padding: ${(props) => props.theme.spacing.gen(1, 0)};
 `;
 
