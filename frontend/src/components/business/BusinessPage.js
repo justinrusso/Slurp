@@ -98,6 +98,14 @@ const BusinessPage = () => {
               {business.zipCode}
             </Typography>
           </section>
+          {business.description && (
+            <section>
+              <Typography variant="h4" gutterBottom>
+                About the Business
+              </Typography>
+              <Typography>{business.description}</Typography>
+            </section>
+          )}
         </MainLeft>
         <MainRight>
           <Sidebar>
