@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { selectBusiness } from "../../store/businesses";
 import ErrorPage from "../common/ErrorPage";
+import Typography from "../common/Typography";
 import Container from "../styled/Container";
 
 const PhotoHeader = styled.div`
@@ -71,7 +72,7 @@ const BusinessPage = () => {
         <PhotoHeaderContentContainer>
           <Container>
             <PhotoHeaderContent>
-              <h1>{business.name}</h1>
+              <Typography variant="h1">{business.name}</Typography>
             </PhotoHeaderContent>
           </Container>
         </PhotoHeaderContentContainer>
