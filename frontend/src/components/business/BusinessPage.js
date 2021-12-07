@@ -69,9 +69,11 @@ const BusinessPage = () => {
     <>
       <PhotoHeader>
         <PhotoHeaderContentContainer>
-          <PhotoHeaderContent>
-            <h1>{business.name}</h1>
-          </PhotoHeaderContent>
+          <Container>
+            <PhotoHeaderContent>
+              <h1>{business.name}</h1>
+            </PhotoHeaderContent>
+          </Container>
         </PhotoHeaderContentContainer>
       </PhotoHeader>
       <MainContainer>
