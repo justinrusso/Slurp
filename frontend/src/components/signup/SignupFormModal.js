@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import StyleBuilderButton from "../../utils/theme/StyleBuilderButton";
 
@@ -33,25 +33,31 @@ const SignupButton = styled(Button).attrs((props) => {
 
 /**
  *
- * @param {{isHomePage: boolean}} props
- * @returns
+ * @typedef {Object} SignupFormModalProps
+ * @property {boolean} isHomePage
+ * @property {React.Dispatch<React.SetStateAction<boolean>>} setVisible
+ * @property {() => void} switchForms
+ * @property {boolean} visible
  */
-const SignupFormModal = ({ isHomePage }) => {
-  const [showModal, setShowModal] = useState(false);
 
+/**
+ *
+ * @param {SignupFormModalProps} props
+ */
+const SignupFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
   return (
     <>
       <SignupButton
         variant={isHomePage ? "outlined" : "contained"}
         color={isHomePage ? "white" : "primary"}
-        onClick={() => setShowModal(true)}
+        onClick={() => setVisible(true)}
       >
         Sign Up
       </SignupButton>
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
+      {visible && (
+        <Modal onClose={() => setVisible(false)}>
           <ModalContent>
-            <SignupForm />
+            <SignupForm switchForms={switchForms} />
           </ModalContent>
         </Modal>
       )}
@@ -61,6 +67,9 @@ const SignupFormModal = ({ isHomePage }) => {
 
 SignupFormModal.propTypes = {
   isHomePage: PropTypes.bool.isRequired,
+  setVisible: PropTypes.func.isRequired,
+  switchForms: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
 };
 
 export default SignupFormModal;

@@ -4,10 +4,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 
-import LoginFormModal from "../login/LoginFormModal";
-import ProfileButton from "./ProfileButton";
-import SignupFormModal from "../signup/SignupFormModal";
+import AuthModals from "./AuthModals";
 import Container from "../styled/Container";
+import ProfileButton from "./ProfileButton";
 import { useSessionUser } from "../../store/session";
 
 const Nav = styled.div`
@@ -53,12 +52,7 @@ const Navigation = ({ isLoaded }) => {
   if (sessionUser) {
     sessionLinks = <ProfileButton user={sessionUser} isHomePage={isHomePage} />;
   } else {
-    sessionLinks = (
-      <>
-        <LoginFormModal isHomePage={isHomePage} />
-        <SignupFormModal isHomePage={isHomePage} />
-      </>
-    );
+    sessionLinks = <AuthModals isHomePage={isHomePage} />;
   }
 
   return (

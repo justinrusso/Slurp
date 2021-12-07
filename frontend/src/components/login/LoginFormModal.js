@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 
 import Modal from "../Modal";
 import { Button } from "../styled/Button";
@@ -8,25 +8,31 @@ import { LoginForm } from "./LoginForm";
 
 /**
  *
- * @param {{isHomePage: boolean}} props
- * @returns
+ * @typedef {Object} LoginFormModalProps
+ * @property {boolean} isHomePage
+ * @property {React.Dispatch<React.SetStateAction<boolean>>} setVisible
+ * @property {() => void} switchForms
+ * @property {boolean} visible
  */
-const LoginFormModal = ({ isHomePage }) => {
-  const [showModal, setShowModal] = useState(false);
 
+/**
+ *
+ * @param {LoginFormModalProps} props
+ */
+const LoginFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
   return (
     <>
       <Button
         variant={isHomePage ? "text" : "outlined"}
         color={isHomePage ? "white" : "black"}
-        onClick={() => setShowModal(true)}
+        onClick={() => setVisible(true)}
       >
         Log In
       </Button>
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
+      {visible && (
+        <Modal onClose={() => setVisible(false)}>
           <ModalContent>
-            <LoginForm />
+            <LoginForm switchForms={switchForms} />
           </ModalContent>
         </Modal>
       )}
@@ -36,6 +42,9 @@ const LoginFormModal = ({ isHomePage }) => {
 
 LoginFormModal.propTypes = {
   isHomePage: PropTypes.bool.isRequired,
+  setVisible: PropTypes.func.isRequired,
+  switchForms: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
 };
 
 export default LoginFormModal;

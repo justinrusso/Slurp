@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -32,7 +33,11 @@ const DemoLoginButton = styled.button`
   padding: 0;
 `;
 
-export const LoginForm = () => {
+/**
+ *
+ * @param {{switchForms: () => void}} props
+ */
+export const LoginForm = ({ switchForms }) => {
   const dispatch = useDispatch();
 
   const [credential, setCredential] = useState("");
@@ -106,11 +111,24 @@ export const LoginForm = () => {
         </DemoLoginButton>
       </DemoHelperText>
       <Actions>
-        <Button variant="text">Create Account</Button>
+        <Button
+          variant="text"
+          onClick={(e) => {
+            e.preventDefault();
+            switchForms();
+          }}
+          type="button"
+        >
+          Create Account
+        </Button>
         <Button form="login" type="submit">
           Log In
         </Button>
       </Actions>
     </>
   );
+};
+
+LoginForm.propTypes = {
+  switchForms: PropTypes.func.isRequired,
 };
