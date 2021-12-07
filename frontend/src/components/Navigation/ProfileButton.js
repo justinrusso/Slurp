@@ -16,13 +16,6 @@ const ProfileButton = ({ user }) => {
 
   const [menuVisible, setMenuVisible] = useState(false);
 
-  const openMenu = () => {
-    if (menuVisible) {
-      return;
-    }
-    setMenuVisible(true);
-  };
-
   useEffect(() => {
     if (!menuVisible) {
       return;
@@ -33,20 +26,30 @@ const ProfileButton = ({ user }) => {
     document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
-  });
+  }, [menuVisible]);
 
-  const handleLogout = (e) => {
+  const preventPropagation = (e) => {
+    e.stopPropagation();
+  };
+
+  const toggleMenu = (e) => {
+    preventPropagation(e);
+    setMenuVisible((isVisible) => !isVisible);
+  };
+
+  const handleLogout = async (e) => {
     e.preventDefault();
-    dispatch(logout());
+    await dispatch(logout());
+    setMenuVisible(false);
   };
 
   return (
     <>
-      <button onClick={openMenu}>
+      <button onClick={toggleMenu}>
         <FontAwesomeIcon icon={faUserCircle} />
       </button>
       {menuVisible && (
-        <ul className="profile-dropdown">
+        <ul className="profile-dropdown" onClick={preventPropagation}>
           <li>{user.username}</li>
           <li>{user.email}</li>
           <li>
