@@ -4,6 +4,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
+import IconButton from "../styled/IconButton";
 import { logout } from "../../store/session";
 
 /**
@@ -45,9 +46,9 @@ const ProfileButton = ({ user }) => {
 
   return (
     <>
-      <button onClick={toggleMenu}>
+      <IconButton onClick={toggleMenu} color="white">
         <FontAwesomeIcon icon={faUserCircle} />
-      </button>
+      </IconButton>
       {menuVisible && (
         <ul className="profile-dropdown" onClick={preventPropagation}>
           <li>{user.username}</li>
@@ -66,6 +67,7 @@ ProfileButton.propTypes = {
     username: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
   }).isRequired,
+  isHomePage: PropTypes.bool.isRequired,
 };
 
 export default ProfileButton;

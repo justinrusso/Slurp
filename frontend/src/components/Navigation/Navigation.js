@@ -51,7 +51,7 @@ const Navigation = ({ isLoaded }) => {
 
   let sessionLinks;
   if (sessionUser) {
-    sessionLinks = <ProfileButton user={sessionUser} />;
+    sessionLinks = <ProfileButton user={sessionUser} isHomePage={isHomePage} />;
   } else {
     sessionLinks = (
       <>
