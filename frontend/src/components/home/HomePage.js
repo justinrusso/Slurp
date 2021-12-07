@@ -1,7 +1,12 @@
 import styled from "styled-components";
-import SearchForm from "../search/SearchForm";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+import Card from "../common/Card";
+import CardContent from "../common/CardContent";
 import Container from "../styled/Container";
+import SearchForm from "../search/SearchForm";
+import Typography from "../common/Typography";
 
 const Hero = styled.div`
   background-image: url(${(props) => props.image});
@@ -18,7 +23,46 @@ const HeroContentWrapper = styled.div`
   padding-top: ${(props) => props.theme.spacing.gen(10)};
 `;
 
+const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
+  display: flex;
+  margin-top: ${(props) => props.theme.spacing.gen(3)};
+`;
+
+const BusinessesList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing.gen(3)};
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+`;
+
+const BusinessListItem = styled.li`
+  display: block;
+  width: 100%;
+`;
+
+const CardLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
+
+const BusinessCard = styled(Card)`
+  display: flex;
+  gap: ${(props) => props.theme.spacing.gen(2)};
+`;
+
+const BusinessImage = styled.img`
+  height: 220px;
+  width: 220px;
+`;
+
 const HomePage = () => {
+  const businessEntries = useSelector((state) =>
+    Object.values(state.businesses.entries)
+  );
+
   return (
     <>
       <Hero>
@@ -28,6 +72,25 @@ const HomePage = () => {
           </Container>
         </HeroContentWrapper>
       </Hero>
+      <MainContainer>
+        <BusinessesList>
+          {businessEntries.map((business) => (
+            <BusinessListItem>
+              <CardLink to={`/biz/${business.id}`}>
+                <BusinessCard>
+                  <BusinessImage
+                    src={business.displayImage}
+                    alt={business.name}
+                  />
+                  <CardContent>
+                    <Typography>{business.name}</Typography>
+                  </CardContent>
+                </BusinessCard>
+              </CardLink>
+            </BusinessListItem>
+          ))}
+        </BusinessesList>
+      </MainContainer>
     </>
   );
 };
