@@ -12,7 +12,7 @@ import { logout } from "../../store/session";
  * @param {{username: string, email: string}} props
  * @returns
  */
-const ProfileButton = ({ user }) => {
+const ProfileButton = ({ isHomePage, user }) => {
   const dispatch = useDispatch();
 
   const [menuVisible, setMenuVisible] = useState(false);
@@ -46,7 +46,7 @@ const ProfileButton = ({ user }) => {
 
   return (
     <>
-      <IconButton onClick={toggleMenu} color="white">
+      <IconButton onClick={toggleMenu} color={isHomePage ? "white" : "primary"}>
         <FontAwesomeIcon icon={faUserCircle} />
       </IconButton>
       {menuVisible && (
