@@ -1,5 +1,19 @@
 import { useSelector } from "react-redux";
-import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import {
+  createGlobalStyle,
+  ThemeProvider as StyledThemeProvider,
+} from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${(props) => props.theme.palette.background};
+    color: ${(props) => props.theme.palette.text.primary};
+    margin: 0;
+    padding: 0;
+
+    ${(props) => props.theme.typography.body1}
+  }
+`;
 
 export const ThemeProvider = ({ children }) => {
   const theme = useSelector((state) => state.theme);
@@ -74,6 +88,7 @@ export const ThemeProvider = ({ children }) => {
         },
       }}
     >
+      <GlobalStyle />
       {children}
     </StyledThemeProvider>
   );
