@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Redirect } from "react-router";
 import { useState } from "react";
@@ -30,7 +31,11 @@ const PasswordHelperTextWrapper = styled.div`
   width: 100%;
 `;
 
-const SignupForm = () => {
+/**
+ *
+ * @param {{switchForms: () => void}} props
+ */
+const SignupForm = ({ switchForms }) => {
   const dispatch = useDispatch();
   const sessionUser = useSessionUser();
 
@@ -135,13 +140,26 @@ const SignupForm = () => {
         </InputsWrapper>
       </form>
       <Actions>
-        <Button variant="text">Sign in instead</Button>
+        <Button
+          variant="text"
+          onClick={(e) => {
+            e.preventDefault();
+            switchForms();
+          }}
+          type="button"
+        >
+          Sign in instead
+        </Button>
         <Button form="signup" type="submit">
           Sign Up
         </Button>
       </Actions>
     </>
   );
+};
+
+SignupForm.propTypes = {
+  switchForms: PropTypes.func.isRequired,
 };
 
 export default SignupForm;
