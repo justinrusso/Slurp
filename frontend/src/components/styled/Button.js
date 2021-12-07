@@ -10,8 +10,6 @@ const getStyling = (props) => {
     props.rounded
   );
 
-  console.log(props.variant);
-
   builder.setFontColor().setBorder().setBackground().setPadding().setHover();
 
   return builder.css;
