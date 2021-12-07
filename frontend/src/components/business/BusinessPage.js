@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import Card from "../common/Card";
+import CardContent from "../common/CardContent";
 import Container from "../styled/Container";
 import ErrorPage from "../common/ErrorPage";
 import Typography from "../common/Typography";
@@ -110,10 +111,12 @@ const BusinessPage = () => {
         <MainRight>
           <Sidebar>
             <Card>
-              <Typography>
-                {business.address}, {business.city}, {business.state}{" "}
-                {business.zipCode}
-              </Typography>
+              <CardContent>
+                <Typography>
+                  {business.address}, {business.city}, {business.state}{" "}
+                  {business.zipCode}
+                </Typography>
+              </CardContent>
             </Card>
           </Sidebar>
         </MainRight>

@@ -5,7 +5,6 @@ const Card = styled.div`
   background-color: ${(props) => props.theme.palette.background};
   border-radius: ${(props) => props.rounded && `${props.theme.borderRadius}px`};
   border: 1px solid ${(props) => props.theme.palette.divider};
-  padding: ${(props) => props.theme.spacing.gen(2)};
 `;
 
 Card.defaultProps = {
