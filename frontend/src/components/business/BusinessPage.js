@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { selectBusiness } from "../../store/businesses";
+
+import Card from "../common/Card";
+import Container from "../styled/Container";
 import ErrorPage from "../common/ErrorPage";
 import Typography from "../common/Typography";
-import Container from "../styled/Container";
+import { selectBusiness } from "../../store/businesses";
 
 const PhotoHeader = styled.div`
   background-color: #333;
@@ -45,6 +47,12 @@ const MainLeft = styled.div`
   ${(props) => props.theme.breakpoints.up("lg")} {
     width: ${(2 / 3) * 100}%;
   }
+
+  & > section:not(:last-child) {
+    border-bottom: 1px solid ${(props) => props.theme.palette.divider};
+    margin-bottom: ${(props) => props.theme.spacing.gen(4)};
+    padding-bottom: ${(props) => props.theme.spacing.gen(4)};
+  }
 `;
 
 const MainRight = styled.div`
@@ -80,9 +88,26 @@ const BusinessPage = () => {
         </PhotoHeaderContentContainer>
       </PhotoHeader>
       <MainContainer>
-        <MainLeft></MainLeft>
+        <MainLeft>
+          <section>
+            <Typography variant="h4" gutterBottom>
+              Location
+            </Typography>
+            <Typography>
+              {business.address}, {business.city}, {business.state}{" "}
+              {business.zipCode}
+            </Typography>
+          </section>
+        </MainLeft>
         <MainRight>
-          <Sidebar></Sidebar>
+          <Sidebar>
+            <Card>
+              <Typography>
+                {business.address}, {business.city}, {business.state}{" "}
+                {business.zipCode}
+              </Typography>
+            </Card>
+          </Sidebar>
         </MainRight>
       </MainContainer>
     </>
