@@ -72,7 +72,9 @@ const BusinessPage = () => {
         <PhotoHeaderContentContainer>
           <Container>
             <PhotoHeaderContent>
-              <Typography variant="h1">{business.name}</Typography>
+              <Typography variant="h1" gutterBottom>
+                {business.name}
+              </Typography>
             </PhotoHeaderContent>
           </Container>
         </PhotoHeaderContentContainer>
