@@ -5,7 +5,9 @@ import { useDispatch } from "react-redux";
 import Navigation from "./components/Navigation";
 import { restoreUser } from "./store/session";
 import HomePage from "./components/home/HomePage";
-import BusinessPage from "./components/business/BusinessPage";
+import BusinessPages, {
+  businessRouteRoot,
+} from "./components/business/BusinessPages";
 import { fetchBusinesses } from "./store/businesses";
 
 function App() {
@@ -25,8 +27,8 @@ function App() {
           <Route exact path="/">
             <HomePage />
           </Route>
-          <Route path="/biz/:businessId">
-            <BusinessPage />
+          <Route path={businessRouteRoot}>
+            <BusinessPages />
           </Route>
         </Switch>
       )}
