@@ -2,6 +2,15 @@ const initialState = () => {
   const mode = "light"; // "light" | "dark"
 
   return {
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
     palette: {
       mode,
       common: {
@@ -47,6 +56,50 @@ const initialState = () => {
       easing: {
         easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
         easeOut: "cubic-bezier(0, 0, 0.2, 1)",
+      },
+    },
+    typography: {
+      h1: {
+        fontFamily: "'Poppins',Helvetica,Arial,sans-serif",
+        fontSize: "3rem",
+        fontWeight: 700,
+        letterSpacing: "-0.01562em",
+        lineHeight: 1.167,
+      },
+      h2: {
+        fontFamily: "'Poppins',Helvetica,Arial,sans-serif",
+        fontSize: "2.25rem",
+        fontWeight: 700,
+        letterSpacing: "-0.00833em",
+        lineHeight: 1.2,
+      },
+      h3: {
+        fontFamily: "'Poppins',Helvetica,Arial,sans-serif",
+        fontSize: "1.75rem",
+        fontWeight: 700,
+        letterSpacing: "-0.025em",
+        lineHeight: 1.3,
+      },
+      h4: {
+        fontFamily: "'Poppins',Helvetica,Arial,sans-serif",
+        fontSize: "1.25rem",
+        fontWeight: 700,
+        letterSpacing: "-0.025em",
+        lineHeight: 1.4,
+      },
+      body1: {
+        fontFamily: "'Open Sans',Helvetica,Arial,sans-serif",
+        fontSize: "1rem",
+        fontWeight: 400,
+        letterSpacing: "0em",
+        lineHeight: 1.5,
+      },
+      button: {
+        fontFamily: "'Poppins',Helvetica,Arial,sans-serif",
+        fontSize: "1rem",
+        fontWeight: 500,
+        letterSpacing: "-0.0125em",
+        lineHeight: 1.5,
       },
     },
     zIndex: {

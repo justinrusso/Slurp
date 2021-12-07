@@ -1,37 +1,63 @@
 import PropTypes from "prop-types";
-import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const ContainerWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
+const maxXS = css`
+  ${(props) => props.theme.breakpoints.up("xs")} {
+    max-width: 444px;
+  }
 `;
 
-export const ContainerContent = styled.div`
-  max-width: 960px;
-  padding: 0 15px;
-  width: 100%;
+const maxSmall = css`
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    max-width: ${(props) => props.theme.breakpoints.values.sm}px;
+  }
 `;
 
-/**
- *
- * @param {{children: React.ReactNode | React.ReactNode[]}} props
- * @returns
- */
-const Container = ({ children }) => {
-  return (
-    <ContainerWrapper>
-      <ContainerContent>{children}</ContainerContent>
-    </ContainerWrapper>
-  );
+const maxMedium = css`
+  ${(props) => props.theme.breakpoints.up("md")} {
+    max-width: ${(props) => props.theme.breakpoints.values.md}px;
+  }
+`;
+
+const maxLarge = css`
+  ${(props) => props.theme.breakpoints.up("lg")} {
+    max-width: ${(props) => props.theme.breakpoints.values.lg}px;
+  }
+`;
+
+const getMaxWidth = (maxWidth) => {
+  switch (maxWidth) {
+    case "xs":
+      return maxXS;
+    case "sm":
+      return maxSmall;
+    case "md":
+      return maxMedium;
+    case "lg":
+    case "xl":
+    default:
+      return maxLarge;
+  }
 };
+
+const Container = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 ${(props) => props.theme.spacing.gen(2)};
+
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    padding: 0 ${(props) => props.theme.spacing.gen(3)};
+  }
+
+  ${(props) => getMaxWidth(props.maxWidth)}
+`;
 
 Container.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
+  maxWidth: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
 };
 
 export default Container;

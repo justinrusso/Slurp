@@ -1,5 +1,19 @@
 import { useSelector } from "react-redux";
-import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import {
+  createGlobalStyle,
+  ThemeProvider as StyledThemeProvider,
+} from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${(props) => props.theme.palette.background};
+    color: ${(props) => props.theme.palette.text.primary};
+    margin: 0;
+    padding: 0;
+
+    ${(props) => props.theme.typography.body1}
+  }
+`;
 
 export const ThemeProvider = ({ children }) => {
   const theme = useSelector((state) => state.theme);
@@ -31,10 +45,42 @@ export const ThemeProvider = ({ children }) => {
       .join(" ");
   };
 
+  const supportedQueryBreakpoints = new Set(
+    Object.keys(theme.breakpoints.values)
+  );
+
+  /**
+   *
+   * @param {"up" | "down"} type
+   * @returns {(key: string) => string}
+   */
+  const generateMediaQuery = (type) => (k) => {
+    const key = k.toLowerCase();
+    if (!supportedQueryBreakpoints.has(key)) {
+      throw new Error("Unsupported media query key");
+    }
+
+    switch (type) {
+      case "up": {
+        return `@media (min-width: ${theme.breakpoints.values[key]}px)`;
+      }
+      case "down": {
+        return `@media (max-width: ${theme.breakpoints.values[key]}px)`;
+      }
+      default:
+        throw new Error("Unsupported query generation type");
+    }
+  };
+
   return (
     <StyledThemeProvider
       theme={{
         ...theme,
+        breakpoints: {
+          ...theme.breakpoints,
+          up: generateMediaQuery("up"),
+          down: generateMediaQuery("down"),
+        },
         spacing: {
           ...theme.spacing,
           gen: generateSpacing,
@@ -42,6 +88,7 @@ export const ThemeProvider = ({ children }) => {
         },
       }}
     >
+      <GlobalStyle />
       {children}
     </StyledThemeProvider>
   );
