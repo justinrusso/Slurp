@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SearchForm from "../search/SearchForm";
 
-import Container, { ContainerWrapper } from "../styled/Container";
+import Container from "../styled/Container";
 
 const Hero = styled.div`
   background-image: url(${(props) => props.image});
@@ -21,15 +21,13 @@ const HeroContentWrapper = styled.div`
 const HomePage = () => {
   return (
     <>
-      <ContainerWrapper>
-        <Hero>
-          <HeroContentWrapper>
-            <Container>
-              <SearchForm />
-            </Container>
-          </HeroContentWrapper>
-        </Hero>
-      </ContainerWrapper>
+      <Hero>
+        <HeroContentWrapper>
+          <Container>
+            <SearchForm />
+          </Container>
+        </HeroContentWrapper>
+      </Hero>
     </>
   );
 };

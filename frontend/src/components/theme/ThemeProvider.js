@@ -31,10 +31,42 @@ export const ThemeProvider = ({ children }) => {
       .join(" ");
   };
 
+  const supportedQueryBreakpoints = new Set(
+    Object.keys(theme.breakpoints.values)
+  );
+
+  /**
+   *
+   * @param {"up" | "down"} type
+   * @returns {(key: string) => string}
+   */
+  const generateMediaQuery = (type) => (k) => {
+    const key = k.toLowerCase();
+    if (!supportedQueryBreakpoints.has(key)) {
+      throw new Error("Unsupported media query key");
+    }
+
+    switch (type) {
+      case "up": {
+        return `@media (min-width: ${theme.breakpoints.values[key]}px)`;
+      }
+      case "down": {
+        return `@media (max-width: ${theme.breakpoints.values[key]}px)`;
+      }
+      default:
+        throw new Error("Unsupported query generation type");
+    }
+  };
+
   return (
     <StyledThemeProvider
       theme={{
         ...theme,
+        breakpoints: {
+          ...theme.breakpoints,
+          up: generateMediaQuery("up"),
+          down: generateMediaQuery("down"),
+        },
         spacing: {
           ...theme.spacing,
           gen: generateSpacing,

@@ -7,16 +7,18 @@ import { Link, useLocation } from "react-router-dom";
 import LoginFormModal from "../login/LoginFormModal";
 import ProfileButton from "./ProfileButton";
 import SignupFormModal from "../signup/SignupFormModal";
-import { ContainerContent, ContainerWrapper } from "../styled/Container";
+import Container from "../styled/Container";
 import { useSessionUser } from "../../store/session";
 
-const Nav = styled(ContainerWrapper)`
+const Nav = styled.div`
+  display: flex;
   height: 64px;
   padding: 2px 0;
   position: ${(props) => props.position};
+  width: 100%;
 `;
 
-const NavContent = styled(ContainerContent)`
+const NavContent = styled(Container)`
   display: flex;
   justify-content: ${(props) => props.justifyContent};
 `;
