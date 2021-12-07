@@ -75,7 +75,7 @@ const HomePage = () => {
       <MainContainer>
         <BusinessesList>
           {businessEntries.map((business) => (
-            <BusinessListItem>
+            <BusinessListItem key={business.id}>
               <CardLink to={`/biz/${business.id}`}>
                 <BusinessCard>
                   <BusinessImage
