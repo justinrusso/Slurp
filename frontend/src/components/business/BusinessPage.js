@@ -47,6 +47,9 @@ const PhotoHeaderContent = styled.div`
   position: relative;
   z-index: 1;
   padding-right: ${(props) => props.theme.spacing.gen(2)};
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing.gen(2)};
 
   & > * {
     pointer-events: auto;
@@ -126,9 +129,7 @@ const BusinessPage = () => {
           <PhotoHeaderContentContainer>
             <Container>
               <PhotoHeaderContent>
-                <Typography variant="h1" gutterBottom>
-                  {business.name}
-                </Typography>
+                <Typography variant="h1">{business.name}</Typography>
                 <ReviewHeroContainer>
                   <Rating
                     rating={roundHalf(ratingAverage)}
@@ -141,14 +142,16 @@ const BusinessPage = () => {
                   </span>
                 </ReviewHeroContainer>
                 {business.ownerId === user?.id && (
-                  <EditButton
-                    color="white"
-                    variant="text"
-                    as={Link}
-                    to={`/biz/${businessId}/edit`}
-                  >
-                    Edit
-                  </EditButton>
+                  <div>
+                    <EditButton
+                      color="white"
+                      variant="text"
+                      as={Link}
+                      to={`/biz/${businessId}/edit`}
+                    >
+                      Edit
+                    </EditButton>
+                  </div>
                 )}
               </PhotoHeaderContent>
             </Container>
