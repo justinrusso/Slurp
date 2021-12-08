@@ -18,6 +18,7 @@ import { useMemo } from "react";
 import InputField from "../common/InputField";
 import { Button } from "../styled/Button";
 import HelperText from "../common/HelperText";
+import { useAuthModal } from "../../context/AuthModalsProvider";
 
 const Form = styled.form`
   display: flex;
@@ -57,6 +58,8 @@ const ReviewsSection = ({ business }) => {
   const reviews = useSelector(selectBusinessReviews(business.id));
   const user = useSessionUser();
 
+  const { setLoginModalVisible } = useAuthModal();
+
   /** @type {ReviewData[]} */
   const reviewsArr = useMemo(() => Object.values(reviews), [reviews]);
 
@@ -69,13 +72,17 @@ const ReviewsSection = ({ business }) => {
 
   const startReview = () => {
     if (!user) {
-      // Open login modal
+      setLoginModalVisible(true);
       return;
     }
     setIsReviewing(true);
   };
 
   const handleChange = (num) => {
+    if (!user) {
+      setLoginModalVisible(true);
+      return;
+    }
     setNewRating(num);
     startReview();
   };

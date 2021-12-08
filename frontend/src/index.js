@@ -14,6 +14,7 @@ import configureStore from "./store";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
+import AuthModalProvider from "./context/AuthModalsProvider";
 
 const store = configureStore();
 
@@ -30,7 +31,9 @@ function Root() {
     <ReduxProvider store={store}>
       <ThemeProvider>
         <BrowserRouter>
-          <App />
+          <AuthModalProvider>
+            <App />
+          </AuthModalProvider>
         </BrowserRouter>
       </ThemeProvider>
     </ReduxProvider>
