@@ -142,6 +142,28 @@ router.put(
   })
 );
 
+router.delete(
+  "/:businessId(\\d+)",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { businessId } = req.params;
+
+    const business = await Business.findByPk(businessId);
+
+    if (!business) {
+      throw createHttpError(404);
+    }
+
+    if (business.ownerId !== req.user.id) {
+      throw createHttpError(403);
+    }
+
+    await business.destroy();
+
+    return res.json({ id: businessId });
+  })
+);
+
 module.exports = {
   businessesRouter: router,
 };
