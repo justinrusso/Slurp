@@ -73,6 +73,7 @@ const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
 `;
 
 const MainLeft = styled.div`
+  margin-bottom: ${(props) => props.theme.spacing.gen(4)};
   width: 100%;
 
   ${(props) => props.theme.breakpoints.up("lg")} {
