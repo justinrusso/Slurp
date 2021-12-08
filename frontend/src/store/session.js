@@ -1,6 +1,12 @@
 import { useSelector } from "react-redux";
 import { csrfFetch } from "./csrf";
 
+/**
+ * @typedef {Object} User
+ * @property {number} id
+ * @property {string} username
+ */
+
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 

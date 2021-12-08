@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import { useAuthModal } from "../../context/AuthModalsProvider";
 
 import LoginFormModal from "../login/LoginFormModal";
 import SignupFormModal from "../signup/SignupFormModal";
 
 const AuthModals = ({ isHomePage }) => {
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [signupModalVisible, setSignupModalVisible] = useState(false);
-
-  const switchForms = () => {
-    setLoginModalVisible((prev) => !prev);
-    setSignupModalVisible((prev) => !prev);
-  };
+  const {
+    loginModalVisible,
+    setLoginModalVisible,
+    signupModalVisible,
+    setSignupModalVisible,
+    switchForms,
+  } = useAuthModal();
 
   return (
     <>

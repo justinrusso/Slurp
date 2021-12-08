@@ -3,7 +3,7 @@ const createHttpError = require("http-errors");
 const express = require("express");
 const { check } = require("express-validator");
 
-const { Business } = require("../../db/models");
+const { Business, Review, User } = require("../../db/models");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 
@@ -161,6 +161,81 @@ router.delete(
     await business.destroy();
 
     return res.json({ id: businessId });
+  })
+);
+
+router.get(
+  "/:businessId(\\d+)/reviews",
+  asyncHandler(async (req, res) => {
+    const { businessId } = req.params;
+
+    const business = await Business.findByPk(businessId);
+
+    if (!business) {
+      throw createHttpError(404);
+    }
+
+    const reviewSummary = await Review.getBusinessReviewSummary(businessId);
+
+    const reviews = await Review.findAll({
+      where: { businessId },
+      include: [{ model: User, as: "user" }],
+    });
+
+    return res.json({
+      reviews,
+      ratingAverage: parseFloat(reviewSummary.ratingAverage),
+      total: parseInt(reviewSummary.total, 10),
+    });
+  })
+);
+
+const validateReview = [
+  check("rating")
+    .exists({ checkFalsy: true })
+    .withMessage("Enter a rating")
+    .isInt()
+    .withMessage("Enter a valid rating"),
+  check("comment")
+    .trim()
+    .exists({ checkFalsy: true })
+    .withMessage("Enter a comment"),
+  handleValidationErrors,
+];
+
+router.post(
+  "/:businessId(\\d+)/reviews",
+  requireAuth,
+  validateReview,
+  asyncHandler(async (req, res) => {
+    const { businessId } = req.params;
+
+    const business = await Business.findByPk(businessId);
+
+    if (!business) {
+      throw createHttpError(404);
+    }
+
+    const { rating, comment } = req.body;
+
+    let review = await Review.create({
+      userId: req.user.id,
+      businessId,
+      rating,
+      comment,
+    });
+
+    review = await Review.findByPk(review.id, {
+      include: [{ model: User, as: "user" }],
+    });
+
+    const reviewSummary = await Review.getBusinessReviewSummary(businessId);
+
+    return res.status(201).json({
+      review,
+      ratingAverage: parseFloat(reviewSummary.ratingAverage),
+      total: parseInt(reviewSummary.total, 10),
+    });
   })
 );
 

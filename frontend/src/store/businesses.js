@@ -7,6 +7,8 @@ import { csrfFetch } from "./csrf.js";
 const ADD_BUSINESS = "slurp/businesses/ADD_BUSINESS";
 const LOAD_BUSINESSES = "slurp/businesses/LOAD_BUSINESSES";
 const REMOVE_BUSINESS = "slurp/businesses/REMOVE_BUSINESS";
+const LOAD_REVIEWS = "slurp/businesses/LOAD_REVIEWS";
+const ADD_REVIEW = "slurp/businesses/ADD_REVIEW";
 
 /**
  * Editable business properties
@@ -29,6 +31,36 @@ const REMOVE_BUSINESS = "slurp/businesses/REMOVE_BUSINESS";
  *
  * Business type definition
  * @typedef {UneditableBusinessData & EditableBusinessData} Business
+ *
+ * Business Review Object
+ * @typedef {Object} EditableReviewData
+ * @property {number} rating
+ * @property {string} comment
+ *
+ * @typedef {Object} UneditableReviewData
+ * @property {number} id
+ * @property {number} userId
+ * @property {User} user
+ * @property {number} businessId
+ * @property {string} createdAt
+ * @property {string} updatedAt
+ *
+ * @typedef {EditableReviewData & UneditableReviewData} ReviewData
+ *
+ * Business Review Response
+ * @typedef {Object} ReviewResponse
+ * @property {ReviewData[]} reviews
+ * @property {number} ratingAverage
+ * @property {number} total
+ *
+ * Business Review
+ * @typedef {Object} ReviewProps
+ * @property {Record<string, ReviewData>} reviews
+ * @property {number} ratingAverage
+ * @property {number} total
+ *
+ * Business with Reviews
+ * @typedef {Business & ReviewProps} BusinessWithReviews
  *
  * Businesses state
  * @typedef {Object} BusinessesState
@@ -66,6 +98,20 @@ const removeBusiness = (businessId) => {
   };
 };
 
+const loadBusinessReviews = (businessId, reviewData) => {
+  return {
+    type: LOAD_REVIEWS,
+    payload: { businessId, reviewData },
+  };
+};
+
+const addOneReview = (businessId, reviewData) => {
+  return {
+    type: ADD_REVIEW,
+    payload: { businessId, reviewData },
+  };
+};
+
 export const fetchBusinesses = () => async (dispatch) => {
   const res = await csrfFetch("/api/businesses");
 
@@ -74,6 +120,21 @@ export const fetchBusinesses = () => async (dispatch) => {
     dispatch(loadBusinesses(data));
     return res;
   }
+};
+
+/**
+ *
+ * @param {number | string} businessId
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const fetchBusiness = (businessId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/businesses/${businessId}`);
+
+  if (res.ok) {
+    const business = await res.json();
+    dispatch(addOneBusiness(business));
+  }
+  return res;
 };
 
 /**
@@ -132,6 +193,42 @@ export const deleteBusiness = (businessId) => async (dispatch) => {
 
 /**
  *
+ * @param {number | string} businessId
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const fetchReviews = (businessId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/businesses/${businessId}/reviews`);
+
+  if (res.ok) {
+    const reviewData = await res.json();
+    dispatch(loadBusinessReviews(businessId, reviewData));
+  }
+  return res;
+};
+
+/**
+ *
+ * @param {{
+ *  comment: string;
+ *  rating: number;
+ * }} data
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const createNewReview = (businessId, data) => async (dispatch) => {
+  const res = await csrfFetch(`/api/businesses/${businessId}/reviews`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  if (res.ok) {
+    const review = await res.json();
+    dispatch(addOneReview(businessId, review));
+  }
+  return res;
+};
+
+/**
+ *
  * @param {BusinessesState} state
  * @param {Action} action
  * @returns {BusinessesState}
@@ -165,6 +262,43 @@ export const businessesReducer = (state = initialState, action) => {
       delete newState.entries[action.payload];
       return newState;
     }
+    case LOAD_REVIEWS: {
+      const newState = {
+        ...state,
+        entries: { ...state.entries },
+      };
+      const reviews = {};
+      action.payload.reviewData.reviews.forEach((review) => {
+        reviews[review.id] = review;
+      });
+
+      newState.entries[action.payload.businessId] = {
+        ...newState.entries[action.payload.businessId],
+        reviews,
+        ratingAverage: action.payload.reviewData.ratingAverage,
+        total: action.payload.reviewData.total,
+      };
+
+      return newState;
+    }
+    case ADD_REVIEW: {
+      const newState = {
+        ...state,
+        entries: { ...state.entries },
+      };
+      newState.entries[action.payload.businessId] = {
+        ...newState.entries[action.payload.businessId],
+        reviews: {
+          ...newState.entries[action.payload.businessId].reviews,
+          [action.payload.reviewData.review.id]:
+            action.payload.reviewData.review,
+        },
+        ratingAverage: action.payload.reviewData.ratingAverage,
+        total: action.payload.reviewData.total,
+      };
+
+      return newState;
+    }
     default:
       return state;
   }
@@ -177,3 +311,27 @@ export const businessesReducer = (state = initialState, action) => {
  */
 export const selectBusiness = (businessId) => (state) =>
   state.businesses.entries[businessId];
+
+/**
+ *
+ * @param {number | string} businessId
+ * @returns {(state: BusinessesState) => number | undefined}
+ */
+export const selectBusinessRatingAverage = (businessId) => (state) =>
+  state.businesses.entries[businessId]?.ratingAverage;
+
+/**
+ *
+ * @param {number | string} businessId
+ * @returns {(state: BusinessesState) => number | undefined}
+ */
+export const selectBusinessReviewTotal = (businessId) => (state) =>
+  state.businesses.entries[businessId]?.total;
+
+/**
+ *
+ * @param {number | string} businessId
+ * @returns {(state: BusinessesState) => Record<string, ReviewData> | undefined}
+ */
+export const selectBusinessReviews = (businessId) => (state) =>
+  state.businesses.entries[businessId]?.reviews;
