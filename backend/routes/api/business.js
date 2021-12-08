@@ -97,7 +97,7 @@ router.post(
       displayImage,
     });
 
-    return res.json(business);
+    return res.status(201).json(business);
   })
 );
 
