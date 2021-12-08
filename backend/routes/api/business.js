@@ -101,6 +101,47 @@ router.post(
   })
 );
 
+router.put(
+  "/:businessId(\\d+)",
+  requireAuth,
+  validateBusiness,
+  asyncHandler(async (req, res) => {
+    const { businessId } = req.params;
+
+    const business = await Business.findByPk(businessId);
+
+    if (!business) {
+      throw createHttpError(404);
+    }
+
+    const {
+      name,
+      description,
+      address,
+      city,
+      state,
+      zipCode,
+      lat,
+      long,
+      displayImage,
+    } = req.body;
+
+    await business.update({
+      name,
+      description,
+      address,
+      city,
+      state,
+      zipCode,
+      lat,
+      long,
+      displayImage,
+    });
+
+    return res.json(business);
+  })
+);
+
 module.exports = {
   businessesRouter: router,
 };
