@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+
   Review.associate = function (models) {
     Review.belongsTo(models.Business, {
       as: "business",
@@ -33,5 +34,18 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
     });
   };
+
+  Review.getBusinessAverage = async function (businessId) {
+    const review = await Review.findOne({
+      attributes: [[sequelize.fn("AVG", sequelize.col("rating")), "ratingAvg"]],
+      where: {
+        businessId,
+      },
+      raw: true,
+    });
+
+    return review.ratingAvg;
+  };
+
   return Review;
 };

@@ -3,7 +3,7 @@ const createHttpError = require("http-errors");
 const express = require("express");
 const { check } = require("express-validator");
 
-const { Business } = require("../../db/models");
+const { Business, Review } = require("../../db/models");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 
@@ -161,6 +161,28 @@ router.delete(
     await business.destroy();
 
     return res.json({ id: businessId });
+  })
+);
+
+router.get(
+  "/:businessId(\\d+)/reviews",
+  asyncHandler(async (req, res) => {
+    const { businessId } = req.params;
+
+    const business = await Business.findByPk(businessId);
+
+    if (!business) {
+      throw createHttpError(404);
+    }
+
+    const ratingAverage = await Review.getBusinessAverage(businessId);
+
+    const reviews = await Review.findAll({ where: { businessId } });
+
+    return res.json({
+      reviews,
+      ratingAverage,
+    });
   })
 );
 
