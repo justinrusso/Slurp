@@ -15,8 +15,9 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(restoreUser()).then(() => setIsLoaded(true));
-    dispatch(fetchBusinesses());
+    dispatch(restoreUser())
+      .then(() => dispatch(fetchBusinesses()))
+      .finally(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
