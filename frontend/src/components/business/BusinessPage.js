@@ -176,7 +176,7 @@ const BusinessPage = () => {
                 <Typography>{business.description}</Typography>
               </section>
             )}
-            <ReviewsSection businessId={businessId} />
+            <ReviewsSection business={business} />
           </MainLeft>
           <MainRight>
             <Sidebar>

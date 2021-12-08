@@ -8,6 +8,7 @@ const RatingsWrapper = styled.div`
   display: flex;
   font-size: ${(props) => (props.size === "small" ? 10 : 16)}px;
   gap: ${(props) => (props.size === "small" ? 2 : 4)}px;
+  width: fit-content;
 `;
 
 const getRatingColor = (props) => {
@@ -83,14 +84,24 @@ const RatingIconWrapper = styled.div`
 /**
  *
  * @param {{
+ *  colorMode: "light" | "dark";
  *  disableButtons: boolean;
+ *  onChange: (rating: number) => void;
  *  rating: number;
  *  size: "small" | "medium";
  * }} props
  * @returns
  */
-const Rating = ({ colorMode, disableButtons, rating, size }) => {
+const Rating = ({ colorMode, disableButtons, onChange, rating, size }) => {
+  if (!disableButtons && !onChange) {
+    throw new Error("onChange must be provided if buttons are enabled");
+  }
+
   const [value, setValue] = useState(rating);
+
+  const handleChange = (e) => {
+    onChange(Number.parseInt(e.target.value, 10));
+  };
 
   const handleClick = (e) => {
     if (disableButtons) {
@@ -99,8 +110,17 @@ const Rating = ({ colorMode, disableButtons, rating, size }) => {
     setValue(Number.parseInt(e.target.value, 10));
   };
 
+  const handleMouseLeave = () => {
+    if (value !== rating) {
+      setValue(rating);
+    }
+  };
+
   return (
-    <RatingsWrapper size={size}>
+    <RatingsWrapper
+      size={size}
+      onMouseLeave={disableButtons ? undefined : handleMouseLeave}
+    >
       <RatingSquare
         variant="contained"
         rating={value}
@@ -110,9 +130,11 @@ const Rating = ({ colorMode, disableButtons, rating, size }) => {
         {!disableButtons && (
           <RatingInput
             type="radio"
-            onChange={handleClick}
+            onChange={handleChange}
+            // onClick={handleChange}
+            onMouseEnter={handleClick}
             value="1"
-            checked={value === 1}
+            checked={rating === 1}
           />
         )}
         <RatingIconWrapper>
@@ -128,9 +150,11 @@ const Rating = ({ colorMode, disableButtons, rating, size }) => {
         {!disableButtons && (
           <RatingInput
             type="radio"
-            onChange={handleClick}
+            onChange={handleChange}
+            // onClick={handleChange}
+            onMouseEnter={handleClick}
             value="2"
-            checked={value === 2}
+            checked={rating === 2}
           />
         )}
         <RatingIconWrapper>
@@ -146,9 +170,11 @@ const Rating = ({ colorMode, disableButtons, rating, size }) => {
         {!disableButtons && (
           <RatingInput
             type="radio"
-            onChange={handleClick}
+            onChange={handleChange}
+            // onClick={handleChange}
+            onMouseEnter={handleClick}
             value="3"
-            checked={value === 3}
+            checked={rating === 3}
           />
         )}
         <RatingIconWrapper>
@@ -164,9 +190,11 @@ const Rating = ({ colorMode, disableButtons, rating, size }) => {
         {!disableButtons && (
           <RatingInput
             type="radio"
-            onChange={handleClick}
+            onChange={handleChange}
+            // onClick={handleChange}
+            onMouseEnter={handleClick}
             value="4"
-            checked={value === 4}
+            checked={rating === 4}
           />
         )}
         <RatingIconWrapper>
@@ -182,9 +210,11 @@ const Rating = ({ colorMode, disableButtons, rating, size }) => {
         {!disableButtons && (
           <RatingInput
             type="radio"
-            onChange={handleClick}
+            onChange={handleChange}
+            // onClick={handleChange}
+            onMouseEnter={handleClick}
             value="5"
-            checked={value === 5}
+            checked={rating === 5}
           />
         )}
         <RatingIconWrapper>
@@ -198,6 +228,7 @@ const Rating = ({ colorMode, disableButtons, rating, size }) => {
 Rating.propTypes = {
   colorMode: PropTypes.oneOf(["light", "dark"]),
   disableButtons: PropTypes.bool,
+  onChange: PropTypes.func,
   rating: PropTypes.number.isRequired,
   size: PropTypes.oneOf(["small", "medium"]).isRequired,
 };

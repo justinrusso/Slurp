@@ -8,6 +8,7 @@ const ADD_BUSINESS = "slurp/businesses/ADD_BUSINESS";
 const LOAD_BUSINESSES = "slurp/businesses/LOAD_BUSINESSES";
 const REMOVE_BUSINESS = "slurp/businesses/REMOVE_BUSINESS";
 const LOAD_REVIEWS = "slurp/businesses/LOAD_REVIEWS";
+const ADD_REVIEW = "slurp/businesses/ADD_REVIEW";
 
 /**
  * Editable business properties
@@ -100,6 +101,13 @@ const removeBusiness = (businessId) => {
 const loadBusinessReviews = (businessId, reviewData) => {
   return {
     type: LOAD_REVIEWS,
+    payload: { businessId, reviewData },
+  };
+};
+
+const addOneReview = (businessId, reviewData) => {
+  return {
+    type: ADD_REVIEW,
     payload: { businessId, reviewData },
   };
 };
@@ -200,6 +208,27 @@ export const fetchReviews = (businessId) => async (dispatch) => {
 
 /**
  *
+ * @param {{
+ *  comment: string;
+ *  rating: number;
+ * }} data
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const createNewReview = (businessId, data) => async (dispatch) => {
+  const res = await csrfFetch(`/api/businesses/${businessId}/reviews`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  if (res.ok) {
+    const review = await res.json();
+    dispatch(addOneReview(businessId, review));
+  }
+  return res;
+};
+
+/**
+ *
  * @param {BusinessesState} state
  * @param {Action} action
  * @returns {BusinessesState}
@@ -246,6 +275,24 @@ export const businessesReducer = (state = initialState, action) => {
       newState.entries[action.payload.businessId] = {
         ...newState.entries[action.payload.businessId],
         reviews,
+        ratingAverage: action.payload.reviewData.ratingAverage,
+        total: action.payload.reviewData.total,
+      };
+
+      return newState;
+    }
+    case ADD_REVIEW: {
+      const newState = {
+        ...state,
+        entries: { ...state.entries },
+      };
+      newState.entries[action.payload.businessId] = {
+        ...newState.entries[action.payload.businessId],
+        reviews: {
+          ...newState.entries[action.payload.businessId].reviews,
+          [action.payload.reviewData.review.id]:
+            action.payload.reviewData.review,
+        },
         ratingAverage: action.payload.reviewData.ratingAverage,
         total: action.payload.reviewData.total,
       };
