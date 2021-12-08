@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import BusinessPage from "./BusinessPage";
 import BusinessEditor from "./BusinessEditor";
-import { fetchBusiness, selectBusiness } from "../../store/businesses";
+import {
+  fetchBusiness,
+  fetchReviews,
+  selectBusiness,
+} from "../../store/businesses";
 
 export const businessRouteRoot = "/biz";
 
@@ -27,7 +31,9 @@ const BusinessPages = () => {
       return;
     }
     if (!business) {
-      dispatch(fetchBusiness(businessId)).finally(() => setIsLoaded(true));
+      dispatch(fetchBusiness(businessId))
+        .then(() => dispatch(fetchReviews(businessId)))
+        .finally(() => setIsLoaded(true));
     } else if (!isLoaded) {
       setIsLoaded(true);
     }

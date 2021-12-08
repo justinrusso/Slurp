@@ -1,16 +1,23 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 import Card from "../common/Card";
 import CardContent from "../common/CardContent";
 import Container from "../styled/Container";
 import ErrorPage from "../common/ErrorPage";
+import ReviewsSection from "../review/ReviewsSection";
 import Typography from "../common/Typography";
 import { Button } from "../styled/Button";
 import { addOpacityToHex } from "../../utils/theme";
-import { selectBusiness } from "../../store/businesses";
+import {
+  fetchReviews,
+  selectBusiness,
+  selectBusinessRatingAverage,
+} from "../../store/businesses";
 import { useSessionUser } from "../../store/session";
+import { roundHalf } from "../../utils";
 
 const PhotoHeader = styled.div`
   background-color: #333;
@@ -89,68 +96,80 @@ const Sidebar = styled.div`
 `;
 
 const BusinessPage = () => {
+  const dispatch = useDispatch();
   const { businessId } = useParams();
 
   const business = useSelector(selectBusiness(businessId));
+  const ratingAverage = useSelector(selectBusinessRatingAverage(businessId));
   const user = useSessionUser();
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchReviews(businessId)).finally(() => setIsLoaded(true));
+  }, [businessId, dispatch]);
+
   return business ? (
-    <>
-      <PhotoHeader>
-        <PhotoHeaderContentContainer>
-          <Container>
-            <PhotoHeaderContent>
-              <Typography variant="h1" gutterBottom>
-                {business.name}
-              </Typography>
-              {business.ownerId === user?.id && (
-                <EditButton
-                  color="white"
-                  variant="text"
-                  as={Link}
-                  to={`/biz/${businessId}/edit`}
-                >
-                  Edit
-                </EditButton>
-              )}
-            </PhotoHeaderContent>
-          </Container>
-        </PhotoHeaderContentContainer>
-      </PhotoHeader>
-      <MainContainer>
-        <MainLeft>
-          <section>
-            <Typography variant="h4" gutterBottom>
-              Location
-            </Typography>
-            <Typography>
-              {business.address}, {business.city}, {business.state}{" "}
-              {business.zipCode}
-            </Typography>
-          </section>
-          {business.description && (
+    isLoaded && (
+      <>
+        <PhotoHeader>
+          <PhotoHeaderContentContainer>
+            <Container>
+              <PhotoHeaderContent>
+                <Typography variant="h1" gutterBottom>
+                  {business.name}
+                </Typography>
+                {business.ownerId === user?.id && (
+                  <EditButton
+                    color="white"
+                    variant="text"
+                    as={Link}
+                    to={`/biz/${businessId}/edit`}
+                  >
+                    Edit
+                  </EditButton>
+                )}
+                <Typography gutterBottom>{roundHalf(ratingAverage)}</Typography>
+              </PhotoHeaderContent>
+            </Container>
+          </PhotoHeaderContentContainer>
+        </PhotoHeader>
+        <MainContainer>
+          <MainLeft>
             <section>
               <Typography variant="h4" gutterBottom>
-                About the Business
+                Location
               </Typography>
-              <Typography>{business.description}</Typography>
+              <Typography>
+                {business.address}, {business.city}, {business.state}{" "}
+                {business.zipCode}
+              </Typography>
             </section>
-          )}
-        </MainLeft>
-        <MainRight>
-          <Sidebar>
-            <Card>
-              <CardContent>
-                <Typography>
-                  {business.address}, {business.city}, {business.state}{" "}
-                  {business.zipCode}
+            {business.description && (
+              <section>
+                <Typography variant="h4" gutterBottom>
+                  About the Business
                 </Typography>
-              </CardContent>
-            </Card>
-          </Sidebar>
-        </MainRight>
-      </MainContainer>
-    </>
+                <Typography>{business.description}</Typography>
+              </section>
+            )}
+            <ReviewsSection businessId={businessId} />
+          </MainLeft>
+          <MainRight>
+            <Sidebar>
+              <Card>
+                <CardContent>
+                  <Typography>
+                    {business.address}, {business.city}, {business.state}{" "}
+                    {business.zipCode}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Sidebar>
+          </MainRight>
+        </MainContainer>
+      </>
+    )
   ) : (
     <ErrorPage />
   );
