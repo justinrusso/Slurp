@@ -46,7 +46,6 @@ const generateRatingBackground = (props) => {
     return `linear-gradient(90deg, ${color} 50%, ${emptyColor} 50%)`;
   }
   if (ratingValue < forValue) {
-    console.log(ratingValue, forValue);
     return emptyColor;
   }
   return color;
