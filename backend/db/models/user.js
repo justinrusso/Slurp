@@ -56,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
       as: "businesses",
       foreignKey: "ownerId",
     });
+    User.hasMany(models.Review, {
+      as: "reviews",
+      foreignKey: "userId",
+    });
   };
 
   User.getCurrentUserById = async function (id) {

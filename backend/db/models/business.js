@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Business.associate = function (models) {
+    Business.hasMany(models.Review, {
+      as: "reviews",
+      foreignKey: "businessId",
+      onDelete: "CASCADE",
+    });
+
     Business.belongsTo(models.User, {
       as: "user",
       foreignKey: "ownerId",
