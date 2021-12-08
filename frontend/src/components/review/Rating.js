@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const RatingsWrapper = styled.div`
   display: flex;
@@ -98,6 +98,10 @@ const Rating = ({ colorMode, disableButtons, onChange, rating, size }) => {
   }
 
   const [value, setValue] = useState(rating);
+
+  useEffect(() => {
+    setValue(rating);
+  }, [rating]);
 
   const handleChange = (e) => {
     onChange(Number.parseInt(e.target.value, 10));
