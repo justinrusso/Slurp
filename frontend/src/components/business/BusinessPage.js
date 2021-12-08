@@ -103,7 +103,7 @@ const BusinessPage = () => {
               <Typography variant="h1" gutterBottom>
                 {business.name}
               </Typography>
-              {business.ownerId === user.id && (
+              {business.ownerId === user?.id && (
                 <EditButton
                   color="white"
                   variant="text"
