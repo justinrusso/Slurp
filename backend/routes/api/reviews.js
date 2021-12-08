@@ -57,6 +57,35 @@ router.put(
   })
 );
 
+router.delete(
+  "/:reviewId(\\d+)",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { reviewId } = req.params;
+    const review = await Review.findByPk(reviewId);
+
+    if (!review) {
+      return createHttpError(404);
+    }
+
+    if (review.userId !== req.user.id) {
+      return createHttpError(403);
+    }
+
+    const businessId = review.businessId;
+
+    await review.destroy();
+
+    const reviewSummary = await Review.getBusinessReviewSummary(businessId);
+
+    return res.json({
+      id: reviewId,
+      ratingAverage: parseFloat(reviewSummary.ratingAverage),
+      total: parseInt(reviewSummary.total, 10),
+    });
+  })
+);
+
 module.exports = {
   reviewsRouter: router,
   validateReview,
