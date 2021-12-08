@@ -119,6 +119,7 @@ const ReviewsSection = ({ business }) => {
       );
       setNewRating(0);
       setComment("");
+      setIsReviewing(false);
     } catch (res) {
       const data = await res.json();
       if (data && data.errors) {
