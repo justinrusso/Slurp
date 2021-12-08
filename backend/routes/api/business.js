@@ -175,7 +175,7 @@ router.get(
       throw createHttpError(404);
     }
 
-    const ratingAverage = await Review.getBusinessAverage(businessId);
+    const reviewSummary = await Review.getBusinessReviewSummary(businessId);
 
     const reviews = await Review.findAll({
       where: { businessId },
@@ -184,7 +184,8 @@ router.get(
 
     return res.json({
       reviews,
-      ratingAverage,
+      ratingAverage: parseFloat(reviewSummary.ratingAverage),
+      total: parseInt(reviewSummary.total, 10),
     });
   })
 );

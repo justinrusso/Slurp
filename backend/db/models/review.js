@@ -35,16 +35,19 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  Review.getBusinessAverage = async function (businessId) {
+  Review.getBusinessReviewSummary = async function (businessId) {
     const review = await Review.findOne({
-      attributes: [[sequelize.fn("AVG", sequelize.col("rating")), "ratingAvg"]],
+      attributes: [
+        [sequelize.fn("AVG", sequelize.col("rating")), "ratingAverage"],
+        [sequelize.fn("COUNT", sequelize.col("rating")), "total"],
+      ],
       where: {
         businessId,
       },
       raw: true,
     });
 
-    return review.ratingAvg;
+    return review;
   };
 
   return Review;
