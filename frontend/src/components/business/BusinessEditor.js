@@ -1,0 +1,259 @@
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { useState } from "react";
+
+import Box from "../styled/Box";
+import Container from "../styled/Container";
+import InputField from "../common/InputField";
+import Typography from "../common/Typography";
+import { Button } from "../styled/Button";
+import {
+  createNewBusiness,
+  selectBusiness,
+  updateBusiness,
+} from "../../store/businesses";
+
+const InputWrapper = styled.div`
+  margin: ${(props) => props.theme.spacing.gen(1.5, 0)};
+  display: inline-flex;
+  width: 100%;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  padding-top: ${(props) => props.theme.spacing.gen(2)};
+`;
+
+const BusinessEditor = ({ addNew }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { businessId } = useParams();
+
+  const business = useSelector(selectBusiness(businessId || 0));
+
+  const businessData = business || {};
+
+  const [name, setName] = useState(businessData.name || "");
+  const [description, setDescription] = useState(
+    businessData.description || ""
+  );
+  const [address, setAddress] = useState(businessData.address || "");
+  const [city, setCity] = useState(businessData.city || "");
+  const [state, setState] = useState(businessData.state || "");
+  const [zipCode, setZipCode] = useState(businessData.zipCode || "");
+  const [lat, setLat] = useState(businessData.lat || "");
+  const [long, setLong] = useState(businessData.long || "");
+  const [displayImage, setDisplayImage] = useState(
+    businessData.displayImage || ""
+  );
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const goBack = () => {
+    history.push(businessId ? `/biz/${businessId}` : "/");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
+    setErrors({});
+
+    const payload = {
+      name,
+      description,
+      address,
+      city,
+      state,
+      zipCode,
+      lat,
+      long,
+      displayImage,
+    };
+
+    try {
+      if (addNew) {
+        await dispatch(createNewBusiness(payload));
+      } else {
+        await dispatch(updateBusiness(businessId, payload));
+      }
+      goBack();
+    } catch (res) {
+      const data = await res.json();
+      if (data && data.errors) {
+        setErrors(data.errors);
+      }
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Box paddingBottom="48px">
+      <Container>
+        <Typography color="primary" variant="h2">
+          {addNew ? "Add a Business" : "Update Business Details"}
+        </Typography>
+        <form id="business-editor" onSubmit={handleSubmit}>
+          <InputWrapper>
+            <InputField
+              label="Business Name"
+              fullWidth
+              id="business-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              inputProps={{
+                autoFocus: true,
+                required: true,
+                type: "text",
+              }}
+              error={!!errors.name}
+              helperText={errors.name}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="Business Image URL"
+              fullWidth
+              id="business-image"
+              value={displayImage}
+              onChange={(e) => setDisplayImage(e.target.value)}
+              inputProps={{
+                type: "text",
+              }}
+              error={!!errors.displayImage}
+              helperText={errors.displayImage}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="Business Description"
+              fullWidth
+              id="business-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              inputProps={{
+                type: "text",
+              }}
+              error={!!errors.description}
+              helperText={errors.description}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="Address"
+              fullWidth
+              id="business-address1"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              inputProps={{
+                type: "text",
+              }}
+              error={!!errors.address}
+              helperText={errors.address}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="City"
+              fullWidth
+              id="business-city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              inputProps={{
+                type: "text",
+              }}
+              error={!!errors.city}
+              helperText={errors.city}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="State"
+              fullWidth
+              id="business-state"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              inputProps={{
+                type: "text",
+              }}
+              error={!!errors.state}
+              helperText={errors.state}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="ZIP"
+              fullWidth
+              id="business-zip-code"
+              value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
+              inputProps={{
+                type: "text",
+              }}
+              error={!!errors.zipCode}
+              helperText={errors.zipCode}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="Latitude"
+              fullWidth
+              id="business-latitude"
+              value={lat}
+              onChange={(e) => setLat(e.target.value)}
+              inputProps={{
+                type: "number",
+                step: "any",
+              }}
+              error={!!errors.lat}
+              helperText={errors.lat}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <InputField
+              label="Longitude"
+              fullWidth
+              id="business-longitude"
+              value={long}
+              onChange={(e) => setLong(e.target.value)}
+              inputProps={{
+                type: "number",
+                step: "any",
+              }}
+              error={!!errors.long}
+              helperText={errors.long}
+            />
+          </InputWrapper>
+        </form>
+        <Actions>
+          <Button form="business-editor" type="submit">
+            {addNew ? "Add a Business" : "Submit Changes"}
+          </Button>
+          <Button
+            type="button"
+            variant="text"
+            color="secondary"
+            onClick={goBack}
+          >
+            Cancel
+          </Button>
+        </Actions>
+      </Container>
+    </Box>
+  );
+};
+
+BusinessEditor.defaultProps = {
+  addNew: false,
+};
+
+BusinessEditor.propTypes = {
+  addNew: PropTypes.bool,
+};
+
+export default BusinessEditor;

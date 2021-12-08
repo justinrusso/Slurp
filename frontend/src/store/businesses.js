@@ -4,13 +4,12 @@
 
 import { csrfFetch } from "./csrf.js";
 
+const ADD_BUSINESS = "slurp/businesses/ADD_BUSINESS";
 const LOAD_BUSINESSES = "slurp/businesses/LOAD_BUSINESSES";
 
 /**
- * Business type definition
- * @typedef {Object} Business
- * @property {number} id
- * @property {number} ownerId
+ * Editable business properties
+ * @typedef {Object} EditableBusinessData
  * @property {string} name
  * @property {string} [description]
  * @property {string} address
@@ -20,11 +19,16 @@ const LOAD_BUSINESSES = "slurp/businesses/LOAD_BUSINESSES";
  * @property {string} lat
  * @property {string} long
  * @property {string} [displayImage]
+ *
+ * @typedef {Object} UneditableBusinessData
+ * @property {number} id
+ * @property {number} ownerId
  * @property {string} createdAt
  * @property {string} updatedAt
- */
-
-/**
+ *
+ * Business type definition
+ * @typedef {UneditableBusinessData & EditableBusinessData} Business
+ *
  * Businesses state
  * @typedef {Object} BusinessesState
  * @property {Object.<string, Business>} entries
@@ -47,6 +51,13 @@ const loadBusinesses = (businesses) => {
   };
 };
 
+const addOneBusiness = (business) => {
+  return {
+    type: ADD_BUSINESS,
+    payload: business,
+  };
+};
+
 export const fetchBusinesses = () => async (dispatch) => {
   const res = await csrfFetch("/api/businesses");
 
@@ -55,6 +66,43 @@ export const fetchBusinesses = () => async (dispatch) => {
     dispatch(loadBusinesses(data));
     return res;
   }
+};
+
+/**
+ *
+ * @param {EditableBusinessData} data
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const createNewBusiness = (data) => async (dispatch) => {
+  const res = await csrfFetch("/api/businesses", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  if (res.ok) {
+    const business = await res.json();
+    dispatch(addOneBusiness(business));
+  }
+  return res;
+};
+
+/**
+ *
+ * @param {number | string} businessId
+ * @param {EditableBusinessData} data
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const updateBusiness = (businessId, data) => async (dispatch) => {
+  const res = await csrfFetch(`/api/businesses/${businessId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+  if (res.ok) {
+    const business = await res.json();
+    dispatch(addOneBusiness(business));
+  }
+  return res;
 };
 
 /**
@@ -73,6 +121,15 @@ export const businessesReducer = (state = initialState, action) => {
       return {
         ...state,
         entries,
+      };
+    }
+    case ADD_BUSINESS: {
+      return {
+        ...state,
+        entries: {
+          ...state.entries,
+          [action.payload.id]: action.payload,
+        },
       };
     }
     default:
