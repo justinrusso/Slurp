@@ -150,7 +150,6 @@ const BusinessPage = () => {
                     Edit
                   </EditButton>
                 )}
-                <Typography gutterBottom>{roundHalf(ratingAverage)}</Typography>
               </PhotoHeaderContent>
             </Container>
           </PhotoHeaderContentContainer>
