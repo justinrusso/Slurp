@@ -8,6 +8,7 @@ import CardContent from "../common/CardContent";
 import Container from "../styled/Container";
 import ErrorPage from "../common/ErrorPage";
 import ReviewsSection from "../review/ReviewsSection";
+import Rating from "../review/Rating";
 import Typography from "../common/Typography";
 import { Button } from "../styled/Button";
 import { addOpacityToHex } from "../../utils/theme";
@@ -49,6 +50,10 @@ const PhotoHeaderContent = styled.div`
   & > * {
     pointer-events: auto;
   }
+`;
+
+const ReviewHeroContainer = styled.div`
+  display: flex;
 `;
 
 const EditButton = styled(Button)`
@@ -119,6 +124,14 @@ const BusinessPage = () => {
                 <Typography variant="h1" gutterBottom>
                   {business.name}
                 </Typography>
+                <ReviewHeroContainer>
+                  <Rating
+                    rating={roundHalf(ratingAverage)}
+                    disableButtons
+                    size="medium"
+                    colorMode="dark"
+                  />
+                </ReviewHeroContainer>
                 {business.ownerId === user?.id && (
                   <EditButton
                     color="white"
