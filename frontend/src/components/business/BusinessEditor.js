@@ -11,6 +11,7 @@ import Typography from "../common/Typography";
 import { Button } from "../styled/Button";
 import {
   createNewBusiness,
+  deleteBusiness,
   selectBusiness,
   updateBusiness,
 } from "../../store/businesses";
@@ -23,6 +24,7 @@ const InputWrapper = styled.div`
 
 const Actions = styled.div`
   display: flex;
+  justify-content: space-between;
   padding-top: ${(props) => props.theme.spacing.gen(2)};
 `;
 
@@ -89,6 +91,16 @@ const BusinessEditor = ({ addNew }) => {
         setErrors(data.errors);
       }
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(deleteBusiness(businessId));
+      history.push("/");
+    } catch {
+      goBack();
     }
   };
 
@@ -231,17 +243,29 @@ const BusinessEditor = ({ addNew }) => {
           </InputWrapper>
         </form>
         <Actions>
-          <Button form="business-editor" type="submit">
-            {addNew ? "Add a Business" : "Submit Changes"}
-          </Button>
-          <Button
-            type="button"
-            variant="text"
-            color="secondary"
-            onClick={goBack}
-          >
-            Cancel
-          </Button>
+          <div>
+            <Button form="business-editor" type="submit">
+              {addNew ? "Add a Business" : "Submit Changes"}
+            </Button>
+            <Button
+              type="button"
+              variant="text"
+              color="secondary"
+              onClick={goBack}
+            >
+              Cancel
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="button"
+              variant="text"
+              color="secondary"
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+          </div>
         </Actions>
       </Container>
     </Box>

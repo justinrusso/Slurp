@@ -6,6 +6,7 @@ import { csrfFetch } from "./csrf.js";
 
 const ADD_BUSINESS = "slurp/businesses/ADD_BUSINESS";
 const LOAD_BUSINESSES = "slurp/businesses/LOAD_BUSINESSES";
+const REMOVE_BUSINESS = "slurp/businesses/REMOVE_BUSINESS";
 
 /**
  * Editable business properties
@@ -58,6 +59,13 @@ const addOneBusiness = (business) => {
   };
 };
 
+const removeBusiness = (businessId) => {
+  return {
+    type: REMOVE_BUSINESS,
+    payload: businessId,
+  };
+};
+
 export const fetchBusinesses = () => async (dispatch) => {
   const res = await csrfFetch("/api/businesses");
 
@@ -107,6 +115,23 @@ export const updateBusiness = (businessId, data) => async (dispatch) => {
 
 /**
  *
+ * @param {number | string} businessId
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const deleteBusiness = (businessId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/businesses/${businessId}`, {
+    method: "DELETE",
+  });
+
+  if (res.ok) {
+    const { id } = await res.json();
+    dispatch(removeBusiness(id));
+  }
+  return res;
+};
+
+/**
+ *
  * @param {BusinessesState} state
  * @param {Action} action
  * @returns {BusinessesState}
@@ -131,6 +156,14 @@ export const businessesReducer = (state = initialState, action) => {
           [action.payload.id]: action.payload,
         },
       };
+    }
+    case REMOVE_BUSINESS: {
+      const newState = {
+        ...state,
+        entries: { ...state.entries },
+      };
+      delete newState.entries[action.payload];
+      return newState;
     }
     default:
       return state;
