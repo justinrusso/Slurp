@@ -149,7 +149,7 @@ const ReviewsSection = ({ business }) => {
                   <RatingHelperWrapper>
                     <HelperText
                       error={!!errors.rating}
-                      showIcon={errors.rating}
+                      showIcon={!!errors.rating}
                     >
                       {!!errors.rating ? errors.rating : "Select your rating"}
                     </HelperText>
