@@ -16,10 +16,11 @@ const getStyling = (props) => {
 };
 
 export const Button = styled(Base).attrs((props) => ({
-  as: "button",
+  as: props.as || "button",
   css: getStyling(props),
 }))`
   cursor: pointer;
+  text-decoration: none;
 
   &:not(style) + :not(style) {
     margin: 0;

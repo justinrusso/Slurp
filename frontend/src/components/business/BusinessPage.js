@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import Card from "../common/Card";
@@ -7,6 +7,8 @@ import CardContent from "../common/CardContent";
 import Container from "../styled/Container";
 import ErrorPage from "../common/ErrorPage";
 import Typography from "../common/Typography";
+import { Button } from "../styled/Button";
+import { addOpacityToHex } from "../../utils/theme";
 import { selectBusiness } from "../../store/businesses";
 
 const PhotoHeader = styled.div`
@@ -35,6 +37,21 @@ const PhotoHeaderContent = styled.div`
   position: relative;
   z-index: 1;
   padding-right: ${(props) => props.theme.spacing.gen(2)};
+
+  & > * {
+    pointer-events: auto;
+  }
+`;
+
+const EditButton = styled(Button)`
+  background-color: ${(props) =>
+    addOpacityToHex("fff", props.theme.palette.action.hoverOpacity)};
+  font-size: 12px;
+
+  &:hover {
+    background-color: ${(props) =>
+      addOpacityToHex("fff", props.theme.palette.action.hoverOpacity * 3)};
+  }
 `;
 
 const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
@@ -84,6 +101,14 @@ const BusinessPage = () => {
               <Typography variant="h1" gutterBottom>
                 {business.name}
               </Typography>
+              <EditButton
+                color="white"
+                variant="text"
+                as={Link}
+                to={`/biz/${businessId}/edit`}
+              >
+                Edit
+              </EditButton>
             </PhotoHeaderContent>
           </Container>
         </PhotoHeaderContentContainer>
