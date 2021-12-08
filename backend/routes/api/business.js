@@ -1,8 +1,11 @@
-const express = require("express");
-const createHttpError = require("http-errors");
 const asyncHandler = require("express-async-handler");
+const createHttpError = require("http-errors");
+const express = require("express");
+const { check } = require("express-validator");
 
 const { Business } = require("../../db/models");
+const { handleValidationErrors } = require("../../utils/validation");
+const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
 
@@ -25,6 +28,74 @@ router.get(
     if (!business) {
       throw createHttpError(404);
     }
+
+    return res.json(business);
+  })
+);
+
+const validateBusiness = [
+  check("name").trim().exists({ checkFalsy: true }).withMessage("Enter a name"),
+  check("description").trim().optional(),
+  check("address")
+    .trim()
+    .exists({ checkFalsy: true })
+    .withMessage("Enter an address"),
+  check("city").trim().exists({ checkFalsy: true }).withMessage("Enter a city"),
+  check("state")
+    .trim()
+    .exists({ checkFalsy: true })
+    .withMessage("Enter a state"),
+  check("zipCode")
+    .trim()
+    .exists({ checkFalsy: true })
+    .withMessage("Enter a zip code"),
+  check("lat")
+    .exists({ checkFalsy: true })
+    .withMessage("Enter a latitude")
+    .isDecimal()
+    .withMessage("Enter a valid latitude"),
+  check("long")
+    .exists({ checkFalsy: true })
+    .withMessage("Enter a longitude")
+    .isDecimal()
+    .withMessage("Enter a valid longitude"),
+  check("displayImage")
+    .trim()
+    .optional()
+    .isURL()
+    .withMessage("Enter a valid image url"),
+  handleValidationErrors,
+];
+
+router.post(
+  "/",
+  requireAuth,
+  validateBusiness,
+  asyncHandler(async (req, res) => {
+    const {
+      name,
+      description,
+      address,
+      city,
+      state,
+      zipCode,
+      lat,
+      long,
+      displayImage,
+    } = req.body;
+
+    const business = await Business.create({
+      ownerId: req.user.id,
+      name,
+      description,
+      address,
+      city,
+      state,
+      zipCode,
+      lat,
+      long,
+      displayImage,
+    });
 
     return res.json(business);
   })

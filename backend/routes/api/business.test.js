@@ -31,7 +31,7 @@ describe("Businesses API route", () => {
     await db.sequelize.close();
   });
 
-  describe("/", () => {
+  describe("GET /", () => {
     test("responds to a GET request", async () => {
       const response = await request(app).get(makeRoute("/"));
       expect(response.statusCode).toBe(200);
@@ -46,7 +46,7 @@ describe("Businesses API route", () => {
     });
   });
 
-  describe("/:businessId", () => {
+  describe("GET /:businessId", () => {
     test("responds to a GET request", async () => {
       const response = await request(app).get(makeRoute("/1"));
       expect(response.statusCode).toBe(200);
