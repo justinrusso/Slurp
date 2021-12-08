@@ -3,7 +3,7 @@ const createHttpError = require("http-errors");
 const express = require("express");
 const { check } = require("express-validator");
 
-const { Business, Review } = require("../../db/models");
+const { Business, Review, User } = require("../../db/models");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 
@@ -177,7 +177,10 @@ router.get(
 
     const ratingAverage = await Review.getBusinessAverage(businessId);
 
-    const reviews = await Review.findAll({ where: { businessId } });
+    const reviews = await Review.findAll({
+      where: { businessId },
+      include: [{ model: User, as: "user" }],
+    });
 
     return res.json({
       reviews,
