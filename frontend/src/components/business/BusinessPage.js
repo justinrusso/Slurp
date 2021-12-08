@@ -16,6 +16,7 @@ import {
   fetchReviews,
   selectBusiness,
   selectBusinessRatingAverage,
+  selectBusinessReviewTotal,
 } from "../../store/businesses";
 import { useSessionUser } from "../../store/session";
 import { roundHalf } from "../../utils";
@@ -54,6 +55,8 @@ const PhotoHeaderContent = styled.div`
 
 const ReviewHeroContainer = styled.div`
   display: flex;
+  align-items: center;
+  gap: ${(props) => props.theme.spacing.gen(2)};
 `;
 
 const EditButton = styled(Button)`
@@ -107,6 +110,7 @@ const BusinessPage = () => {
 
   const business = useSelector(selectBusiness(businessId));
   const ratingAverage = useSelector(selectBusinessRatingAverage(businessId));
+  const reviewTotal = useSelector(selectBusinessReviewTotal(businessId));
   const user = useSessionUser();
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -132,6 +136,9 @@ const BusinessPage = () => {
                     size="medium"
                     colorMode="dark"
                   />
+                  <span>
+                    {reviewTotal} review{reviewTotal === 1 ? "" : "s"}
+                  </span>
                 </ReviewHeroContainer>
                 {business.ownerId === user?.id && (
                   <EditButton

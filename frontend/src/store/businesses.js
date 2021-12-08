@@ -49,12 +49,14 @@ const LOAD_REVIEWS = "slurp/businesses/LOAD_REVIEWS";
  * Business Review Response
  * @typedef {Object} ReviewResponse
  * @property {ReviewData[]} reviews
- * @property {number} ratingAvg
+ * @property {number} ratingAverage
+ * @property {number} total
  *
  * Business Review
  * @typedef {Object} ReviewProps
  * @property {Record<string, ReviewData>} reviews
- * @property {number} ratingAvg
+ * @property {number} ratingAverage
+ * @property {number} total
  *
  * Business with Reviews
  * @typedef {Business & ReviewProps} BusinessWithReviews
@@ -245,6 +247,7 @@ export const businessesReducer = (state = initialState, action) => {
         ...newState.entries[action.payload.businessId],
         reviews,
         ratingAverage: action.payload.reviewData.ratingAverage,
+        total: action.payload.reviewData.total,
       };
 
       return newState;
@@ -269,6 +272,14 @@ export const selectBusiness = (businessId) => (state) =>
  */
 export const selectBusinessRatingAverage = (businessId) => (state) =>
   state.businesses.entries[businessId]?.ratingAverage;
+
+/**
+ *
+ * @param {number | string} businessId
+ * @returns {(state: BusinessesState) => number | undefined}
+ */
+export const selectBusinessReviewTotal = (businessId) => (state) =>
+  state.businesses.entries[businessId]?.total;
 
 /**
  *
