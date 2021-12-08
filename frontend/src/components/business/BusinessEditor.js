@@ -259,7 +259,7 @@ const BusinessEditor = ({ addNew }) => {
           <div>
             <Button
               type="button"
-              variant="text"
+              variant="outlined"
               color="secondary"
               onClick={handleDelete}
             >
