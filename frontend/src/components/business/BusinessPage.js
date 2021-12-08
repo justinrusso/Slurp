@@ -10,6 +10,7 @@ import Typography from "../common/Typography";
 import { Button } from "../styled/Button";
 import { addOpacityToHex } from "../../utils/theme";
 import { selectBusiness } from "../../store/businesses";
+import { useSessionUser } from "../../store/session";
 
 const PhotoHeader = styled.div`
   background-color: #333;
@@ -91,6 +92,7 @@ const BusinessPage = () => {
   const { businessId } = useParams();
 
   const business = useSelector(selectBusiness(businessId));
+  const user = useSessionUser();
 
   return business ? (
     <>
@@ -101,14 +103,16 @@ const BusinessPage = () => {
               <Typography variant="h1" gutterBottom>
                 {business.name}
               </Typography>
-              <EditButton
-                color="white"
-                variant="text"
-                as={Link}
-                to={`/biz/${businessId}/edit`}
-              >
-                Edit
-              </EditButton>
+              {business.ownerId === user.id && (
+                <EditButton
+                  color="white"
+                  variant="text"
+                  as={Link}
+                  to={`/biz/${businessId}/edit`}
+                >
+                  Edit
+                </EditButton>
+              )}
             </PhotoHeaderContent>
           </Container>
         </PhotoHeaderContentContainer>
