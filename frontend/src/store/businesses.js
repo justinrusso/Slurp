@@ -78,6 +78,21 @@ export const fetchBusinesses = () => async (dispatch) => {
 
 /**
  *
+ * @param {number | string} businessId
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const fetchBusiness = (businessId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/businesses/${businessId}`);
+
+  if (res.ok) {
+    const business = await res.json();
+    dispatch(addOneBusiness(business));
+  }
+  return res;
+};
+
+/**
+ *
  * @param {EditableBusinessData} data
  * @returns {(dispatch: unknown) => Promise<Response>}
  */
