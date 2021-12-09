@@ -35,7 +35,7 @@ router.get(
 
 const validateBusiness = [
   check("name").trim().exists({ checkFalsy: true }).withMessage("Enter a name"),
-  check("description").trim().optional(),
+  check("description").trim().optional({ checkFalsy: true }),
   check("address")
     .trim()
     .exists({ checkFalsy: true })
@@ -61,7 +61,7 @@ const validateBusiness = [
     .withMessage("Enter a valid longitude"),
   check("displayImage")
     .trim()
-    .optional()
+    .optional({ checkFalsy: true })
     .isURL()
     .withMessage("Enter a valid image url"),
   handleValidationErrors,
