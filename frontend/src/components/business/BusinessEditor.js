@@ -256,16 +256,18 @@ const BusinessEditor = ({ addNew }) => {
               Cancel
             </Button>
           </div>
-          <div>
-            <Button
-              type="button"
-              variant="outlined"
-              color="secondary"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-          </div>
+          {!addNew && (
+            <div>
+              <Button
+                type="button"
+                variant="outlined"
+                color="secondary"
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            </div>
+          )}
         </Actions>
       </Container>
     </Box>
