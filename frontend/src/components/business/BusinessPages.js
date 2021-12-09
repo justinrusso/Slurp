@@ -29,7 +29,7 @@ const BusinessPages = () => {
     if (!businessId) {
       return;
     }
-    if (!business) {
+    if (!business && !isLoaded) {
       dispatch(fetchBusiness(businessId))
         .then(() => dispatch(fetchReviews(businessId)))
         .finally(() => setIsLoaded(true));
