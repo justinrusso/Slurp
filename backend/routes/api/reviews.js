@@ -33,11 +33,11 @@ router.put(
     });
 
     if (!review) {
-      return createHttpError(404);
+      throw createHttpError(404);
     }
 
     if (review.userId !== req.user.id) {
-      return createHttpError(403);
+      throw createHttpError(403);
     }
 
     const { rating, comment } = req.body;
@@ -67,11 +67,11 @@ router.delete(
     const review = await Review.findByPk(reviewId);
 
     if (!review) {
-      return createHttpError(404);
+      throw createHttpError(404);
     }
 
     if (review.userId !== req.user.id) {
-      return createHttpError(403);
+      throw createHttpError(403);
     }
 
     const businessId = review.businessId;
