@@ -57,8 +57,8 @@ router.get(
 
     return res.json({
       ...business,
-      ratingAverage: parseFloat(reviewSummary.ratingAverage),
-      total: parseInt(reviewSummary.total, 10),
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
     });
   })
 );
@@ -214,8 +214,8 @@ router.get(
 
     return res.json({
       reviews,
-      ratingAverage: parseFloat(reviewSummary.ratingAverage),
-      total: parseInt(reviewSummary.total, 10),
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
     });
   })
 );
@@ -250,8 +250,8 @@ router.post(
 
     return res.status(201).json({
       review,
-      ratingAverage: parseFloat(reviewSummary.ratingAverage),
-      total: parseInt(reviewSummary.total, 10),
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
     });
   })
 );
