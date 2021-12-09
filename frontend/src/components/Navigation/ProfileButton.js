@@ -10,6 +10,7 @@ import Menu from "../common/Menu";
 import MenuItem from "../common/MenuItem";
 import Typography from "../common/Typography";
 import { logout } from "../../store/session";
+import { Link } from "react-router-dom";
 
 const UserInfo = styled.div`
   display: flex;
@@ -19,6 +20,13 @@ const UserInfo = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.palette.divider};
   padding-bottom: 4px;
   margin-bottom: 4px;
+`;
+
+const PlainLi = styled.li`
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  text-decoration: none;
 `;
 
 /**
@@ -62,6 +70,11 @@ const ProfileButton = ({ isHomePage, user }) => {
             <Typography gutterBottom>{user.email}</Typography>
           </UserInfo>
         </MenuItem>
+        <PlainLi>
+          <MenuItem as={Link} to="/biz/new" onClick={() => closeMenu()}>
+            Add Business
+          </MenuItem>
+        </PlainLi>
         <MenuItem onClick={handleLogout}>Log Out</MenuItem>
       </Menu>
     </>
