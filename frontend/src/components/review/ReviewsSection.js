@@ -139,7 +139,7 @@ const ReviewsSection = ({ business }) => {
         <CardContent>
           <Form onSubmit={handleSubmit}>
             <ReviewCardTop>
-              <Typography>{user?.name || "Username"}</Typography>
+              <Typography>{user?.username || "Username"}</Typography>
               <RatingWrapper>
                 <Rating
                   rating={newRating}
