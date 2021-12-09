@@ -9,6 +9,7 @@ const LOAD_BUSINESSES = "slurp/businesses/LOAD_BUSINESSES";
 const REMOVE_BUSINESS = "slurp/businesses/REMOVE_BUSINESS";
 const LOAD_REVIEWS = "slurp/businesses/LOAD_REVIEWS";
 const ADD_REVIEW = "slurp/businesses/ADD_REVIEW";
+const REMOVE_REVIEW = "slurp/businesses/REMOVE_REVIEW";
 
 /**
  * Editable business properties
@@ -108,6 +109,13 @@ const loadBusinessReviews = (businessId, reviewData) => {
 const addOneReview = (businessId, reviewData) => {
   return {
     type: ADD_REVIEW,
+    payload: { businessId, reviewData },
+  };
+};
+
+const removeReview = (businessId, reviewData) => {
+  return {
+    type: REMOVE_REVIEW,
     payload: { businessId, reviewData },
   };
 };
@@ -229,6 +237,44 @@ export const createNewReview = (businessId, data) => async (dispatch) => {
 
 /**
  *
+ * @param {{
+ *  comment: string;
+ *  rating: number;
+ * }} data
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const updateReview = (reviewId, data) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+  if (res.ok) {
+    const reviewData = await res.json();
+    dispatch(addOneReview(reviewData.review.businessId, reviewData));
+  }
+  return res;
+};
+
+/**
+ *
+ * @param {number | string} businessId
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const deleteReview = (businessId, reviewId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "DELETE",
+  });
+
+  if (res.ok) {
+    const reviewData = await res.json();
+    dispatch(removeReview(businessId, reviewData));
+  }
+  return res;
+};
+
+/**
+ *
  * @param {BusinessesState} state
  * @param {Action} action
  * @returns {BusinessesState}
@@ -297,6 +343,26 @@ export const businessesReducer = (state = initialState, action) => {
         total: action.payload.reviewData.total,
       };
 
+      return newState;
+    }
+    case REMOVE_REVIEW: {
+      const {
+        businessId,
+        reviewData: { id: reviewId, total, ratingAverage },
+      } = action.payload;
+      const newState = {
+        ...state,
+        entries: {
+          ...state.entries,
+          [businessId]: {
+            ...state.entries[businessId],
+            reviews: { ...state.entries[businessId].reviews },
+            ratingAverage,
+            total,
+          },
+        },
+      };
+      delete newState.entries[businessId].reviews[reviewId];
       return newState;
     }
     default:

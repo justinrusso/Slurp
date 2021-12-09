@@ -9,6 +9,9 @@ import Rating from "./Rating";
 import Typography from "../common/Typography";
 import Menu from "../common/Menu";
 import MenuItem from "../common/MenuItem";
+import ReviewEditDialog from "./ReviewEditDialog";
+import { useSessionUser } from "../../store/session";
+import ReviewDeleteDialog from "./ReviewDeleteDialog";
 
 const ReviewWrapper = styled.article`
   margin-top: ${(props) => props.theme.spacing.gen(5)};
@@ -41,7 +44,12 @@ const Comment = styled(Typography)`
 `;
 
 const Review = ({ review }) => {
+  const user = useSessionUser();
+
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const showMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -53,9 +61,11 @@ const Review = ({ review }) => {
 
   const handleEdit = () => {
     closeMenu();
+    setEditModalVisible(true);
   };
 
   const handleDelete = () => {
+    setDeleteModalVisible(true);
     closeMenu();
   };
 
@@ -63,21 +73,35 @@ const Review = ({ review }) => {
     <ReviewWrapper key={review.id}>
       <TopSection>
         <Typography as="span">{review.user.username}</Typography>
-        <div>
-          <IconButton onClick={showMenu} color="black">
-            <FontAwesomeIcon icon={faEllipsisH} />
-          </IconButton>
-          <Menu
-            id={`comment-more-${review.id}`}
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={closeMenu}
-          >
-            <MenuItem onClick={handleEdit}>Edit</MenuItem>
-            <MenuItem onClick={handleDelete}>Delete</MenuItem>
-          </Menu>
-        </div>
+        {review.userId === user.id && (
+          <div>
+            <IconButton onClick={showMenu} color="black">
+              <FontAwesomeIcon icon={faEllipsisH} />
+            </IconButton>
+            <Menu
+              id={`comment-more-${review.id}`}
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={closeMenu}
+            >
+              <MenuItem onClick={handleEdit}>Edit</MenuItem>
+              <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            </Menu>
+          </div>
+        )}
       </TopSection>
+      {editModalVisible && (
+        <ReviewEditDialog
+          onClose={() => setEditModalVisible(false)}
+          review={review}
+        />
+      )}
+      {deleteModalVisible && (
+        <ReviewDeleteDialog
+          onClose={() => setDeleteModalVisible(false)}
+          review={review}
+        />
+      )}
       <MiddleSection>
         <Rating rating={review.rating} disableButtons size="small" />
         <ReviewDate as="span">

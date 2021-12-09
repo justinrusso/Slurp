@@ -6,6 +6,7 @@ const { check } = require("express-validator");
 const { Business, Review, User } = require("../../db/models");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
+const { validateReview } = require("./reviews");
 
 const router = express.Router();
 
@@ -189,19 +190,6 @@ router.get(
     });
   })
 );
-
-const validateReview = [
-  check("rating")
-    .exists({ checkFalsy: true })
-    .withMessage("Enter a rating")
-    .isInt()
-    .withMessage("Enter a valid rating"),
-  check("comment")
-    .trim()
-    .exists({ checkFalsy: true })
-    .withMessage("Enter a comment"),
-  handleValidationErrors,
-];
 
 router.post(
   "/:businessId(\\d+)/reviews",

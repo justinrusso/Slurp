@@ -27,17 +27,19 @@ const ModalContentBackground = styled.div`
   overflow-y: auto;
   pointer-events: all;
   position: absolute;
+  width: ${(props) => props.fullWidth && "calc(100% - 64px)"};
 `;
 
 /**
  *
  * @param {{
  *  children: React.ReactNode;
+ *  fullWidth: boolean;
  *  hideBackground: boolean;
  *  onClose: () => void;
  * }} props
  */
-const Dialog = ({ children, hideBackground, onClose }) => {
+const Dialog = ({ children, hideBackground, fullWidth, onClose }) => {
   const contentRef = useRef();
 
   useEffect(() => {
@@ -51,7 +53,9 @@ const Dialog = ({ children, hideBackground, onClose }) => {
   return createPortal(
     <Modal hideBackground={hideBackground} onClose={onClose}>
       <ModalContentContainer ref={contentRef}>
-        <ModalContentBackground>{children}</ModalContentBackground>
+        <ModalContentBackground fullWidth={fullWidth}>
+          {children}
+        </ModalContentBackground>
       </ModalContentContainer>
     </Modal>,
     document.body
@@ -63,8 +67,9 @@ Dialog.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  onClose: PropTypes.func,
+  fullWidth: PropTypes.bool,
   hideBackground: PropTypes.bool,
+  onClose: PropTypes.func,
 };
 
 export default Dialog;
