@@ -7,6 +7,8 @@ import styled from "styled-components";
 import IconButton from "../styled/IconButton";
 import Rating from "./Rating";
 import Typography from "../common/Typography";
+import Menu from "../common/Menu";
+import MenuItem from "../common/MenuItem";
 
 const ReviewWrapper = styled.article`
   margin-top: ${(props) => props.theme.spacing.gen(5)};
@@ -49,6 +51,14 @@ const Review = ({ review }) => {
     setAnchorEl(null);
   };
 
+  const handleEdit = () => {
+    closeMenu();
+  };
+
+  const handleDelete = () => {
+    closeMenu();
+  };
+
   return (
     <ReviewWrapper key={review.id}>
       <TopSection>
@@ -57,6 +67,15 @@ const Review = ({ review }) => {
           <IconButton onClick={showMenu} color="black">
             <FontAwesomeIcon icon={faEllipsisH} />
           </IconButton>
+          <Menu
+            id={`comment-more-${review.id}`}
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={closeMenu}
+          >
+            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+            <MenuItem onClick={handleDelete}>Delete</MenuItem>
+          </Menu>
         </div>
       </TopSection>
       <MiddleSection>
