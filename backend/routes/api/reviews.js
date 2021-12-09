@@ -1,9 +1,11 @@
-const express = require("express");
 const asyncHandler = require("express-async-handler");
-
-const { requireAuth } = require("../../utils/auth.js");
-const { Review, User } = require("../../db/models");
 const createHttpError = require("http-errors");
+const express = require("express");
+const { check } = require("express-validator");
+
+const { Review, User } = require("../../db/models");
+const { handleValidationErrors } = require("../../utils/validation");
+const { requireAuth } = require("../../utils/auth.js");
 
 const router = express.Router();
 
