@@ -229,6 +229,27 @@ export const createNewReview = (businessId, data) => async (dispatch) => {
 
 /**
  *
+ * @param {{
+ *  comment: string;
+ *  rating: number;
+ * }} data
+ * @returns {(dispatch: unknown) => Promise<Response>}
+ */
+export const updateReview = (reviewId, data) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+
+  if (res.ok) {
+    const reviewData = await res.json();
+    dispatch(addOneReview(reviewData.review.businessId, reviewData));
+  }
+  return res;
+};
+
+/**
+ *
  * @param {BusinessesState} state
  * @param {Action} action
  * @returns {BusinessesState}

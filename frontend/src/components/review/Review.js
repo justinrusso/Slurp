@@ -9,6 +9,7 @@ import Rating from "./Rating";
 import Typography from "../common/Typography";
 import Menu from "../common/Menu";
 import MenuItem from "../common/MenuItem";
+import ReviewEditDialog from "./ReviewEditDialog";
 
 const ReviewWrapper = styled.article`
   margin-top: ${(props) => props.theme.spacing.gen(5)};
@@ -43,6 +44,8 @@ const Comment = styled(Typography)`
 const Review = ({ review }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const [editModalVisible, setEditModalVisible] = useState(false);
+
   const showMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -53,6 +56,7 @@ const Review = ({ review }) => {
 
   const handleEdit = () => {
     closeMenu();
+    setEditModalVisible(true);
   };
 
   const handleDelete = () => {
@@ -78,6 +82,12 @@ const Review = ({ review }) => {
           </Menu>
         </div>
       </TopSection>
+      {editModalVisible && (
+        <ReviewEditDialog
+          onClose={() => setEditModalVisible(false)}
+          review={review}
+        />
+      )}
       <MiddleSection>
         <Rating rating={review.rating} disableButtons size="small" />
         <ReviewDate as="span">
