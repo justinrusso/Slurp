@@ -47,7 +47,10 @@ module.exports = (sequelize, DataTypes) => {
       raw: true,
     });
 
-    return review;
+    return {
+      ratingAverage: parseFloat(review.ratingAverage) || 0,
+      total: parseInt(review.total, 10) || 0,
+    };
   };
 
   return Review;

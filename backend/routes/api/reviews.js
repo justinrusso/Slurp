@@ -53,8 +53,8 @@ router.put(
 
     return res.json({
       review,
-      ratingAverage: parseFloat(reviewSummary.ratingAverage),
-      total: parseInt(reviewSummary.total, 10),
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
     });
   })
 );
@@ -82,8 +82,8 @@ router.delete(
 
     return res.json({
       id: reviewId,
-      ratingAverage: parseFloat(reviewSummary.ratingAverage),
-      total: parseInt(reviewSummary.total, 10),
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
     });
   })
 );

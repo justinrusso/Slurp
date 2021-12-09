@@ -13,7 +13,7 @@ const router = express.Router();
 router.get(
   "/",
   asyncHandler(async (req, res) => {
-    const businesses = await Business.findAll();
+    const businesses = await Business.findAllWithSummary();
 
     return res.json(businesses);
   })
@@ -30,7 +30,13 @@ router.get(
       throw createHttpError(404);
     }
 
-    return res.json(business);
+    const reviewSummary = await Review.getBusinessReviewSummary(businessId);
+
+    return res.json({
+      ...business,
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
+    });
   })
 );
 
@@ -185,8 +191,8 @@ router.get(
 
     return res.json({
       reviews,
-      ratingAverage: parseFloat(reviewSummary.ratingAverage),
-      total: parseInt(reviewSummary.total, 10),
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
     });
   })
 );
@@ -221,8 +227,8 @@ router.post(
 
     return res.status(201).json({
       review,
-      ratingAverage: parseFloat(reviewSummary.ratingAverage),
-      total: parseInt(reviewSummary.total, 10),
+      ratingAverage: reviewSummary.ratingAverage,
+      total: reviewSummary.total,
     });
   })
 );

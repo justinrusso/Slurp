@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Card from "../common/Card";
 import CardContent from "../common/CardContent";
 import Container from "../styled/Container";
+import Rating from "../review/Rating";
 import SearchForm from "../search/SearchForm";
 import Typography from "../common/Typography";
 
@@ -46,19 +47,50 @@ const BusinessListItem = styled.li`
 const CardLink = styled(Link)`
   text-decoration: none;
   color: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const BusinessCard = styled(Card)`
   display: flex;
   gap: ${(props) => props.theme.spacing.gen(2)};
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const BusinessImageWrapper = styled.div`
+  height: 220px;
+  width: 220px;
+  padding: ${(props) => props.theme.spacing.gen(2)};
+  padding-right: 0;
 `;
 
 const BusinessImage = styled.img`
-  height: 220px;
-  width: 220px;
+  height: 100%;
+  width: 100%;
+  border-radius: ${(props) => props.theme.borderRadius}px;
+`;
+
+const RatingContainer = styled(Typography).attrs((props) => {
+  return {
+    ...props,
+    as: "div",
+  };
+})`
+  display: flex;
+  align-items: center;
+  gap: ${(props) => props.theme.spacing.gen(1)};
+  color: ${(props) => props.theme.palette.text.secondary};
 `;
 
 const HomePage = () => {
+  const history = useHistory();
+
   const businessEntries = useSelector((state) =>
     Object.values(state.businesses.entries)
   );
@@ -74,19 +106,35 @@ const HomePage = () => {
       </Hero>
       <MainContainer>
         <BusinessesList>
-          {businessEntries.map((business) => (
+          {businessEntries.map((business, i) => (
             <BusinessListItem key={business.id}>
-              <CardLink to={`/biz/${business.id}`}>
-                <BusinessCard>
+              <BusinessCard onClick={() => history.push(`/biz/${business.id}`)}>
+                <BusinessImageWrapper>
                   <BusinessImage
                     src={business.displayImage}
                     alt={business.name}
                   />
-                  <CardContent>
-                    <Typography>{business.name}</Typography>
-                  </CardContent>
-                </BusinessCard>
-              </CardLink>
+                </BusinessImageWrapper>
+                <CardContent>
+                  <Typography variant="h4" gutterBottom>
+                    {i + 1}.{" "}
+                    <CardLink
+                      to={`/biz/${business.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {business.name}
+                    </CardLink>
+                  </Typography>
+                  <RatingContainer gutterBottom>
+                    <Rating
+                      rating={business.ratingAverage}
+                      disableButtons
+                      size="small"
+                    />
+                    {business.total}
+                  </RatingContainer>
+                </CardContent>
+              </BusinessCard>
             </BusinessListItem>
           ))}
         </BusinessesList>
