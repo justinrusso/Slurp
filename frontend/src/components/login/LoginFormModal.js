@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import Modal from "../Modal";
+import Dialog from "../common/Dialog";
 import { Button } from "../styled/Button";
 import ModalContent from "../styled/ModalContent";
 import { LoginForm } from "./LoginForm";
@@ -30,11 +30,11 @@ const LoginFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
         Log In
       </Button>
       {visible && (
-        <Modal onClose={() => setVisible(false)}>
+        <Dialog onClose={() => setVisible(false)}>
           <ModalContent>
             <LoginForm switchForms={switchForms} />
           </ModalContent>
-        </Modal>
+        </Dialog>
       )}
     </>
   );
