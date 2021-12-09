@@ -63,9 +63,17 @@ const BusinessCard = styled(Card)`
   }
 `;
 
-const BusinessImage = styled.img`
+const BusinessImageWrapper = styled.div`
   height: 220px;
   width: 220px;
+  padding: ${(props) => props.theme.spacing.gen(2)};
+  padding-right: 0;
+`;
+
+const BusinessImage = styled.img`
+  height: 100%;
+  width: 100%;
+  border-radius: ${(props) => props.theme.borderRadius}px;
 `;
 
 const RatingContainer = styled(Typography).attrs((props) => {
@@ -101,10 +109,12 @@ const HomePage = () => {
           {businessEntries.map((business, i) => (
             <BusinessListItem key={business.id}>
               <BusinessCard onClick={() => history.push(`/biz/${business.id}`)}>
-                <BusinessImage
-                  src={business.displayImage}
-                  alt={business.name}
-                />
+                <BusinessImageWrapper>
+                  <BusinessImage
+                    src={business.displayImage}
+                    alt={business.name}
+                  />
+                </BusinessImageWrapper>
                 <CardContent>
                   <Typography variant="h4" gutterBottom>
                     {i + 1}.{" "}
