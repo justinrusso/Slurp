@@ -10,6 +10,7 @@ import Typography from "../common/Typography";
 import Menu from "../common/Menu";
 import MenuItem from "../common/MenuItem";
 import ReviewEditDialog from "./ReviewEditDialog";
+import { useSessionUser } from "../../store/session";
 
 const ReviewWrapper = styled.article`
   margin-top: ${(props) => props.theme.spacing.gen(5)};
@@ -42,6 +43,8 @@ const Comment = styled(Typography)`
 `;
 
 const Review = ({ review }) => {
+  const user = useSessionUser();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -67,20 +70,22 @@ const Review = ({ review }) => {
     <ReviewWrapper key={review.id}>
       <TopSection>
         <Typography as="span">{review.user.username}</Typography>
-        <div>
-          <IconButton onClick={showMenu} color="black">
-            <FontAwesomeIcon icon={faEllipsisH} />
-          </IconButton>
-          <Menu
-            id={`comment-more-${review.id}`}
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={closeMenu}
-          >
-            <MenuItem onClick={handleEdit}>Edit</MenuItem>
-            <MenuItem onClick={handleDelete}>Delete</MenuItem>
-          </Menu>
-        </div>
+        {review.userId === user.id && (
+          <div>
+            <IconButton onClick={showMenu} color="black">
+              <FontAwesomeIcon icon={faEllipsisH} />
+            </IconButton>
+            <Menu
+              id={`comment-more-${review.id}`}
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={closeMenu}
+            >
+              <MenuItem onClick={handleEdit}>Edit</MenuItem>
+              <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            </Menu>
+          </div>
+        )}
       </TopSection>
       {editModalVisible && (
         <ReviewEditDialog
