@@ -57,6 +57,10 @@ const BusinessCard = styled(Card)`
   display: flex;
   gap: ${(props) => props.theme.spacing.gen(2)};
   cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const BusinessImage = styled.img`
