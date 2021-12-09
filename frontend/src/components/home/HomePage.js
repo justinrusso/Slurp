@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Card from "../common/Card";
@@ -47,11 +47,16 @@ const BusinessListItem = styled.li`
 const CardLink = styled(Link)`
   text-decoration: none;
   color: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const BusinessCard = styled(Card)`
   display: flex;
   gap: ${(props) => props.theme.spacing.gen(2)};
+  cursor: pointer;
 `;
 
 const BusinessImage = styled.img`
@@ -72,6 +77,8 @@ const RatingContainer = styled(Typography).attrs((props) => {
 `;
 
 const HomePage = () => {
+  const history = useHistory();
+
   const businessEntries = useSelector((state) =>
     Object.values(state.businesses.entries)
   );
@@ -89,27 +96,31 @@ const HomePage = () => {
         <BusinessesList>
           {businessEntries.map((business, i) => (
             <BusinessListItem key={business.id}>
-              <CardLink to={`/biz/${business.id}`}>
-                <BusinessCard>
-                  <BusinessImage
-                    src={business.displayImage}
-                    alt={business.name}
-                  />
-                  <CardContent>
-                    <Typography variant="h4" gutterBottom>
-                      {i + 1}. {business.name}
-                    </Typography>
-                    <RatingContainer gutterBottom>
-                      <Rating
-                        rating={business.ratingAverage}
-                        disableButtons
-                        size="small"
-                      />
-                      {business.total}
-                    </RatingContainer>
-                  </CardContent>
-                </BusinessCard>
-              </CardLink>
+              <BusinessCard onClick={() => history.push(`/biz/${business.id}`)}>
+                <BusinessImage
+                  src={business.displayImage}
+                  alt={business.name}
+                />
+                <CardContent>
+                  <Typography variant="h4" gutterBottom>
+                    {i + 1}.{" "}
+                    <CardLink
+                      to={`/biz/${business.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {business.name}
+                    </CardLink>
+                  </Typography>
+                  <RatingContainer gutterBottom>
+                    <Rating
+                      rating={business.ratingAverage}
+                      disableButtons
+                      size="small"
+                    />
+                    {business.total}
+                  </RatingContainer>
+                </CardContent>
+              </BusinessCard>
             </BusinessListItem>
           ))}
         </BusinessesList>
