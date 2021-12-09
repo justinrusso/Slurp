@@ -73,7 +73,7 @@ const Review = ({ review }) => {
     <ReviewWrapper key={review.id}>
       <TopSection>
         <Typography as="span">{review.user.username}</Typography>
-        {review.userId === user.id && (
+        {review.userId === user?.id && (
           <div>
             <IconButton onClick={showMenu} color="black">
               <FontAwesomeIcon icon={faEllipsisH} />
