@@ -1,10 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const createHttpError = require("http-errors");
 const express = require("express");
-const { QueryTypes } = require("sequelize");
 const { check } = require("express-validator");
 
-const { Business, Review, User, sequelize } = require("../../db/models");
+const { Business, Review, User } = require("../../db/models");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { validateReview } = require("./reviews");
@@ -14,29 +13,7 @@ const router = express.Router();
 router.get(
   "/",
   asyncHandler(async (req, res) => {
-    // Using the model to query with eager loading forces review.id to be included & breaks grouping
-    const businesses = await sequelize.query(
-      `SELECT
-        "Business"."id",
-        "Business"."ownerId",
-        "Business"."name",
-        "Business"."description",
-        "Business"."address",
-        "Business"."city",
-        "Business"."state",
-        "Business"."zipCode",
-        "Business"."lat",
-        "Business"."long",
-        "Business"."displayImage",
-        "Business"."createdAt",
-        "Business"."updatedAt",
-        CAST(COALESCE(AVG("rating"), 0) AS FLOAT)  AS "ratingAverage",
-        CAST(COUNT("rating") AS INT) AS "total"
-      FROM "Businesses" AS "Business"
-        LEFT OUTER JOIN "Reviews" AS "reviews" ON "Business"."id" = "reviews"."businessId"
-      GROUP BY "Business"."id", "reviews"."businessId";`,
-      { raw: true, type: QueryTypes.SELECT }
-    );
+    const businesses = await Business.findAllWithSummary();
 
     return res.json(businesses);
   })

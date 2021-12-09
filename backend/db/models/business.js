@@ -1,4 +1,7 @@
 "use strict";
+
+const { QueryTypes } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const Business = sequelize.define(
     "Business",
@@ -16,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+
   Business.associate = function (models) {
     Business.hasMany(models.Review, {
       as: "reviews",
@@ -28,5 +32,36 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "ownerId",
     });
   };
+
+  /**
+   *
+   * @returns All businesses in a raw object with review summaries included
+   */
+  Business.findAllWithSummary = function () {
+    // Using the model to query with eager loading forces review.id to be included & breaks grouping
+    return sequelize.query(
+      `SELECT
+        "Business"."id",
+        "Business"."ownerId",
+        "Business"."name",
+        "Business"."description",
+        "Business"."address",
+        "Business"."city",
+        "Business"."state",
+        "Business"."zipCode",
+        "Business"."lat",
+        "Business"."long",
+        "Business"."displayImage",
+        "Business"."createdAt",
+        "Business"."updatedAt",
+        CAST(COALESCE(AVG("rating"), 0) AS FLOAT)  AS "ratingAverage",
+        CAST(COUNT("rating") AS INT) AS "total"
+      FROM "Businesses" AS "Business"
+        LEFT OUTER JOIN "Reviews" AS "reviews" ON "Business"."id" = "reviews"."businessId"
+      GROUP BY "Business"."id", "reviews"."businessId";`,
+      { raw: true, type: QueryTypes.SELECT }
+    );
+  };
+
   return Business;
 };
