@@ -30,10 +30,10 @@ router.get(
         "Business"."displayImage",
         "Business"."createdAt",
         "Business"."updatedAt",
-        AVG("rating") AS "ratingAverage",
-        COUNT("rating") AS "total"
+        CAST(COALESCE(AVG("rating"), 0) AS FLOAT)  AS "ratingAverage",
+        CAST(COUNT("rating") AS INT) AS "total"
       FROM "Businesses" AS "Business"
-      LEFT OUTER JOIN "Reviews" AS "reviews" ON "Business"."id" = "reviews"."businessId"
+        LEFT OUTER JOIN "Reviews" AS "reviews" ON "Business"."id" = "reviews"."businessId"
       GROUP BY "Business"."id", "reviews"."businessId";`,
       { raw: true, type: QueryTypes.SELECT }
     );
