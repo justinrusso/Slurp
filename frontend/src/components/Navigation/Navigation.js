@@ -57,7 +57,7 @@ const Navigation = ({ isLoaded }) => {
 
   return (
     <Nav position={isHomePage ? "absolute" : "static"}>
-      <NavContent justifyContent={isHomePage ? "end" : "space-between"}>
+      <NavContent justifyContent={isHomePage ? "flex-end" : "space-between"}>
         {!isHomePage && (
           <LogoContainer to="/">
             <span>Slurp</span>

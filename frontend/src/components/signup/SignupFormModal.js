@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import StyleBuilderButton from "../../utils/theme/StyleBuilderButton";
 
-import Modal from "../Modal";
+import Dialog from "../common/Dialog";
 import { Button } from "../styled/Button";
 import ModalContent from "../styled/ModalContent";
 import SignupForm from "./SignupForm";
@@ -55,11 +55,11 @@ const SignupFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
         Sign Up
       </SignupButton>
       {visible && (
-        <Modal onClose={() => setVisible(false)}>
+        <Dialog onClose={() => setVisible(false)}>
           <ModalContent>
             <SignupForm switchForms={switchForms} />
           </ModalContent>
-        </Modal>
+        </Dialog>
       )}
     </>
   );

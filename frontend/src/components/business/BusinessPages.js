@@ -15,11 +15,10 @@ export const businessRouteRoot = "/biz";
 const makeRoute = (subRoute) => `${businessRouteRoot}${subRoute}`;
 
 const BusinessPages = () => {
-  const {
-    params: { businessId },
-  } = useRouteMatch({
+  const match = useRouteMatch({
     path: makeRoute("/:businessId(\\d+)"),
   });
+  const businessId = match?.params?.businessId;
 
   const business = useSelector(selectBusiness(businessId));
 
@@ -30,7 +29,7 @@ const BusinessPages = () => {
     if (!businessId) {
       return;
     }
-    if (!business) {
+    if (!business && !isLoaded) {
       dispatch(fetchBusiness(businessId))
         .then(() => dispatch(fetchReviews(businessId)))
         .finally(() => setIsLoaded(true));
