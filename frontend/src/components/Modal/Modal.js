@@ -10,7 +10,7 @@ const ModalRoot = styled.div`
 `;
 
 const ModalBackground = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => !props.transparent && "rgba(0, 0, 0, 0.5)"};
   bottom: 0;
   left: 0;
   position: fixed;
@@ -34,6 +34,9 @@ const Modal = ({ children, hideBackground, onClose }) => {
   const backgroundRef = useRef();
 
   useEffect(() => {
+    if (hideBackground) {
+      return;
+    }
     const timeout = setTimeout(() => {
       if (backgroundRef.current) {
         backgroundRef.current.style.opacity = 1;
@@ -41,13 +44,15 @@ const Modal = ({ children, hideBackground, onClose }) => {
     }, 0);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [hideBackground]);
 
   return createPortal(
     <ModalRoot>
-      {!hideBackground && (
-        <ModalBackground onClick={onClose} ref={backgroundRef} />
-      )}
+      <ModalBackground
+        onClick={onClose}
+        ref={backgroundRef}
+        transparent={hideBackground}
+      />
       {children}
     </ModalRoot>,
     document.body
