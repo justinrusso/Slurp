@@ -11,6 +11,7 @@ import Menu from "../common/Menu";
 import MenuItem from "../common/MenuItem";
 import ReviewEditDialog from "./ReviewEditDialog";
 import { useSessionUser } from "../../store/session";
+import ReviewDeleteDialog from "./ReviewDeleteDialog";
 
 const ReviewWrapper = styled.article`
   margin-top: ${(props) => props.theme.spacing.gen(5)};
@@ -48,6 +49,7 @@ const Review = ({ review }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const showMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,6 +65,7 @@ const Review = ({ review }) => {
   };
 
   const handleDelete = () => {
+    setDeleteModalVisible(true);
     closeMenu();
   };
 
@@ -90,6 +93,12 @@ const Review = ({ review }) => {
       {editModalVisible && (
         <ReviewEditDialog
           onClose={() => setEditModalVisible(false)}
+          review={review}
+        />
+      )}
+      {deleteModalVisible && (
+        <ReviewDeleteDialog
+          onClose={() => setDeleteModalVisible(false)}
           review={review}
         />
       )}
