@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import Card from "../common/Card";
 import CardContent from "../common/CardContent";
 import Container from "../styled/Container";
+import Rating from "../review/Rating";
 import SearchForm from "../search/SearchForm";
 import Typography from "../common/Typography";
 
@@ -58,6 +59,18 @@ const BusinessImage = styled.img`
   width: 220px;
 `;
 
+const RatingContainer = styled(Typography).attrs((props) => {
+  return {
+    ...props,
+    as: "div",
+  };
+})`
+  display: flex;
+  align-items: center;
+  gap: ${(props) => props.theme.spacing.gen(1)};
+  color: ${(props) => props.theme.palette.text.secondary};
+`;
+
 const HomePage = () => {
   const businessEntries = useSelector((state) =>
     Object.values(state.businesses.entries)
@@ -74,7 +87,7 @@ const HomePage = () => {
       </Hero>
       <MainContainer>
         <BusinessesList>
-          {businessEntries.map((business) => (
+          {businessEntries.map((business, i) => (
             <BusinessListItem key={business.id}>
               <CardLink to={`/biz/${business.id}`}>
                 <BusinessCard>
@@ -83,7 +96,17 @@ const HomePage = () => {
                     alt={business.name}
                   />
                   <CardContent>
-                    <Typography>{business.name}</Typography>
+                    <Typography variant="h4" gutterBottom>
+                      {i + 1}. {business.name}
+                    </Typography>
+                    <RatingContainer gutterBottom>
+                      <Rating
+                        rating={business.ratingAverage}
+                        disableButtons
+                        size="small"
+                      />
+                      {business.total}
+                    </RatingContainer>
                   </CardContent>
                 </BusinessCard>
               </CardLink>
