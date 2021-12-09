@@ -1,11 +1,33 @@
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import IconButton from "../styled/IconButton";
+import Menu from "../common/Menu";
+import MenuItem from "../common/MenuItem";
+import Typography from "../common/Typography";
 import { logout } from "../../store/session";
+import { Link } from "react-router-dom";
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  border-bottom: 1px solid ${(props) => props.theme.palette.divider};
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+`;
+
+const PlainLi = styled.li`
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  text-decoration: none;
+`;
 
 /**
  *
@@ -15,49 +37,46 @@ import { logout } from "../../store/session";
 const ProfileButton = ({ isHomePage, user }) => {
   const dispatch = useDispatch();
 
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  useEffect(() => {
-    if (!menuVisible) {
-      return;
-    }
-
-    const closeMenu = () => setMenuVisible(false);
-
-    document.addEventListener("click", closeMenu);
-
-    return () => document.removeEventListener("click", closeMenu);
-  }, [menuVisible]);
-
-  const preventPropagation = (e) => {
-    e.stopPropagation();
+  const showMenu = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const toggleMenu = (e) => {
-    preventPropagation(e);
-    setMenuVisible((isVisible) => !isVisible);
+  const closeMenu = () => {
+    setAnchorEl(null);
   };
 
   const handleLogout = async (e) => {
     e.preventDefault();
     await dispatch(logout());
-    setMenuVisible(false);
+    closeMenu();
   };
 
   return (
     <>
-      <IconButton onClick={toggleMenu} color={isHomePage ? "white" : "primary"}>
+      <IconButton onClick={showMenu} color={isHomePage ? "white" : "primary"}>
         <FontAwesomeIcon icon={faUserCircle} />
       </IconButton>
-      {menuVisible && (
-        <ul className="profile-dropdown" onClick={preventPropagation}>
-          <li>{user.username}</li>
-          <li>{user.email}</li>
-          <li>
-            <button onClick={handleLogout}>Log Out</button>
-          </li>
-        </ul>
-      )}
+      <Menu
+        id="profile-dropdown"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={closeMenu}
+      >
+        <MenuItem plain>
+          <UserInfo>
+            <Typography gutterBottom>{user.username}</Typography>
+            <Typography gutterBottom>{user.email}</Typography>
+          </UserInfo>
+        </MenuItem>
+        <PlainLi>
+          <MenuItem as={Link} to="/biz/new" onClick={() => closeMenu()}>
+            Add Business
+          </MenuItem>
+        </PlainLi>
+        <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+      </Menu>
     </>
   );
 };
