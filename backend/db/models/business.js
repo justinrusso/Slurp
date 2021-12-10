@@ -35,32 +35,44 @@ module.exports = (sequelize, DataTypes) => {
 
   /**
    *
+   * @param {Object} [options]
    * @returns All businesses in a raw object with review summaries included
    */
-  Business.findAllWithSummary = function () {
-    // Using the model to query with eager loading forces review.id to be included & breaks grouping
-    return sequelize.query(
-      `SELECT
-        "Business"."id",
-        "Business"."ownerId",
-        "Business"."name",
-        "Business"."description",
-        "Business"."address",
-        "Business"."city",
-        "Business"."state",
-        "Business"."zipCode",
-        "Business"."lat",
-        "Business"."long",
-        "Business"."displayImage",
-        "Business"."createdAt",
-        "Business"."updatedAt",
-        CAST(COALESCE(AVG("rating"), 0) AS FLOAT)  AS "ratingAverage",
-        CAST(COUNT("rating") AS INT) AS "total"
-      FROM "Businesses" AS "Business"
-        LEFT OUTER JOIN "Reviews" AS "reviews" ON "Business"."id" = "reviews"."businessId"
-      GROUP BY "Business"."id", "reviews"."businessId";`,
-      { raw: true, type: QueryTypes.SELECT }
-    );
+  Business.findAllWithSummary = function (options) {
+    return Business.findAll({
+      ...options,
+      include: [
+        {
+          model: sequelize.models.Review,
+          as: "reviews",
+          attributes: [],
+        },
+      ],
+      attributes: {
+        include: [
+          [
+            sequelize.cast(
+              sequelize.fn(
+                "COALESCE",
+                sequelize.fn("AVG", sequelize.col("rating")),
+                0
+              ),
+              "float"
+            ),
+            "ratingAverage",
+          ],
+          [
+            sequelize.cast(
+              sequelize.fn("COUNT", sequelize.col("rating")),
+
+              "int"
+            ),
+            "total",
+          ],
+        ],
+      },
+      group: ["Business.id"],
+    });
   };
 
   return Business;
