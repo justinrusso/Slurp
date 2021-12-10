@@ -97,7 +97,7 @@ const HomePage = () => {
 
   return (
     <>
-      <Hero>
+      <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
         <HeroContentWrapper>
           <Container>
             <SearchForm />

@@ -22,6 +22,9 @@ import { useSessionUser } from "../../store/session";
 import { roundHalf } from "../../utils";
 
 const PhotoHeader = styled.div`
+  background-image: linear-gradient(180deg, #0000 31.42%, #000),
+    url(${(props) => props.image});
+  background-size: cover;
   background-color: #333;
   color: #fff;
   height: 426px;
@@ -126,7 +129,7 @@ const BusinessPage = () => {
   return business ? (
     isLoaded && (
       <>
-        <PhotoHeader>
+        <PhotoHeader image="https://static.slurp.justinrusso.dev/images/hero.jfif">
           <PhotoHeaderContentContainer>
             <Container>
               <PhotoHeaderContent>
