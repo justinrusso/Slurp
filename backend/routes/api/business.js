@@ -183,6 +183,7 @@ router.delete(
 
 router.get(
   "/:businessId(\\d+)/reviews",
+  sanitizePaginationQuery,
   asyncHandler(async (req, res) => {
     const { businessId } = req.params;
 
@@ -192,11 +193,16 @@ router.get(
       throw createHttpError(404);
     }
 
+    const { limit, page } = req.query;
+    const offset = page * limit;
+
     const reviewSummary = await Review.getBusinessReviewSummary(businessId);
 
     const reviews = await Review.findAll({
       where: { businessId },
       include: [{ model: User, as: "user" }],
+      limit,
+      offset,
     });
 
     return res.json({
