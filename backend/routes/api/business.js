@@ -1,7 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const createHttpError = require("http-errors");
 const express = require("express");
-const { check } = require("express-validator");
+const { check, query } = require("express-validator");
+const { Op } = require("sequelize");
 
 const { Business, Review, User } = require("../../db/models");
 const {
@@ -13,16 +14,28 @@ const { validateReview } = require("./reviews");
 
 const router = express.Router();
 
+const sanitizeBusinessSearchQuery = [query("find_desc")];
+
 router.get(
   "/",
   sanitizePaginationQuery,
+  sanitizeBusinessSearchQuery,
   asyncHandler(async (req, res) => {
-    const { limit, page } = req.query;
+    const { find_desc, limit, page } = req.query;
     const offset = page * limit;
 
     const businesses = await Business.findAllWithSummary({
       limit: limit,
       offset,
+      where: find_desc
+        ? {
+            name: find_desc
+              ? {
+                  [Op.iLike]: `%${find_desc}%`,
+                }
+              : undefined,
+          }
+        : undefined,
     });
 
     return res.json(businesses);
