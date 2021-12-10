@@ -1,4 +1,4 @@
-const { validationResult } = require("express-validator");
+const { validationResult, query } = require("express-validator");
 
 // middleware for formatting errors from express-validator middleware
 // (to customize, see express-validator's documentation)
@@ -21,6 +21,18 @@ const handleValidationErrors = (req, _res, next) => {
   next();
 };
 
+const sanitizePaginationQuery = [
+  query("limit")
+    .toInt()
+    .customSanitizer((val) => (val >= 0 ? val : undefined))
+    .default(10),
+  query("page")
+    .toInt()
+    .customSanitizer((val) => (val >= 0 ? val : undefined))
+    .default(0),
+];
+
 module.exports = {
   handleValidationErrors,
+  sanitizePaginationQuery,
 };

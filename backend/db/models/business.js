@@ -72,6 +72,7 @@ module.exports = (sequelize, DataTypes) => {
         ],
       },
       group: ["Business.id"],
+      subQuery: false,
     });
   };
 

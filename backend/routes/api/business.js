@@ -4,7 +4,10 @@ const express = require("express");
 const { check } = require("express-validator");
 
 const { Business, Review, User } = require("../../db/models");
-const { handleValidationErrors } = require("../../utils/validation");
+const {
+  handleValidationErrors,
+  sanitizePaginationQuery,
+} = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { validateReview } = require("./reviews");
 
@@ -12,8 +15,15 @@ const router = express.Router();
 
 router.get(
   "/",
+  sanitizePaginationQuery,
   asyncHandler(async (req, res) => {
-    const businesses = await Business.findAllWithSummary();
+    const { limit, page } = req.query;
+    const offset = page * limit;
+
+    const businesses = await Business.findAllWithSummary({
+      limit: limit,
+      offset,
+    });
 
     return res.json(businesses);
   })
