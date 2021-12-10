@@ -75,6 +75,7 @@ const EditButton = styled(Button)`
 
 const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
   display: flex;
+  gap: ${(props) => props.theme.spacing.gen(4)};
   margin-top: ${(props) => props.theme.spacing.gen(3)};
 `;
 
