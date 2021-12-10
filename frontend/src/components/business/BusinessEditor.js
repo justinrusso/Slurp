@@ -150,6 +150,8 @@ const BusinessEditor = ({ addNew }) => {
               onChange={(e) => setDescription(e.target.value)}
               inputProps={{
                 type: "text",
+                as: "textarea",
+                rows: 3,
               }}
               error={!!errors.description}
               helperText={errors.description}

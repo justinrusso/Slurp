@@ -84,6 +84,10 @@ const ReviewEditDialog = ({ onClose, review }) => {
             value={comment}
             error={!!errors.comment}
             helperText={errors.comment}
+            inputProps={{
+              as: "textarea",
+              rows: 4,
+            }}
           />
           <div>
             <Button type="submit">Update Review</Button>

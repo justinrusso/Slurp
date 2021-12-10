@@ -176,6 +176,10 @@ const ReviewsSection = ({ business }) => {
                   value={comment}
                   error={!!errors.comment}
                   helperText={errors.comment}
+                  inputProps={{
+                    as: "textarea",
+                    rows: 4,
+                  }}
                 />
                 <FormActions>
                   <Button type="submit">Post Review</Button>

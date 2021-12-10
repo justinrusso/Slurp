@@ -55,6 +55,7 @@ const InputRoot = styled.div`
   font-size: 1rem;
   letter-spacing: 0.00938em;
   line-height: 1.4375em;
+  padding: 16.5px 14px;
   position: relative;
   width: ${(props) => props.fullWidth && "100%"};
 `;
@@ -66,12 +67,12 @@ const Input = styled.input`
   color: currentcolor;
   display: block;
   font: inherit;
-  height: 1.4375em;
+  height: ${(props) => 1.4375 * (props.rows || 1)}em;
   letter-spacing: inherit;
   margin: 0;
   min-width: 0px;
   outline: 0;
-  padding: 16.5px 14px;
+  resize: none;
   width: 100%;
 `;
 
