@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 
 import Navigation from "./components/Navigation";
 import { restoreUser } from "./store/session";
+import Footer from "./components/footer/Footer";
 import HomePage from "./components/home/HomePage";
 import BusinessPages, {
   businessRouteRoot,
@@ -33,6 +34,7 @@ function App() {
           </Route>
         </Switch>
       )}
+      <Footer />
     </>
   );
 }
