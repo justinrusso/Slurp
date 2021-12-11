@@ -3,15 +3,18 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const csurf = require("csurf");
 const express = require("express");
+const enableWs = require("express-ws");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
 const routes = require("./routes");
 const { environment } = require("./config");
+const { WebSocketManager } = require("./routes/websocket");
 
 const isProduction = environment === "production";
 
 const app = express();
+enableWs(app);
 
 if (environment !== "test") {
   app.use(morgan("dev"));
@@ -43,6 +46,12 @@ app.use(
 );
 
 // Routes
+app.ws(
+  "/ws",
+  WebSocketManager.getInstance().webSocketHandler.bind(
+    WebSocketManager.getInstance()
+  )
+);
 app.use(routes);
 
 // Catch unhandled requests and forward to error handler.

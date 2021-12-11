@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.2.0",
     "express-validator": "^6.13.0",
+    "express-ws": "^5.0.2",
     "faker": "^5.5.3",
     "helmet": "^4.6.0",
     "http-errors": "^1.8.1",
@@ -31,7 +32,8 @@
     "pg": "^8.7.1",
     "sequelize": "^5.22.4",
     "sequelize-cli": "^5.5.1",
-    "start": "^5.1.0"
+    "start": "^5.1.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/http-errors": "^1.8.1",
