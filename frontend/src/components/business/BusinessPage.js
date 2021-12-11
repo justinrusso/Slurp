@@ -20,6 +20,7 @@ import {
 } from "../../store/businesses";
 import { useSessionUser } from "../../store/session";
 import { roundHalf } from "../../utils";
+import LoadingCircle from "../common/LoadingCircle";
 
 const PhotoHeader = styled.div`
   background-image: linear-gradient(180deg, #0000 31.42%, #000),
@@ -127,7 +128,7 @@ const BusinessPage = () => {
   }, [businessId, dispatch]);
 
   return business ? (
-    isLoaded && (
+    isLoaded ? (
       <>
         <PhotoHeader image="https://static.slurp.justinrusso.dev/images/hero.jfif">
           <PhotoHeaderContentContainer>
@@ -196,6 +197,8 @@ const BusinessPage = () => {
           </MainRight>
         </MainContainer>
       </>
+    ) : (
+      <LoadingCircle />
     )
   ) : (
     <ErrorPage />

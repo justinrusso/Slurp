@@ -9,6 +9,7 @@ import {
   fetchReviews,
   selectBusiness,
 } from "../../store/businesses";
+import LoadingCircle from "../common/LoadingCircle";
 
 export const businessRouteRoot = "/biz";
 
@@ -46,10 +47,10 @@ const BusinessPages = () => {
         <BusinessEditor addNew />
       </Route>
       <Route exact path={makeRoute("/:businessId(\\d+)")}>
-        {isLoaded && <BusinessPage />}
+        {isLoaded ? <BusinessPage /> : <LoadingCircle />}
       </Route>
       <Route path={makeRoute("/:businessId(\\d+)/edit")}>
-        {isLoaded && <BusinessEditor />}
+        {isLoaded ? <BusinessEditor /> : <LoadingCircle />}
       </Route>
     </Switch>
   );
