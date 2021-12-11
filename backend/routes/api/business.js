@@ -1,9 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const createHttpError = require("http-errors");
 const express = require("express");
-const { check } = require("express-validator");
+const { Client } = require("@googlemaps/google-maps-services-js");
+const { check, validationResult } = require("express-validator");
 
 const { Business, Review, User } = require("../../db/models");
+const {
+  apiKeys: { google: googleApiKey },
+} = require("../../config");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { validateReview } = require("./reviews");
@@ -40,9 +44,44 @@ router.get(
   })
 );
 
+const client = new Client();
+const addressToLatLong = asyncHandler(async (req) => {
+  // If the lat and long are passed in the body, skip requesting the information from Google
+  if (req.body.lat && req.body.long) {
+    return { lat: req.body.lat, long: req.body.long };
+  }
+
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    return;
+  }
+
+  const { address, city, state, zipCode } = req.body;
+
+  const geocodeResult = await client.geocode({
+    params: {
+      address: `${address}, ${city}, ${state} ${zipCode}`,
+      key: googleApiKey,
+    },
+  });
+
+  if (
+    !geocodeResult.data ||
+    geocodeResult.data.status !== "OK" ||
+    !geocodeResult.data.results ||
+    geocodeResult.data.results.length < 1
+  ) {
+    return;
+  }
+
+  return {
+    lat: geocodeResult.data.results[0].geometry.location.lat,
+    long: geocodeResult.data.results[0].geometry.location.lng,
+  };
+});
+
 const validateBusiness = [
-  check("name").trim().exists({ checkFalsy: true }).withMessage("Enter a name"),
-  check("description").trim().optional({ checkFalsy: true }),
   check("address")
     .trim()
     .exists({ checkFalsy: true })
@@ -56,6 +95,29 @@ const validateBusiness = [
     .trim()
     .exists({ checkFalsy: true })
     .withMessage("Enter a zip code"),
+  check("address").custom(async (_, { req }) => {
+    try {
+      const latLong = await addressToLatLong(req);
+
+      if (!latLong) {
+        throw new Error("Failed to find this address. Try again.");
+      }
+
+      req.body.lat = latLong.lat;
+      req.body.long = latLong.long;
+      return true;
+    } catch {
+      throw new Error("Failed to find this address. Try again.");
+    }
+  }),
+
+  check("name").trim().exists({ checkFalsy: true }).withMessage("Enter a name"),
+  check("description").trim().optional({ checkFalsy: true }),
+  check("displayImage")
+    .trim()
+    .optional({ checkFalsy: true })
+    .isURL()
+    .withMessage("Enter a valid image url"),
   check("lat")
     .exists({ checkFalsy: true })
     .withMessage("Enter a latitude")
@@ -66,11 +128,6 @@ const validateBusiness = [
     .withMessage("Enter a longitude")
     .isDecimal()
     .withMessage("Enter a valid longitude"),
-  check("displayImage")
-    .trim()
-    .optional({ checkFalsy: true })
-    .isURL()
-    .withMessage("Enter a valid image url"),
   handleValidationErrors,
 ];
 
