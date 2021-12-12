@@ -19,7 +19,10 @@ export default class StyleBuilderButton extends StyleBuilderBase {
     if (this.variant === "contained") {
       this.css.color = this.colorPalette.contrastText;
     } else {
-      this.css.color = this.colorPalette.main;
+      this.css.color =
+        this.props.theme.palette.mode === "light"
+          ? this.colorPalette.main
+          : this.colorPalette.light;
     }
     return this;
   }

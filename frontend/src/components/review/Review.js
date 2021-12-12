@@ -75,7 +75,7 @@ const Review = ({ review }) => {
         <Typography as="span">{review.user.username}</Typography>
         {review.userId === user?.id && (
           <div>
-            <IconButton onClick={showMenu} color="black">
+            <IconButton onClick={showMenu} color="inherit">
               <FontAwesomeIcon icon={faEllipsisH} />
             </IconButton>
             <Menu
