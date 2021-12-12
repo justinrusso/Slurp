@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import HelperText from "./HelperText";
 import { addOpacityToHex } from "../../utils/theme";
@@ -154,7 +154,11 @@ const InputField = ({
 
   const inputRef = useRef();
 
-  const hasValue = inputRef.current?.value;
+  const [hasValue, setHasValue] = useState(false);
+
+  useEffect(() => {
+    setHasValue(Boolean(inputRef.current?.value));
+  }, [value]);
 
   return (
     <InputFieldRoot fullWidth={fullWidth}>
