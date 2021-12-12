@@ -69,6 +69,7 @@ const getInitialTheme = (mode = "light") => {
     },
     palette: {
       mode,
+      rootMode: mode,
       common: {
         black: "#000",
         white: "#fff",
@@ -190,7 +191,10 @@ export const ThemeProvider = ({ children, mode }) => {
   const [theme, setTheme] = useState(getInitialTheme(mode));
 
   const changeMode = (mode) => {
-    const newTheme = { ...theme, palette: { ...theme.palette, mode } };
+    const newTheme = {
+      ...theme,
+      palette: { ...theme.palette, mode, rootMode: mode },
+    };
     generateThemeColors(newTheme);
     setTheme(newTheme);
     localStorage.setItem("themeMode", mode);

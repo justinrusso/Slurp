@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { useTheme } from "styled-components";
 
 import Dialog from "../common/Dialog";
-import { Button } from "../styled/Button";
 import ModalContent from "../styled/ModalContent";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
+import { Button } from "../styled/Button";
 import { LoginForm } from "./LoginForm";
 
 /**
@@ -20,6 +22,7 @@ import { LoginForm } from "./LoginForm";
  * @param {LoginFormModalProps} props
  */
 const LoginFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
+  const theme = useTheme();
   return (
     <>
       <Button
@@ -30,11 +33,15 @@ const LoginFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
         Log In
       </Button>
       {visible && (
-        <Dialog onClose={() => setVisible(false)}>
-          <ModalContent>
-            <LoginForm switchForms={switchForms} />
-          </ModalContent>
-        </Dialog>
+        <NestedThemeProvider
+          inverted={theme.palette.mode !== theme.palette.rootMode}
+        >
+          <Dialog onClose={() => setVisible(false)}>
+            <ModalContent>
+              <LoginForm switchForms={switchForms} />
+            </ModalContent>
+          </Dialog>
+        </NestedThemeProvider>
       )}
     </>
   );

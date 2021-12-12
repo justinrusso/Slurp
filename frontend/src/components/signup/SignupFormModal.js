@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
-import styled from "styled-components";
-import StyleBuilderButton from "../../utils/theme/StyleBuilderButton";
+import styled, { useTheme } from "styled-components";
 
 import Dialog from "../common/Dialog";
-import { Button } from "../styled/Button";
 import ModalContent from "../styled/ModalContent";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
 import SignupForm from "./SignupForm";
+import StyleBuilderButton from "../../utils/theme/StyleBuilderButton";
+import { Button } from "../styled/Button";
 
 const SignupButton = styled(Button).attrs((props) => {
   const builder = new StyleBuilderButton(
@@ -45,6 +46,8 @@ const SignupButton = styled(Button).attrs((props) => {
  * @param {SignupFormModalProps} props
  */
 const SignupFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
+  const theme = useTheme();
+
   return (
     <>
       <SignupButton
@@ -55,11 +58,15 @@ const SignupFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
         Sign Up
       </SignupButton>
       {visible && (
-        <Dialog onClose={() => setVisible(false)}>
-          <ModalContent>
-            <SignupForm switchForms={switchForms} />
-          </ModalContent>
-        </Dialog>
+        <NestedThemeProvider
+          inverted={theme.palette.mode !== theme.palette.rootMode}
+        >
+          <Dialog onClose={() => setVisible(false)}>
+            <ModalContent>
+              <SignupForm switchForms={switchForms} />
+            </ModalContent>
+          </Dialog>
+        </NestedThemeProvider>
       )}
     </>
   );
