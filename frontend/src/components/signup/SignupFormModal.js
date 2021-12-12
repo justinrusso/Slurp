@@ -23,7 +23,10 @@ const SignupButton = styled(Button).attrs((props) => {
 
     builder.css["&:hover"] = {
       ...builder.css["&:hover"],
-      backgroundColor: builder.colorPalette.main,
+      backgroundColor:
+        builder.props.theme.palette.mode === "light"
+          ? builder.colorPalette.main
+          : builder.colorPalette.light,
       color: builder.theme.palette.text.primary,
     };
   }
