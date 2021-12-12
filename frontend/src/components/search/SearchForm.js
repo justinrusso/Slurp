@@ -1,6 +1,7 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { useTheme } from "styled-components";
+import Typography from "../common/Typography";
 import Box from "../styled/Box";
 import { Button } from "../styled/Button";
 
@@ -11,14 +12,19 @@ const LabelWrapper = styled.div`
 `;
 
 const Label = styled(Box).attrs({ as: "label" })`
-  background-color: #fff;
+  background-color: ${(props) => props.theme.palette.background};
   display: block;
   padding: ${(props) => props.theme.spacing.gen(1.5)};
   position: relative;
   width: 100%;
 `;
 
-const LabelText = styled.span`
+const LabelText = styled(Typography).attrs((props) => {
+  return {
+    ...props,
+    as: "span",
+  };
+})`
   font-weight: 700;
   margin-right: ${(props) => props.theme.spacing.gen(1.5)};
   user-select: none;

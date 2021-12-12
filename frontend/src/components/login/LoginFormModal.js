@@ -24,7 +24,7 @@ const LoginFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
     <>
       <Button
         variant={isHomePage ? "text" : "outlined"}
-        color={isHomePage ? "white" : "black"}
+        color="inherit"
         onClick={() => setVisible(true)}
       >
         Log In

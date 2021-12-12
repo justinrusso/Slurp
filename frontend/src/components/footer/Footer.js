@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedinIn, faGithub } from "@fortawesome/free-brands-svg-icons";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import Typography from "../common/Typography";
 
 import Container from "../styled/Container";
 import IconButton from "../styled/IconButton";
 import { faCode } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "../styled/Button";
 
 const FooterRoot = styled.footer`
   display: flex;
@@ -31,12 +32,26 @@ const Socials = styled.div`
 `;
 
 const Footer = () => {
+  const theme = useTheme();
   return (
     <FooterRoot>
       <FooterContent>
         <Typography>
           Created by <Name as="span">Justin Russo</Name>
         </Typography>
+        <div>
+          <Button
+            color="inherit"
+            variant="text"
+            onClick={() =>
+              theme.changeMode(
+                theme.palette.mode === "light" ? "dark" : "light"
+              )
+            }
+          >
+            Toggle Dark Mode
+          </Button>
+        </div>
         <Socials>
           <IconButton
             as="a"

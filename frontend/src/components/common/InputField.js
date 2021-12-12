@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRef, useState } from "react";
 
 import HelperText from "./HelperText";
+import { addOpacityToHex } from "../../utils/theme";
 
 const InputFieldRoot = styled.div`
   border: 0;
@@ -84,7 +85,7 @@ const InputFieldset = styled.fieldset`
       ? props.theme.palette.primary.main
       : props.hovered
       ? props.theme.palette.text.primary
-      : "rgba(0, 0, 0, 0.23)"};
+      : addOpacityToHex(props.theme.palette.text.base, 0.23)};
   border-radius: inherit;
   border-style: solid;
   border-width: ${(props) => (props.focused ? 2 : 1)}px;

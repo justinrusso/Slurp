@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -8,6 +8,8 @@ import Container from "../styled/Container";
 import Rating from "../review/Rating";
 import SearchForm from "../search/SearchForm";
 import Typography from "../common/Typography";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
+import { getOverlayAlpha } from "../../utils/theme";
 
 const Hero = styled.div`
   background-image: url(${(props) => props.image});
@@ -54,11 +56,21 @@ const CardLink = styled(Link)`
 `;
 
 const BusinessCard = styled(Card)`
+  background-image: ${(props) =>
+    props.theme.palette.mode === "dark" &&
+    `linear-gradient(rgba(255, 255, 255, ${getOverlayAlpha(
+      1
+    )}), rgba(255, 255, 255, ${getOverlayAlpha(1)}))`};
   display: flex;
   gap: ${(props) => props.theme.spacing.gen(2)};
   cursor: pointer;
 
   &:hover {
+    background-image: ${(props) =>
+      props.theme.palette.mode === "dark" &&
+      `linear-gradient(rgba(255, 255, 255, ${getOverlayAlpha(
+        2
+      )}), rgba(255, 255, 255, ${getOverlayAlpha(2)}))`};
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 `;
@@ -90,6 +102,7 @@ const RatingContainer = styled(Typography).attrs((props) => {
 
 const HomePage = () => {
   const history = useHistory();
+  const theme = useTheme();
 
   const businessEntries = useSelector((state) =>
     Object.values(state.businesses.entries)
@@ -97,13 +110,15 @@ const HomePage = () => {
 
   return (
     <>
-      <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
-        <HeroContentWrapper>
-          <Container>
-            <SearchForm />
-          </Container>
-        </HeroContentWrapper>
-      </Hero>
+      <NestedThemeProvider inverted={theme.palette.mode === "dark"}>
+        <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
+          <HeroContentWrapper>
+            <Container>
+              <SearchForm />
+            </Container>
+          </HeroContentWrapper>
+        </Hero>
+      </NestedThemeProvider>
       <MainContainer>
         <BusinessesList>
           {businessEntries.map((business, i) => (
