@@ -5,7 +5,10 @@ const Typography = styled.p`
   ${(props) => props.theme.typography[props.variant]}
   ${(props) =>
     props.color && {
-      color: props.theme.palette[props.color]?.main,
+      color:
+        props.theme.palette.mode === "light"
+          ? props.theme.palette[props.color]?.main
+          : props.theme.palette[props.color]?.light,
     }}
   margin: 0;
 
