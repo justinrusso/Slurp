@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import HelperText from "./HelperText";
 
@@ -145,6 +145,7 @@ const InputField = ({
   inputProps,
   label,
   onChange,
+  required,
   value,
 }) => {
   const [focused, setFocused] = useState(false);
@@ -152,11 +153,7 @@ const InputField = ({
 
   const inputRef = useRef();
 
-  const [hasValue, setHasValue] = useState(false);
-
-  useEffect(() => {
-    setHasValue(Boolean(inputRef.current?.value));
-  }, [value]);
+  const hasValue = inputRef.current?.value;
 
   return (
     <InputFieldRoot fullWidth={fullWidth}>
@@ -168,6 +165,7 @@ const InputField = ({
         htmlFor={id}
       >
         {label}
+        {required && <span>&nbsp;*</span>}
       </InputLabel>
       <InputRoot fullWidth={fullWidth}>
         <Input
@@ -180,10 +178,11 @@ const InputField = ({
           onFocus={() => setFocused(true)}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
+          required={required}
         />
         <InputFieldset error={error} focused={focused} hovered={hovered}>
           <Legend focused={focused} hasValue={hasValue}>
-            <span>{label}</span>
+            <span>{`${label}${required && " *"}`}</span>
           </Legend>
         </InputFieldset>
       </InputRoot>
@@ -204,6 +203,7 @@ InputField.propTypes = {
   inputProps: PropTypes.object,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func,
+  required: PropTypes.bool,
   value: PropTypes.string,
 };
 

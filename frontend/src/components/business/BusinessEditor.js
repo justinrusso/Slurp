@@ -120,11 +120,11 @@ const BusinessEditor = ({ addNew }) => {
               onChange={(e) => setName(e.target.value)}
               inputProps={{
                 autoFocus: true,
-                required: true,
                 type: "text",
               }}
               error={!!errors.name}
               helperText={errors.name}
+              required
             />
           </InputWrapper>
           <InputWrapper>
@@ -169,6 +169,7 @@ const BusinessEditor = ({ addNew }) => {
               }}
               error={!!errors.address}
               helperText={errors.address}
+              required
             />
           </InputWrapper>
           <InputWrapper>
@@ -183,6 +184,7 @@ const BusinessEditor = ({ addNew }) => {
               }}
               error={!!errors.city}
               helperText={errors.city}
+              required
             />
           </InputWrapper>
           <InputWrapper>
@@ -197,6 +199,7 @@ const BusinessEditor = ({ addNew }) => {
               }}
               error={!!errors.state}
               helperText={errors.state}
+              required
             />
           </InputWrapper>
           <InputWrapper>
@@ -211,6 +214,7 @@ const BusinessEditor = ({ addNew }) => {
               }}
               error={!!errors.zipCode}
               helperText={errors.zipCode}
+              required
             />
           </InputWrapper>
           <InputWrapper>
@@ -226,6 +230,7 @@ const BusinessEditor = ({ addNew }) => {
               }}
               error={!!errors.lat}
               helperText={errors.lat}
+              required
             />
           </InputWrapper>
           <InputWrapper>
@@ -241,6 +246,7 @@ const BusinessEditor = ({ addNew }) => {
               }}
               error={!!errors.long}
               helperText={errors.long}
+              required
             />
           </InputWrapper>
         </form>

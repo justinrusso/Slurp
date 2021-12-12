@@ -81,11 +81,11 @@ const SignupForm = ({ switchForms }) => {
             onChange={(e) => setEmail(e.target.value)}
             inputProps={{
               autoFocus: true,
-              required: true,
               type: "text",
             }}
             error={!!errors.email}
             helperText={errors.email}
+            required
           />
           <InputField
             fullWidth
@@ -94,11 +94,11 @@ const SignupForm = ({ switchForms }) => {
             id="username"
             onChange={(e) => setUsername(e.target.value)}
             inputProps={{
-              required: true,
               type: "text",
             }}
             error={!!errors.username}
             helperText={errors.username}
+            required
           />
           <InputWrapper>
             <InputField
@@ -108,10 +108,10 @@ const SignupForm = ({ switchForms }) => {
               id="password"
               onChange={(e) => setPassword(e.target.value)}
               inputProps={{
-                required: true,
                 type: "password",
               }}
               error={!!errors.password}
+              required
             />
           </InputWrapper>
           <InputWrapper>
@@ -122,10 +122,10 @@ const SignupForm = ({ switchForms }) => {
               id="confirm-password"
               onChange={(e) => setConfirmPassword(e.target.value)}
               inputProps={{
-                required: true,
                 type: "password",
               }}
               error={!!errors.confirmPassword}
+              required
             />
           </InputWrapper>
           {(errors.password || errors.confirmPassword) && (

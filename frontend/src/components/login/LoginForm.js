@@ -74,11 +74,11 @@ export const LoginForm = ({ switchForms }) => {
             onChange={(e) => setCredential(e.target.value)}
             inputProps={{
               autoFocus: true,
-              required: true,
               type: "text",
             }}
             error={!!errors.credential || !!errors.credentials}
             helperText={errors.credential}
+            required
           />
         </InputWrapper>
         <InputWrapper>
@@ -89,11 +89,11 @@ export const LoginForm = ({ switchForms }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             inputProps={{
-              required: true,
               type: "password",
             }}
             error={!!errors.password || !!errors.credentials}
             helperText={errors.password}
+            required
           />
         </InputWrapper>
         {errors.credentials && (
