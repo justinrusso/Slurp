@@ -152,7 +152,7 @@ const BusinessPage = () => {
                   {business.ownerId === user?.id && (
                     <div>
                       <EditButton
-                        color="white"
+                        color="inherit"
                         variant="text"
                         as={Link}
                         to={`/biz/${businessId}/edit`}
