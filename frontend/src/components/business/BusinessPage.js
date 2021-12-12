@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { useEffect, useState } from "react";
 
 import Card from "../common/Card";
@@ -21,6 +21,7 @@ import {
 import { useSessionUser } from "../../store/session";
 import { roundHalf } from "../../utils";
 import LoadingCircle from "../common/LoadingCircle";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
 
 const PhotoHeader = styled.div`
   background-image: linear-gradient(180deg, #0000 31.42%, #000),
@@ -114,6 +115,7 @@ const Sidebar = styled.div`
 
 const BusinessPage = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { businessId } = useParams();
 
   const business = useSelector(selectBusiness(businessId));
@@ -130,38 +132,40 @@ const BusinessPage = () => {
   return business ? (
     isLoaded ? (
       <>
-        <PhotoHeader image="https://static.slurp.justinrusso.dev/images/hero.jfif">
-          <PhotoHeaderContentContainer>
-            <Container>
-              <PhotoHeaderContent>
-                <Typography variant="h1">{business.name}</Typography>
-                <ReviewHeroContainer>
-                  <Rating
-                    rating={roundHalf(ratingAverage)}
-                    disableButtons
-                    size="medium"
-                    colorMode="dark"
-                  />
-                  <span>
-                    {reviewTotal} review{reviewTotal === 1 ? "" : "s"}
-                  </span>
-                </ReviewHeroContainer>
-                {business.ownerId === user?.id && (
-                  <div>
-                    <EditButton
-                      color="white"
-                      variant="text"
-                      as={Link}
-                      to={`/biz/${businessId}/edit`}
-                    >
-                      Edit
-                    </EditButton>
-                  </div>
-                )}
-              </PhotoHeaderContent>
-            </Container>
-          </PhotoHeaderContentContainer>
-        </PhotoHeader>
+        <NestedThemeProvider inverted={theme.palette.mode === "light"}>
+          <PhotoHeader image="https://static.slurp.justinrusso.dev/images/hero.jfif">
+            <PhotoHeaderContentContainer>
+              <Container>
+                <PhotoHeaderContent>
+                  <Typography variant="h1">{business.name}</Typography>
+                  <ReviewHeroContainer>
+                    <Rating
+                      rating={roundHalf(ratingAverage)}
+                      disableButtons
+                      size="medium"
+                      colorMode="dark"
+                    />
+                    <span>
+                      {reviewTotal} review{reviewTotal === 1 ? "" : "s"}
+                    </span>
+                  </ReviewHeroContainer>
+                  {business.ownerId === user?.id && (
+                    <div>
+                      <EditButton
+                        color="white"
+                        variant="text"
+                        as={Link}
+                        to={`/biz/${businessId}/edit`}
+                      >
+                        Edit
+                      </EditButton>
+                    </div>
+                  )}
+                </PhotoHeaderContent>
+              </Container>
+            </PhotoHeaderContentContainer>
+          </PhotoHeader>
+        </NestedThemeProvider>
         <MainContainer>
           <MainLeft>
             <section>
