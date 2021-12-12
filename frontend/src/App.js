@@ -11,16 +11,13 @@ import BusinessPages, {
   businessRouteRoot,
 } from "./components/business/BusinessPages";
 import SearchPage from "./components/search/SearchPage";
-import { fetchBusinesses } from "./store/businesses";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(restoreUser())
-      .then(() => dispatch(fetchBusinesses()))
-      .finally(() => setIsLoaded(true));
+    dispatch(restoreUser()).finally(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
