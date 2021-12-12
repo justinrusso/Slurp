@@ -127,11 +127,11 @@ const HomePage = () => {
                   </Typography>
                   <RatingContainer gutterBottom>
                     <Rating
-                      rating={business.ratingAverage}
+                      rating={business.ratingAverage || 0}
                       disableButtons
                       size="small"
                     />
-                    {business.total}
+                    {business.total || 0}
                   </RatingContainer>
                 </CardContent>
               </BusinessCard>
