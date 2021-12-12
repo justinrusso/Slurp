@@ -50,7 +50,6 @@ const ProfileButton = ({ isHomePage, user }) => {
   const handleLogout = async (e) => {
     e.preventDefault();
     await dispatch(logout());
-    closeMenu();
   };
 
   return (

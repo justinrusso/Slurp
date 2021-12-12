@@ -2,7 +2,9 @@ import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
+
 import Modal from "../Modal";
+import Paper from "./Paper";
 
 const ModalContentContainer = styled.div`
   align-items: center;
@@ -15,10 +17,8 @@ const ModalContentContainer = styled.div`
     ${(props) => props.theme.transitions.easing.easeInOut} 0ms;
 `;
 
-const ModalContentBackground = styled.div`
-  background-color: ${(props) => props.theme.palette.background};
+const ModalContentBackground = styled(Paper)`
   border-radius: ${(props) => props.theme.borderRadius}px;
-  color: ${(props) => props.theme.palette.text.primary};
   display: flex;
   flex-direction: column;
   margin: 32px;
@@ -53,7 +53,7 @@ const Dialog = ({ children, hideBackground, fullWidth, onClose }) => {
   return createPortal(
     <Modal hideBackground={hideBackground} onClose={onClose}>
       <ModalContentContainer ref={contentRef}>
-        <ModalContentBackground fullWidth={fullWidth}>
+        <ModalContentBackground fullWidth={fullWidth} elevation={24}>
           {children}
         </ModalContentBackground>
       </ModalContentContainer>

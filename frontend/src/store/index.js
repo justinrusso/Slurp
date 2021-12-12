@@ -3,7 +3,6 @@ import thunk from "redux-thunk";
 
 import { businessesReducer } from "./businesses";
 import { sessionReducer } from "./session";
-import { themeReducer } from "./theme";
 
 /**
  * @typedef {Object} Action
@@ -14,7 +13,6 @@ import { themeReducer } from "./theme";
 const rootReducer = combineReducers({
   businesses: businessesReducer,
   session: sessionReducer,
-  theme: themeReducer,
 });
 
 let enhancer;

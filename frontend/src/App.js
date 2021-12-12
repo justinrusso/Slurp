@@ -4,7 +4,9 @@ import { useDispatch } from "react-redux";
 
 import Navigation from "./components/Navigation";
 import { restoreUser } from "./store/session";
+import Footer from "./components/footer/Footer";
 import HomePage from "./components/home/HomePage";
+import LoadingCircle from "./components/common/LoadingCircle";
 import BusinessPages, {
   businessRouteRoot,
 } from "./components/business/BusinessPages";
@@ -23,7 +25,7 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && (
+      {isLoaded ? (
         <Switch>
           <Route exact path="/">
             <HomePage />
@@ -32,7 +34,10 @@ function App() {
             <BusinessPages />
           </Route>
         </Switch>
+      ) : (
+        <LoadingCircle />
       )}
+      <Footer />
     </>
   );
 }
