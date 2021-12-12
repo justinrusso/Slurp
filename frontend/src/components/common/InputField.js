@@ -183,7 +183,10 @@ const InputField = ({
         />
         <InputFieldset error={error} focused={focused} hovered={hovered}>
           <Legend focused={focused} hasValue={hasValue}>
-            <span>{`${label}${required && " *"}`}</span>
+            <span>
+              {label}
+              {required && " *"}
+            </span>
           </Legend>
         </InputFieldset>
       </InputRoot>
