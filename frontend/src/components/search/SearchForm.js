@@ -76,14 +76,6 @@ const SearchForm = () => {
           </LeftInputWrapper>
         </Label>
       </LabelWrapper>
-      <LabelWrapper>
-        <Label>
-          <LeftInputWrapper>
-            <LabelText>Near</LabelText>
-            <Input placeholder="your location"></Input>
-          </LeftInputWrapper>
-        </Label>
-      </LabelWrapper>
       <SearchButton>
         <FontAwesomeIcon icon={faSearch} />
       </SearchButton>
