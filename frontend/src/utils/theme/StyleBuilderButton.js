@@ -30,7 +30,12 @@ export default class StyleBuilderButton extends StyleBuilderBase {
   setBorder() {
     this.css.border =
       this.variant === "outlined"
-        ? `1px solid ${addOpacityToHex(this.colorPalette.main, 0.5)}`
+        ? `1px solid ${addOpacityToHex(
+            this.props.theme.palette.mode === "light"
+              ? this.colorPalette.main
+              : this.colorPalette.light,
+            0.5
+          )}`
         : "none";
 
     if (this.rounded) {
@@ -42,7 +47,11 @@ export default class StyleBuilderButton extends StyleBuilderBase {
 
   setBackground() {
     this.css.backgroundColor =
-      this.variant === "contained" ? this.colorPalette.main : "transparent";
+      this.variant === "contained"
+        ? this.props.theme.palette.mode === "light"
+          ? this.colorPalette.main
+          : this.colorPalette.light
+        : "transparent";
     return this;
   }
 
@@ -61,17 +70,27 @@ export default class StyleBuilderButton extends StyleBuilderBase {
 
     if (this.variant === "outlined") {
       hoverProps.backgroundColor = addOpacityToHex(
-        this.colorPalette.main,
+        this.props.theme.palette.mode === "light"
+          ? this.colorPalette.main
+          : this.colorPalette.light,
         this.theme.palette.action.hoverOpacity
       );
-      hoverProps.borderColor = this.colorPalette.main;
+      hoverProps.borderColor =
+        this.props.theme.palette.mode === "light"
+          ? this.colorPalette.main
+          : this.colorPalette.light;
     } else if (this.variant === "text") {
       hoverProps.backgroundColor = addOpacityToHex(
-        this.colorPalette.main,
+        this.props.theme.palette.mode === "light"
+          ? this.colorPalette.main
+          : this.colorPalette.light,
         this.theme.palette.action.hoverOpacity
       );
     } else if (this.variant === "contained") {
-      hoverProps.backgroundColor = this.colorPalette.dark;
+      hoverProps.backgroundColor =
+        this.props.theme.palette.mode === "light"
+          ? this.colorPalette.dark
+          : this.colorPalette.main;
     }
 
     this.css["&:hover"] = hoverProps;
