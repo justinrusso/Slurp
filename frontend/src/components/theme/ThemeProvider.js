@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const generateThemeColors = (theme) => {
+export const generateThemeColors = (theme) => {
   const mode = theme.palette.mode;
   const backgroundColor = mode === "light" ? "#fff" : "#121212";
   const backgroundContrastColor = invertColor(backgroundColor, true);

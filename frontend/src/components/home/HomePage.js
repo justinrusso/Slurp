@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -8,6 +8,7 @@ import Container from "../styled/Container";
 import Rating from "../review/Rating";
 import SearchForm from "../search/SearchForm";
 import Typography from "../common/Typography";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
 
 const Hero = styled.div`
   background-image: url(${(props) => props.image});
@@ -90,6 +91,7 @@ const RatingContainer = styled(Typography).attrs((props) => {
 
 const HomePage = () => {
   const history = useHistory();
+  const theme = useTheme();
 
   const businessEntries = useSelector((state) =>
     Object.values(state.businesses.entries)
@@ -97,13 +99,15 @@ const HomePage = () => {
 
   return (
     <>
-      <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
-        <HeroContentWrapper>
-          <Container>
-            <SearchForm />
-          </Container>
-        </HeroContentWrapper>
-      </Hero>
+      <NestedThemeProvider inverted={theme.palette.mode === "dark"}>
+        <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
+          <HeroContentWrapper>
+            <Container>
+              <SearchForm />
+            </Container>
+          </HeroContentWrapper>
+        </Hero>
+      </NestedThemeProvider>
       <MainContainer>
         <BusinessesList>
           {businessEntries.map((business, i) => (

@@ -1,7 +1,7 @@
 import logo from "../../images/logo.png";
 
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 
 import AuthModals from "./AuthModals";
@@ -9,6 +9,7 @@ import Container from "../styled/Container";
 import ProfileButton from "./ProfileButton";
 import { useSessionUser } from "../../store/session";
 import Typography from "../common/Typography";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
 
 const Nav = styled.div`
   display: flex;
@@ -51,6 +52,7 @@ const Navigation = ({ isLoaded }) => {
   const sessionUser = useSessionUser();
 
   const location = useLocation();
+  const theme = useTheme();
 
   const isHomePage = location.pathname === "/";
 
@@ -62,19 +64,23 @@ const Navigation = ({ isLoaded }) => {
   }
 
   return (
-    <Nav position={isHomePage ? "absolute" : "static"}>
-      <NavContent justifyContent={isHomePage ? "flex-end" : "space-between"}>
-        {!isHomePage && (
-          <LogoContainer to="/">
-            <LogoText as="span" variant="h4">
-              Slurp
-            </LogoText>
-            <Logo src={logo} alt="" />
-          </LogoContainer>
-        )}
-        <RightNavContainer>{isLoaded && sessionLinks}</RightNavContainer>
-      </NavContent>
-    </Nav>
+    <NestedThemeProvider
+      inverted={isHomePage && theme.palette.mode === "light"}
+    >
+      <Nav position={isHomePage ? "absolute" : "static"}>
+        <NavContent justifyContent={isHomePage ? "flex-end" : "space-between"}>
+          {!isHomePage && (
+            <LogoContainer to="/">
+              <LogoText as="span" variant="h4">
+                Slurp
+              </LogoText>
+              <Logo src={logo} alt="" />
+            </LogoContainer>
+          )}
+          <RightNavContainer>{isLoaded && sessionLinks}</RightNavContainer>
+        </NavContent>
+      </Nav>
+    </NestedThemeProvider>
   );
 };
 
