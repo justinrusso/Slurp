@@ -213,36 +213,6 @@ const BusinessEditor = ({ addNew }) => {
               helperText={errors.zipCode}
             />
           </InputWrapper>
-          <InputWrapper>
-            <InputField
-              label="Latitude"
-              fullWidth
-              id="business-latitude"
-              value={lat}
-              onChange={(e) => setLat(e.target.value)}
-              inputProps={{
-                type: "number",
-                step: "any",
-              }}
-              error={!!errors.lat}
-              helperText={errors.lat}
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <InputField
-              label="Longitude"
-              fullWidth
-              id="business-longitude"
-              value={long}
-              onChange={(e) => setLong(e.target.value)}
-              inputProps={{
-                type: "number",
-                step: "any",
-              }}
-              error={!!errors.long}
-              helperText={errors.long}
-            />
-          </InputWrapper>
         </form>
         <Actions>
           <div>
