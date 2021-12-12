@@ -120,8 +120,18 @@ const removeReview = (businessId, reviewData) => {
   };
 };
 
-export const fetchBusinesses = () => async (dispatch) => {
-  const res = await csrfFetch("/api/businesses");
+/**
+ *
+ * @param {URLSearchParams} [queryParams]
+ * @returns
+ */
+export const fetchBusinesses = (queryParams) => async (dispatch) => {
+  let url = "/api/businesses";
+  const paramsString = queryParams?.toString();
+  if (paramsString?.length > 0) {
+    url += `?${paramsString}`;
+  }
+  const res = await csrfFetch(url);
 
   if (res.ok) {
     const data = await res.json();

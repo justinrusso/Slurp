@@ -10,6 +10,7 @@ import LoadingCircle from "./components/common/LoadingCircle";
 import BusinessPages, {
   businessRouteRoot,
 } from "./components/business/BusinessPages";
+import SearchPage from "./components/search/SearchPage";
 import { fetchBusinesses } from "./store/businesses";
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <HomePage />
+          </Route>
+          <Route path="/search">
+            <SearchPage />
           </Route>
           <Route path={businessRouteRoot}>
             <BusinessPages />
