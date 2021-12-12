@@ -27,7 +27,10 @@ const DemoHelperText = styled(HelperText)`
 const DemoLoginButton = styled.button`
   background: none;
   border: none;
-  color: ${(props) => props.theme.palette.primary.main};
+  color: ${(props) =>
+    props.theme.palette.mode === "light"
+      ? props.theme.palette.primary.main
+      : props.theme.palette.primary.light};
   cursor: pointer;
   outline: none;
   padding: 0;
