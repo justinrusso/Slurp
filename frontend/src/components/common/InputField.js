@@ -168,17 +168,20 @@ const InputField = ({
         {label}
         {required && <span>&nbsp;*</span>}
       </InputLabel>
-      <InputRoot fullWidth={fullWidth}>
+      <InputRoot
+        fullWidth={fullWidth}
+        onClick={() => inputRef.current?.focus()}
+        onBlur={() => setFocused(false)}
+        onFocus={() => setFocused(true)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         <Input
           {...inputProps}
           ref={inputRef}
           id={id}
           value={value}
           onChange={onChange}
-          onBlur={() => setFocused(false)}
-          onFocus={() => setFocused(true)}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
           required={required}
         />
         <InputFieldset error={error} focused={focused} hovered={hovered}>
