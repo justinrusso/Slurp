@@ -193,7 +193,7 @@ export const ThemeProvider = ({ children, mode }) => {
     const newTheme = { ...theme, palette: { ...theme.palette, mode } };
     generateThemeColors(newTheme);
     setTheme(newTheme);
-    localStorage.setItem("themeMode", "light");
+    localStorage.setItem("themeMode", mode);
   };
 
   /**
