@@ -38,7 +38,7 @@ const LoginFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
         >
           <Dialog onClose={() => setVisible(false)}>
             <ModalContent>
-              <LoginForm switchForms={switchForms} />
+              <LoginForm setVisible={setVisible} switchForms={switchForms} />
             </ModalContent>
           </Dialog>
         </NestedThemeProvider>

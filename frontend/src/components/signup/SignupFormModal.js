@@ -63,7 +63,7 @@ const SignupFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
         >
           <Dialog onClose={() => setVisible(false)}>
             <ModalContent>
-              <SignupForm switchForms={switchForms} />
+              <SignupForm setVisible={setVisible} switchForms={switchForms} />
             </ModalContent>
           </Dialog>
         </NestedThemeProvider>

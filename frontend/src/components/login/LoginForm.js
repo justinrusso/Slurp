@@ -35,9 +35,12 @@ const DemoLoginButton = styled.button`
 
 /**
  *
- * @param {{switchForms: () => void}} props
+ * @param {{
+ *  setVisible: () => void;
+ *  switchForms: () => void;
+ * }} props
  */
-export const LoginForm = ({ switchForms }) => {
+export const LoginForm = ({ setVisible, switchForms }) => {
   const dispatch = useDispatch();
 
   const [credential, setCredential] = useState("");
@@ -48,18 +51,22 @@ export const LoginForm = ({ switchForms }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(login(credential, password)).catch(async (res) => {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
-    });
+    return dispatch(login(credential, password))
+      .then(() => setVisible(false))
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
   };
 
   const handleDemoLogin = () => {
     setErrors({});
-    return dispatch(loginDemo()).catch(async (res) => {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
-    });
+    return dispatch(loginDemo())
+      .then(() => setVisible(false))
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
   };
 
   return (
@@ -130,5 +137,6 @@ export const LoginForm = ({ switchForms }) => {
 };
 
 LoginForm.propTypes = {
+  setVisible: PropTypes.func.isRequired,
   switchForms: PropTypes.func.isRequired,
 };

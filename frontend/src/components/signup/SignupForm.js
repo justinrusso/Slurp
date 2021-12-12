@@ -33,9 +33,12 @@ const PasswordHelperTextWrapper = styled.div`
 
 /**
  *
- * @param {{switchForms: () => void}} props
+ * @param {{
+ *  setVisible: () => void;
+ *  switchForms: () => void
+ * }} props
  */
-const SignupForm = ({ switchForms }) => {
+const SignupForm = ({ setVisible, switchForms }) => {
   const dispatch = useDispatch();
   const sessionUser = useSessionUser();
 
@@ -54,12 +57,12 @@ const SignupForm = ({ switchForms }) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
-      return dispatch(signup(username, email, password, confirmPassword)).catch(
-        async (res) => {
+      return dispatch(signup(username, email, password, confirmPassword))
+        .then(() => setVisible(false))
+        .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
-        }
-      );
+        });
     }
     return setErrors({
       confirmPassword:
@@ -159,6 +162,7 @@ const SignupForm = ({ switchForms }) => {
 };
 
 SignupForm.propTypes = {
+  setVisible: PropTypes.func.isRequired,
   switchForms: PropTypes.func.isRequired,
 };
 
