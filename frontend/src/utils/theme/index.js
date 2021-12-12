@@ -44,3 +44,19 @@ export function addOpacityToHex(hexString, opacity) {
 
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
 }
+
+// From https://github.com/mui-org/material-ui/blob/master/packages/mui-material/src/Paper/Paper.js
+/**
+ * Gets the background-image overlay opacity for dark mode
+ * @param {number} elevation
+ * @returns {number}
+ */
+export const getOverlayAlpha = (elevation) => {
+  let alphaValue;
+  if (elevation < 1) {
+    alphaValue = 5.11916 * elevation ** 2;
+  } else {
+    alphaValue = 4.5 * Math.log(elevation + 1) + 2;
+  }
+  return (alphaValue / 100).toFixed(2);
+};

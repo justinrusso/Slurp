@@ -9,6 +9,7 @@ import Rating from "../review/Rating";
 import SearchForm from "../search/SearchForm";
 import Typography from "../common/Typography";
 import NestedThemeProvider from "../theme/NestedThemeProvider";
+import { getOverlayAlpha } from "../../utils/theme";
 
 const Hero = styled.div`
   background-image: url(${(props) => props.image});
@@ -55,11 +56,21 @@ const CardLink = styled(Link)`
 `;
 
 const BusinessCard = styled(Card)`
+  background-image: ${(props) =>
+    props.theme.palette.mode === "dark" &&
+    `linear-gradient(rgba(255, 255, 255, ${getOverlayAlpha(
+      1
+    )}), rgba(255, 255, 255, ${getOverlayAlpha(1)}))`};
   display: flex;
   gap: ${(props) => props.theme.spacing.gen(2)};
   cursor: pointer;
 
   &:hover {
+    background-image: ${(props) =>
+      props.theme.palette.mode === "dark" &&
+      `linear-gradient(rgba(255, 255, 255, ${getOverlayAlpha(
+        2
+      )}), rgba(255, 255, 255, ${getOverlayAlpha(2)}))`};
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 `;
