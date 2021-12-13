@@ -14,15 +14,21 @@ const { validateReview } = require("./reviews");
 
 const router = express.Router();
 
-const sanitizeBusinessSearchQuery = [query("find_desc")];
+const sanitizeBusinessSearchQuery = [
+  query("find_desc"),
+  query("sort_by").trim(),
+];
 
 router.get(
   "/",
   sanitizePaginationQuery,
   sanitizeBusinessSearchQuery,
   asyncHandler(async (req, res) => {
-    const { find_desc, limit, page } = req.query;
+    const { find_desc, limit, page, sort_by } = req.query;
     const offset = page * limit;
+
+    // column.asc or column.desc
+    const order = sort_by ? sort_by.split(".") : undefined;
 
     const businesses = await Business.findAllWithSummary({
       limit: limit,
@@ -35,6 +41,9 @@ router.get(
                 }
               : undefined,
           }
+        : undefined,
+      order: order
+        ? [[Business.getColumnName(order[0]), order[1].toUpperCase()]]
         : undefined,
     });
     const count = await Business.count({

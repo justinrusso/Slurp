@@ -35,13 +35,18 @@ const HomePage = () => {
   const theme = useTheme();
 
   const businessEntries = useSelector((state) =>
-    Object.values(state.businesses.entries)
+    state.businesses.order.map(
+      (businessId) => state.businesses.entries[businessId]
+    )
   );
 
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchBusinesses()).finally(() => setIsLoaded(true));
+    const queryParams = new URLSearchParams();
+    queryParams.set("sort_by", "ratingAverage.desc");
+    queryParams.set("limit", 5);
+    dispatch(fetchBusinesses(queryParams)).finally(() => setIsLoaded(true));
   }, [dispatch]);
 
   return isLoaded ? (

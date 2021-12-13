@@ -71,6 +71,7 @@ const REMOVE_REVIEW = "slurp/businesses/REMOVE_REVIEW";
 /** @type {BusinessesState} */
 const initialState = {
   entries: {},
+  order: [],
 };
 
 /**
@@ -293,12 +294,15 @@ export const businessesReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_BUSINESSES: {
       const entries = {};
+      const order = [];
       action.payload.businesses.forEach((business) => {
         entries[business.id] = business;
+        order.push(business.id);
       });
       return {
         ...state,
         entries,
+        order,
       };
     }
     case ADD_BUSINESS: {
