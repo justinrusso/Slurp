@@ -4,6 +4,8 @@ Slurp is the perfect way to find the best Ramen in your area and is inspired by 
 
 Website: [https://jrusso-slurp.herokuapp.com/](https://jrusso-slurp.herokuapp.com/)
 
+![](https://github.com/justinrusso/Slurp/blob/main/docs/images/homepage_ss.jpg?raw=true)
+
 ## Technologies Used
 
 - JavaScript
