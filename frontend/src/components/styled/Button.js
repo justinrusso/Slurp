@@ -10,7 +10,13 @@ const getStyling = (props) => {
     props.rounded
   );
 
-  builder.setFontColor().setBorder().setBackground().setPadding().setHover();
+  builder
+    .setFontColor()
+    .setBorder()
+    .setBackground()
+    .setPadding()
+    .setHover()
+    .setDisabled();
 
   return builder.css;
 };

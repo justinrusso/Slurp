@@ -55,6 +55,26 @@ export default class StyleBuilderButton extends StyleBuilderBase {
     return this;
   }
 
+  setDisabled() {
+    const disabledProps = {
+      color: this.props.theme.palette.action.disabled,
+      boxShadow: "none",
+      pointerEvents: "none",
+      cursor: "default",
+    };
+
+    if (this.variant === "contained") {
+      disabledProps.backgroundColor =
+        this.props.theme.palette.action.disabledBackground;
+    } else if (this.variant === "outlined") {
+      disabledProps.borderColor =
+        this.props.theme.palette.action.disabledBackground;
+    }
+
+    this.css["&[disabled]"] = disabledProps;
+    return this;
+  }
+
   setPadding() {
     if (this.variant === "outlined") {
       const rawSpacing = this.theme.spacing.raw(0.75, 2);
@@ -93,7 +113,7 @@ export default class StyleBuilderButton extends StyleBuilderBase {
           : this.colorPalette.main;
     }
 
-    this.css["&:hover"] = hoverProps;
+    this.css["&:not([disabled]):hover"] = hoverProps;
     return this;
   }
 }

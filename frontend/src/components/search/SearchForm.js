@@ -1,8 +1,11 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { useTheme } from "styled-components";
-import Typography from "../common/Typography";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
+
 import Box from "../styled/Box";
+import Typography from "../common/Typography";
 import { Button } from "../styled/Button";
 
 const LabelWrapper = styled.div`
@@ -64,23 +67,40 @@ const SearchButton = styled(Button)`
 const SearchForm = () => {
   const theme = useTheme();
 
+  const history = useHistory();
+
+  const [desc, setDesc] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+
+    if (desc.length > 0) {
+      params.set("find_desc", desc);
+    }
+
+    let url = "/search";
+    const paramsString = params.toString();
+    if (paramsString.length > 0) {
+      url += `?${paramsString}`;
+    }
+    history.push(url);
+  };
+
   return (
-    <Box as="form" display="flex">
+    <Box as="form" display="flex" onSubmit={handleSubmit}>
       <LabelWrapper>
         <Label
           borderRadius={`${theme.borderRadius}px 0 0 ${theme.borderRadius}px`}
         >
           <LeftInputWrapper>
             <LabelText>Find</LabelText>
-            <Input placeholder="ramen restaurants"></Input>
-          </LeftInputWrapper>
-        </Label>
-      </LabelWrapper>
-      <LabelWrapper>
-        <Label>
-          <LeftInputWrapper>
-            <LabelText>Near</LabelText>
-            <Input placeholder="your location"></Input>
+            <Input
+              placeholder="ramen restaurants"
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+            ></Input>
           </LeftInputWrapper>
         </Label>
       </LabelWrapper>

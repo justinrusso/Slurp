@@ -51,6 +51,8 @@ export const generateThemeColors = (theme) => {
     ),
     hover: addOpacityToHex(backgroundContrastColor, hoverOpacity),
     hoverOpacity,
+    disabled: addOpacityToHex(backgroundContrastColor, 0.26),
+    disabledBackground: addOpacityToHex(backgroundContrastColor, 0.12),
   };
 
   theme.palette = newPalette;

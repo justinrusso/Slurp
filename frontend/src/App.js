@@ -10,16 +10,14 @@ import LoadingCircle from "./components/common/LoadingCircle";
 import BusinessPages, {
   businessRouteRoot,
 } from "./components/business/BusinessPages";
-import { fetchBusinesses } from "./store/businesses";
+import SearchPage from "./components/search/SearchPage";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(restoreUser())
-      .then(() => dispatch(fetchBusinesses()))
-      .finally(() => setIsLoaded(true));
+    dispatch(restoreUser()).finally(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
@@ -29,6 +27,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <HomePage />
+          </Route>
+          <Route path="/search">
+            <SearchPage />
           </Route>
           <Route path={businessRouteRoot}>
             <BusinessPages />

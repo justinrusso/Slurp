@@ -1,21 +1,55 @@
 const asyncHandler = require("express-async-handler");
 const createHttpError = require("http-errors");
 const express = require("express");
-const { check } = require("express-validator");
+const { check, query } = require("express-validator");
+const { Op } = require("sequelize");
 
 const { Business, Review, User } = require("../../db/models");
-const { handleValidationErrors } = require("../../utils/validation");
+const {
+  handleValidationErrors,
+  sanitizePaginationQuery,
+} = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { validateReview } = require("./reviews");
 
 const router = express.Router();
 
+const sanitizeBusinessSearchQuery = [query("find_desc")];
+
 router.get(
   "/",
+  sanitizePaginationQuery,
+  sanitizeBusinessSearchQuery,
   asyncHandler(async (req, res) => {
-    const businesses = await Business.findAllWithSummary();
+    const { find_desc, limit, page } = req.query;
+    const offset = page * limit;
 
-    return res.json(businesses);
+    const businesses = await Business.findAllWithSummary({
+      limit: limit,
+      offset,
+      where: find_desc
+        ? {
+            name: find_desc
+              ? {
+                  [Op.iLike]: `%${find_desc}%`,
+                }
+              : undefined,
+          }
+        : undefined,
+    });
+    const count = await Business.count({
+      where: find_desc
+        ? {
+            name: find_desc
+              ? {
+                  [Op.iLike]: `%${find_desc}%`,
+                }
+              : undefined,
+          }
+        : undefined,
+    });
+
+    return res.json({ businesses, count, page });
   })
 );
 
@@ -173,6 +207,7 @@ router.delete(
 
 router.get(
   "/:businessId(\\d+)/reviews",
+  sanitizePaginationQuery,
   asyncHandler(async (req, res) => {
     const { businessId } = req.params;
 
@@ -182,11 +217,16 @@ router.get(
       throw createHttpError(404);
     }
 
+    const { limit, page } = req.query;
+    const offset = page * limit;
+
     const reviewSummary = await Review.getBusinessReviewSummary(businessId);
 
     const reviews = await Review.findAll({
       where: { businessId },
       include: [{ model: User, as: "user" }],
+      limit,
+      offset,
     });
 
     return res.json({

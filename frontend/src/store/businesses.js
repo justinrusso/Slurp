@@ -120,13 +120,23 @@ const removeReview = (businessId, reviewData) => {
   };
 };
 
-export const fetchBusinesses = () => async (dispatch) => {
-  const res = await csrfFetch("/api/businesses");
+/**
+ *
+ * @param {URLSearchParams} [queryParams]
+ * @returns
+ */
+export const fetchBusinesses = (queryParams) => async (dispatch) => {
+  let url = "/api/businesses";
+  const paramsString = queryParams?.toString();
+  if (paramsString?.length > 0) {
+    url += `?${paramsString}`;
+  }
+  const res = await csrfFetch(url);
 
   if (res.ok) {
     const data = await res.json();
     dispatch(loadBusinesses(data));
-    return res;
+    return data;
   }
 };
 
@@ -283,7 +293,7 @@ export const businessesReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_BUSINESSES: {
       const entries = {};
-      action.payload.forEach((business) => {
+      action.payload.businesses.forEach((business) => {
         entries[business.id] = business;
       });
       return {
