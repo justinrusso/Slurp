@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import { useState } from "react";
 import IconButton from "../styled/IconButton";
 import Menu from "../common/Menu";
 import MenuItem from "../common/MenuItem";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
 import Typography from "../common/Typography";
 import { logout } from "../../store/session";
 import { Link } from "react-router-dom";
@@ -36,6 +37,7 @@ const PlainLi = styled.li`
  */
 const ProfileButton = ({ isHomePage, user }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -57,25 +59,29 @@ const ProfileButton = ({ isHomePage, user }) => {
       <IconButton onClick={showMenu} color={isHomePage ? "white" : "primary"}>
         <FontAwesomeIcon icon={faUserCircle} />
       </IconButton>
-      <Menu
-        id="profile-dropdown"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={closeMenu}
+      <NestedThemeProvider
+        inverted={theme.palette.mode !== theme.palette.rootMode}
       >
-        <MenuItem plain>
-          <UserInfo>
-            <Typography gutterBottom>{user.username}</Typography>
-            <Typography gutterBottom>{user.email}</Typography>
-          </UserInfo>
-        </MenuItem>
-        <PlainLi>
-          <MenuItem as={Link} to="/biz/new" onClick={() => closeMenu()}>
-            Add Business
+        <Menu
+          id="profile-dropdown"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={closeMenu}
+        >
+          <MenuItem plain>
+            <UserInfo>
+              <Typography gutterBottom>{user.username}</Typography>
+              <Typography gutterBottom>{user.email}</Typography>
+            </UserInfo>
           </MenuItem>
-        </PlainLi>
-        <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-      </Menu>
+          <PlainLi>
+            <MenuItem as={Link} to="/biz/new" onClick={() => closeMenu()}>
+              Add Business
+            </MenuItem>
+          </PlainLi>
+          <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+        </Menu>
+      </NestedThemeProvider>
     </>
   );
 };
