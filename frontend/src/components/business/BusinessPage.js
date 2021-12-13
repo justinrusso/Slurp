@@ -26,6 +26,7 @@ const PhotoHeader = styled.div`
   background-image: linear-gradient(180deg, #0000 31.42%, #000),
     url(${(props) => props.image});
   background-size: cover;
+  background-position: 50%;
   background-color: #333;
   color: #fff;
   height: 426px;
