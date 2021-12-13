@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 
+import { roundHalf } from "../../utils";
+
 const RatingsWrapper = styled.div`
   display: flex;
   font-size: ${(props) => (props.size === "small" ? 10 : 16)}px;
@@ -97,10 +99,10 @@ const Rating = ({ colorMode, disableButtons, onChange, rating, size }) => {
     throw new Error("onChange must be provided if buttons are enabled");
   }
 
-  const [value, setValue] = useState(rating);
+  const [value, setValue] = useState(roundHalf(rating));
 
   useEffect(() => {
-    setValue(rating);
+    setValue(roundHalf(rating));
   }, [rating]);
 
   const handleChange = (e) => {
@@ -116,7 +118,7 @@ const Rating = ({ colorMode, disableButtons, onChange, rating, size }) => {
 
   const handleMouseLeave = () => {
     if (value !== rating) {
-      setValue(rating);
+      setValue(roundHalf(rating));
     }
   };
 

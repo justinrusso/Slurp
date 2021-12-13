@@ -27,6 +27,8 @@ const HeroContentWrapper = styled.div`
 
 const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: ${(props) => props.theme.spacing.gen(3)};
 `;
 
@@ -35,13 +37,18 @@ const HomePage = () => {
   const theme = useTheme();
 
   const businessEntries = useSelector((state) =>
-    Object.values(state.businesses.entries)
+    state.businesses.order.map(
+      (businessId) => state.businesses.entries[businessId]
+    )
   );
 
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchBusinesses()).finally(() => setIsLoaded(true));
+    const queryParams = new URLSearchParams();
+    queryParams.set("sort_by", "ratingAverage.desc");
+    queryParams.set("limit", 5);
+    dispatch(fetchBusinesses(queryParams)).finally(() => setIsLoaded(true));
   }, [dispatch]);
 
   return isLoaded ? (
@@ -56,6 +63,9 @@ const HomePage = () => {
         </Hero>
       </NestedThemeProvider>
       <MainContainer>
+        <Typography variant="h2" color="primary" gutterBottom>
+          Top 5 Businesses
+        </Typography>
         {businessEntries ? (
           <BusinessesList businesses={businessEntries} />
         ) : (
