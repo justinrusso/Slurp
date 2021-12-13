@@ -21,13 +21,16 @@ const SignupButton = styled(Button).attrs((props) => {
     const rawSpacing = props.theme.spacing.raw(0.75, 2);
     builder.css.padding = rawSpacing.map((space) => `${space - 2}px`).join(" ");
 
-    builder.css["&:hover"] = {
-      ...builder.css["&:hover"],
+    builder.css["&:not([disabled]):hover"] = {
+      ...builder.css["&:not([disabled]):hover"],
       backgroundColor:
         builder.props.theme.palette.mode === "light"
           ? builder.colorPalette.main
           : builder.colorPalette.light,
-      color: builder.theme.palette.text.primary,
+      color:
+        props.color === "inherit"
+          ? "rgba(0, 0, 0, 0.87)"
+          : builder.theme.palette.text.primary,
     };
   }
   return builder.css;
@@ -55,7 +58,7 @@ const SignupFormModal = ({ isHomePage, setVisible, switchForms, visible }) => {
     <>
       <SignupButton
         variant={isHomePage ? "outlined" : "contained"}
-        color={isHomePage ? "white" : "primary"}
+        color={isHomePage ? "inherit" : "primary"}
         onClick={() => setVisible(true)}
       >
         Sign Up
