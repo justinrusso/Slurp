@@ -45,8 +45,6 @@ const BusinessEditor = ({ addNew }) => {
   const [city, setCity] = useState(businessData.city || "");
   const [state, setState] = useState(businessData.state || "");
   const [zipCode, setZipCode] = useState(businessData.zipCode || "");
-  const [lat, setLat] = useState(businessData.lat || "");
-  const [long, setLong] = useState(businessData.long || "");
   const [displayImage, setDisplayImage] = useState(
     businessData.displayImage || ""
   );
@@ -73,8 +71,6 @@ const BusinessEditor = ({ addNew }) => {
       city,
       state,
       zipCode,
-      lat,
-      long,
       displayImage,
     };
 
