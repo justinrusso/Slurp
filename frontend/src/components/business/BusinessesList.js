@@ -1,3 +1,5 @@
+import businessDefaultImage from "../../images/business_default.png";
+
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
@@ -86,7 +88,10 @@ const BusinessesList = ({ businesses }) => {
         <BusinessListItem key={business.id}>
           <BusinessCard onClick={() => history.push(`/biz/${business.id}`)}>
             <BusinessImageWrapper>
-              <BusinessImage src={business.displayImage} alt={business.name} />
+              <BusinessImage
+                src={business.displayImage || businessDefaultImage}
+                alt={business.name}
+              />
             </BusinessImageWrapper>
             <CardContent>
               <Typography variant="h4" gutterBottom>
