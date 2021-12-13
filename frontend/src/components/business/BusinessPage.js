@@ -19,7 +19,6 @@ import {
   selectBusinessReviewTotal,
 } from "../../store/businesses";
 import { useSessionUser } from "../../store/session";
-import { roundHalf } from "../../utils";
 import LoadingCircle from "../common/LoadingCircle";
 import NestedThemeProvider from "../theme/NestedThemeProvider";
 
@@ -140,7 +139,7 @@ const BusinessPage = () => {
                   <Typography variant="h1">{business.name}</Typography>
                   <ReviewHeroContainer>
                     <Rating
-                      rating={roundHalf(ratingAverage)}
+                      rating={ratingAverage}
                       disableButtons
                       size="medium"
                       colorMode="dark"
