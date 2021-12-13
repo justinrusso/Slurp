@@ -37,8 +37,19 @@ router.get(
           }
         : undefined,
     });
+    const count = await Business.count({
+      where: find_desc
+        ? {
+            name: find_desc
+              ? {
+                  [Op.iLike]: `%${find_desc}%`,
+                }
+              : undefined,
+          }
+        : undefined,
+    });
 
-    return res.json(businesses);
+    return res.json({ businesses, count, page });
   })
 );
 

@@ -136,7 +136,7 @@ export const fetchBusinesses = (queryParams) => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
     dispatch(loadBusinesses(data));
-    return res;
+    return data;
   }
 };
 
@@ -293,7 +293,7 @@ export const businessesReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_BUSINESSES: {
       const entries = {};
-      action.payload.forEach((business) => {
+      action.payload.businesses.forEach((business) => {
         entries[business.id] = business;
       });
       return {
