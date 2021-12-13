@@ -1,3 +1,5 @@
+import logo from "../../images/logo.png";
+
 import styled, { useTheme } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -25,6 +27,23 @@ const Hero = styled.div`
 
 const HeroContentWrapper = styled.div`
   padding-top: ${(props) => props.theme.spacing.gen(10)};
+`;
+
+const LogoContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  margin-bottom: ${(props) => props.theme.spacing.gen(4)};
+`;
+
+const Logo = styled.img`
+  height: 80px;
+  width: 80px;
+`;
+
+const LogoText = styled(Typography)`
+  color: ${(props) => props.theme.palette.primary.main};
 `;
 
 const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
@@ -66,6 +85,12 @@ const HomePage = () => {
         <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
           <HeroContentWrapper>
             <Container>
+              <LogoContainer>
+                <LogoText as="h1" variant="h3">
+                  Slurp
+                </LogoText>
+                <Logo src={logo} alt="" />
+              </LogoContainer>
               <SearchForm />
             </Container>
           </HeroContentWrapper>
