@@ -27,6 +27,8 @@ const HeroContentWrapper = styled.div`
 
 const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: ${(props) => props.theme.spacing.gen(3)};
 `;
 
@@ -61,6 +63,9 @@ const HomePage = () => {
         </Hero>
       </NestedThemeProvider>
       <MainContainer>
+        <Typography variant="h2" color="primary" gutterBottom>
+          Top 5 Businesses
+        </Typography>
         {businessEntries ? (
           <BusinessesList businesses={businessEntries} />
         ) : (
