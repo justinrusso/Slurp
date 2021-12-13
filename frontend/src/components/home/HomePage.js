@@ -1,13 +1,16 @@
-import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import styled, { useTheme } from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
-import Card from "../common/Card";
-import CardContent from "../common/CardContent";
+import BusinessesList from "../business/BusinessesList";
 import Container from "../styled/Container";
-import Rating from "../review/Rating";
+import LoadingCircle from "../common/LoadingCircle";
+import NestedThemeProvider from "../theme/NestedThemeProvider";
 import SearchForm from "../search/SearchForm";
 import Typography from "../common/Typography";
+import { Button } from "../styled/Button";
+import { fetchBusinesses } from "../../store/businesses";
 
 const Hero = styled.div`
   background-image: url(${(props) => props.image});
@@ -26,120 +29,68 @@ const HeroContentWrapper = styled.div`
 
 const MainContainer = styled(Container).attrs(() => ({ as: "main" }))`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: ${(props) => props.theme.spacing.gen(3)};
 `;
 
-const BusinessesList = styled.ul`
+const SeeMoreButtonWrapper = styled.div`
+  padding: ${(props) => props.theme.spacing.gen(3)} 0 0;
   display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing.gen(3)};
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-`;
-
-const BusinessListItem = styled.li`
-  display: block;
-  width: 100%;
-`;
-
-const CardLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const BusinessCard = styled(Card)`
-  display: flex;
-  gap: ${(props) => props.theme.spacing.gen(2)};
-  cursor: pointer;
-
-  &:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const BusinessImageWrapper = styled.div`
-  height: 220px;
-  width: 220px;
-  padding: ${(props) => props.theme.spacing.gen(2)};
-  padding-right: 0;
-`;
-
-const BusinessImage = styled.img`
-  height: 100%;
-  width: 100%;
-  border-radius: ${(props) => props.theme.borderRadius}px;
-`;
-
-const RatingContainer = styled(Typography).attrs((props) => {
-  return {
-    ...props,
-    as: "div",
-  };
-})`
-  display: flex;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing.gen(1)};
-  color: ${(props) => props.theme.palette.text.secondary};
+  justify-content: center;
 `;
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+  const theme = useTheme();
   const history = useHistory();
 
   const businessEntries = useSelector((state) =>
-    Object.values(state.businesses.entries)
+    state.businesses.order.map(
+      (businessId) => state.businesses.entries[businessId]
+    )
   );
 
-  return (
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("sort_by", "ratingAverage.desc");
+    queryParams.set("limit", 5);
+    dispatch(fetchBusinesses(queryParams)).finally(() => setIsLoaded(true));
+  }, [dispatch]);
+
+  return isLoaded ? (
     <>
-      <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
-        <HeroContentWrapper>
-          <Container>
-            <SearchForm />
-          </Container>
-        </HeroContentWrapper>
-      </Hero>
+      <NestedThemeProvider inverted={theme.palette.mode === "dark"}>
+        <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
+          <HeroContentWrapper>
+            <Container>
+              <SearchForm />
+            </Container>
+          </HeroContentWrapper>
+        </Hero>
+      </NestedThemeProvider>
       <MainContainer>
-        <BusinessesList>
-          {businessEntries.map((business, i) => (
-            <BusinessListItem key={business.id}>
-              <BusinessCard onClick={() => history.push(`/biz/${business.id}`)}>
-                <BusinessImageWrapper>
-                  <BusinessImage
-                    src={business.displayImage}
-                    alt={business.name}
-                  />
-                </BusinessImageWrapper>
-                <CardContent>
-                  <Typography variant="h4" gutterBottom>
-                    {i + 1}.{" "}
-                    <CardLink
-                      to={`/biz/${business.id}`}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {business.name}
-                    </CardLink>
-                  </Typography>
-                  <RatingContainer gutterBottom>
-                    <Rating
-                      rating={business.ratingAverage}
-                      disableButtons
-                      size="small"
-                    />
-                    {business.total}
-                  </RatingContainer>
-                </CardContent>
-              </BusinessCard>
-            </BusinessListItem>
-          ))}
-        </BusinessesList>
+        <Typography variant="h2" color="primary" gutterBottom>
+          Top 5 Ramen Shops
+        </Typography>
+        {businessEntries ? (
+          <BusinessesList businesses={businessEntries} />
+        ) : (
+          <Typography as="h1" variant="h3" gutterBottom>
+            No businsesses found!
+          </Typography>
+        )}
+        <SeeMoreButtonWrapper>
+          <Button onClick={() => history.push("/search")}>
+            See More Ramen Shops
+          </Button>
+        </SeeMoreButtonWrapper>
       </MainContainer>
     </>
+  ) : (
+    <LoadingCircle />
   );
 };
 

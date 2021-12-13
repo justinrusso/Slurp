@@ -3,10 +3,12 @@ import styled from "styled-components";
 
 const Typography = styled.p`
   ${(props) => props.theme.typography[props.variant]}
-  ${(props) =>
-    props.color && {
-      color: props.theme.palette[props.color]?.main,
-    }}
+  color: ${(props) =>
+    props.color
+      ? props.theme.palette.mode === "light"
+        ? props.theme.palette[props.color]?.main
+        : props.theme.palette[props.color]?.light
+      : props.theme.palette.text.primary};
   margin: 0;
 
   margin-bottom: ${(props) => props.gutterBottom && "0.35em"};

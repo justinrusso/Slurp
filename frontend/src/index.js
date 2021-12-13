@@ -26,10 +26,29 @@ if (process.env.NODE_ENV !== "production") {
   window.sessionActions = sessionActions;
 }
 
+const getMode = () => {
+  const modeKey = "themeMode";
+  const savedThemeMode = localStorage.getItem(modeKey);
+  if (savedThemeMode) {
+    return savedThemeMode;
+  }
+  if (!window.matchMedia) {
+    localStorage.setItem(modeKey, "light");
+    return "light";
+  }
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    localStorage.setItem(modeKey, "dark");
+    return "dark";
+  } else {
+    localStorage.setItem(modeKey, "light");
+    return "light";
+  }
+};
+
 function Root() {
   return (
     <ReduxProvider store={store}>
-      <ThemeProvider>
+      <ThemeProvider mode={getMode()}>
         <BrowserRouter>
           <AuthModalProvider>
             <App />

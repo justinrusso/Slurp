@@ -27,7 +27,10 @@ const DemoHelperText = styled(HelperText)`
 const DemoLoginButton = styled.button`
   background: none;
   border: none;
-  color: ${(props) => props.theme.palette.primary.main};
+  color: ${(props) =>
+    props.theme.palette.mode === "light"
+      ? props.theme.palette.primary.main
+      : props.theme.palette.primary.light};
   cursor: pointer;
   outline: none;
   padding: 0;
@@ -35,9 +38,12 @@ const DemoLoginButton = styled.button`
 
 /**
  *
- * @param {{switchForms: () => void}} props
+ * @param {{
+ *  setVisible: () => void;
+ *  switchForms: () => void;
+ * }} props
  */
-export const LoginForm = ({ switchForms }) => {
+export const LoginForm = ({ setVisible, switchForms }) => {
   const dispatch = useDispatch();
 
   const [credential, setCredential] = useState("");
@@ -48,18 +54,22 @@ export const LoginForm = ({ switchForms }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(login(credential, password)).catch(async (res) => {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
-    });
+    return dispatch(login(credential, password))
+      .then(() => setVisible(false))
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
   };
 
   const handleDemoLogin = () => {
     setErrors({});
-    return dispatch(loginDemo()).catch(async (res) => {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
-    });
+    return dispatch(loginDemo())
+      .then(() => setVisible(false))
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
   };
 
   return (
@@ -74,11 +84,11 @@ export const LoginForm = ({ switchForms }) => {
             onChange={(e) => setCredential(e.target.value)}
             inputProps={{
               autoFocus: true,
-              required: true,
               type: "text",
             }}
             error={!!errors.credential || !!errors.credentials}
             helperText={errors.credential}
+            required
           />
         </InputWrapper>
         <InputWrapper>
@@ -89,11 +99,11 @@ export const LoginForm = ({ switchForms }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             inputProps={{
-              required: true,
               type: "password",
             }}
             error={!!errors.password || !!errors.credentials}
             helperText={errors.password}
+            required
           />
         </InputWrapper>
         {errors.credentials && (
@@ -130,5 +140,6 @@ export const LoginForm = ({ switchForms }) => {
 };
 
 LoginForm.propTypes = {
+  setVisible: PropTypes.func.isRequired,
   switchForms: PropTypes.func.isRequired,
 };

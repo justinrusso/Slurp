@@ -2,13 +2,11 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import Modal from "../Modal";
+import Paper from "./Paper";
 import { getViewOffset } from "../../utils";
 
-const MenuRoot = styled.div`
+const MenuRoot = styled(Paper)`
   position: fixed;
-
-  box-shadow: ${(props) => props.theme.shadows[1]};
-  background-color: ${(props) => props.theme.palette.background};
 `;
 
 const MenuList = styled.ul`
@@ -22,7 +20,7 @@ const Menu = ({ anchorEl, children, id, onClose, open }) => {
 
   return (
     <Modal hideBackground onClose={onClose}>
-      <MenuRoot id={id} style={getViewOffset(anchorEl)}>
+      <MenuRoot id={id} style={getViewOffset(anchorEl)} elevation={8}>
         <MenuList>{children}</MenuList>
       </MenuRoot>
     </Modal>

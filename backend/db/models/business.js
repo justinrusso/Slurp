@@ -64,7 +64,6 @@ module.exports = (sequelize, DataTypes) => {
           [
             sequelize.cast(
               sequelize.fn("COUNT", sequelize.col("rating")),
-
               "int"
             ),
             "total",
@@ -72,7 +71,31 @@ module.exports = (sequelize, DataTypes) => {
         ],
       },
       group: ["Business.id"],
+      subQuery: false,
     });
+  };
+
+  Business.getColumnName = function (name) {
+    switch (name) {
+      case "ratingAverage": {
+        return sequelize.cast(
+          sequelize.fn(
+            "COALESCE",
+            sequelize.fn("AVG", sequelize.col("rating")),
+            0
+          ),
+          "float"
+        );
+      }
+      case "total": {
+        return sequelize.cast(
+          sequelize.fn("COUNT", sequelize.col("rating")),
+          "int"
+        );
+      }
+      default:
+        return name;
+    }
   };
 
   return Business;

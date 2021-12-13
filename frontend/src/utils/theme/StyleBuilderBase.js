@@ -12,8 +12,10 @@ export default class StyleBuilderBase {
     this.css = this.props.css || {};
 
     if (color) {
-      if (color === "white" || color === "black") {
-        this._generateCommonColorPalette(color);
+      if (color === "inherit") {
+        this._generateCommonColorPalette(
+          this.props.theme.palette.mode === "light" ? "black" : "white"
+        );
       } else {
         this.colorPalette = this.props.theme.palette[color];
       }

@@ -36,7 +36,6 @@ const ReviewDeleteDialog = ({ onClose, review }) => {
 
     try {
       await dispatch(deleteReview(review.businessId, review.id));
-      onClose(); // Trigger a close
     } catch (res) {
       setIsSubmitting(false);
     }

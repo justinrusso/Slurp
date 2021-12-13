@@ -10,7 +10,13 @@ const getStyling = (props) => {
     props.rounded
   );
 
-  builder.setFontColor().setBorder().setBackground().setPadding().setHover();
+  builder
+    .setFontColor()
+    .setBorder()
+    .setBackground()
+    .setPadding()
+    .setHover()
+    .setDisabled();
 
   return builder.css;
 };
@@ -21,6 +27,12 @@ export const Button = styled(Base).attrs((props) => ({
 }))`
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 250ms
+      ${(props) => props.theme.transitions.easing.easeInOut} 0ms,
+    box-shadow 250ms ${(props) => props.theme.transitions.easing.easeInOut} 0ms,
+    border-color 250ms ${(props) => props.theme.transitions.easing.easeInOut}
+      0ms,
+    color 250ms ${(props) => props.theme.transitions.easing.easeInOut} 0ms;
 
   &:not(style) + :not(style) {
     margin: 0;

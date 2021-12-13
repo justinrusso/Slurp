@@ -2,24 +2,67 @@ const asyncHandler = require("express-async-handler");
 const createHttpError = require("http-errors");
 const express = require("express");
 const { Client } = require("@googlemaps/google-maps-services-js");
-const { check, validationResult } = require("express-validator");
+const { check, query, validationResult } = require("express-validator");
+const { Op } = require("sequelize");
 
 const { Business, Review, User } = require("../../db/models");
 const {
   apiKeys: { google: googleApiKey },
 } = require("../../config");
-const { handleValidationErrors } = require("../../utils/validation");
+const {
+  handleValidationErrors,
+  sanitizePaginationQuery,
+} = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { validateReview } = require("./reviews");
 
 const router = express.Router();
 
+const sanitizeBusinessSearchQuery = [
+  query("find_desc"),
+  query("sort_by").trim(),
+];
+
 router.get(
   "/",
+  sanitizePaginationQuery,
+  sanitizeBusinessSearchQuery,
   asyncHandler(async (req, res) => {
-    const businesses = await Business.findAllWithSummary();
+    const { find_desc, limit, page, sort_by } = req.query;
+    const offset = page * limit;
 
-    return res.json(businesses);
+    // column.asc or column.desc
+    const order = sort_by ? sort_by.split(".") : undefined;
+
+    const businesses = await Business.findAllWithSummary({
+      limit: limit,
+      offset,
+      where: find_desc
+        ? {
+            name: find_desc
+              ? {
+                  [Op.iLike]: `%${find_desc}%`,
+                }
+              : undefined,
+          }
+        : undefined,
+      order: order
+        ? [[Business.getColumnName(order[0]), order[1].toUpperCase()]]
+        : undefined,
+    });
+    const count = await Business.count({
+      where: find_desc
+        ? {
+            name: find_desc
+              ? {
+                  [Op.iLike]: `%${find_desc}%`,
+                }
+              : undefined,
+          }
+        : undefined,
+    });
+
+    return res.json({ businesses, count, page });
   })
 );
 
@@ -230,6 +273,7 @@ router.delete(
 
 router.get(
   "/:businessId(\\d+)/reviews",
+  sanitizePaginationQuery,
   asyncHandler(async (req, res) => {
     const { businessId } = req.params;
 
@@ -239,11 +283,16 @@ router.get(
       throw createHttpError(404);
     }
 
+    const { limit, page } = req.query;
+    const offset = page * limit;
+
     const reviewSummary = await Review.getBusinessReviewSummary(businessId);
 
     const reviews = await Review.findAll({
       where: { businessId },
       include: [{ model: User, as: "user" }],
+      limit,
+      offset,
     });
 
     return res.json({

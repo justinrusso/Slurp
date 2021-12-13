@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import HelperText from "./HelperText";
+import { addOpacityToHex } from "../../utils/theme";
 
 const InputFieldRoot = styled.div`
   border: 0;
@@ -84,7 +85,7 @@ const InputFieldset = styled.fieldset`
       ? props.theme.palette.primary.main
       : props.hovered
       ? props.theme.palette.text.primary
-      : "rgba(0, 0, 0, 0.23)"};
+      : addOpacityToHex(props.theme.palette.text.base, 0.23)};
   border-radius: inherit;
   border-style: solid;
   border-width: ${(props) => (props.focused ? 2 : 1)}px;
@@ -145,6 +146,7 @@ const InputField = ({
   inputProps,
   label,
   onChange,
+  required,
   value,
 }) => {
   const [focused, setFocused] = useState(false);
@@ -152,7 +154,11 @@ const InputField = ({
 
   const inputRef = useRef();
 
-  const hasValue = inputRef.current?.value;
+  const [hasValue, setHasValue] = useState(false);
+
+  useEffect(() => {
+    setHasValue(Boolean(inputRef.current?.value));
+  }, [value]);
 
   return (
     <InputFieldRoot fullWidth={fullWidth}>
@@ -164,22 +170,30 @@ const InputField = ({
         htmlFor={id}
       >
         {label}
+        {required && <span>&nbsp;*</span>}
       </InputLabel>
-      <InputRoot fullWidth={fullWidth}>
+      <InputRoot
+        fullWidth={fullWidth}
+        onClick={() => inputRef.current?.focus()}
+        onBlur={() => setFocused(false)}
+        onFocus={() => setFocused(true)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         <Input
           {...inputProps}
           ref={inputRef}
           id={id}
           value={value}
           onChange={onChange}
-          onBlur={() => setFocused(false)}
-          onFocus={() => setFocused(true)}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
+          required={required}
         />
         <InputFieldset error={error} focused={focused} hovered={hovered}>
           <Legend focused={focused} hasValue={hasValue}>
-            <span>{label}</span>
+            <span>
+              {label}
+              {required && " *"}
+            </span>
           </Legend>
         </InputFieldset>
       </InputRoot>
@@ -200,6 +214,7 @@ InputField.propTypes = {
   inputProps: PropTypes.object,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func,
+  required: PropTypes.bool,
   value: PropTypes.string,
 };
 
