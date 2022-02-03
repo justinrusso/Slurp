@@ -5,7 +5,7 @@ import Typography from "../common/Typography";
 
 import Container from "../styled/Container";
 import IconButton from "../styled/IconButton";
-import { faCode } from "@fortawesome/free-solid-svg-icons";
+import { faCode, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../styled/Button";
 
 const FooterRoot = styled.footer`
@@ -53,6 +53,13 @@ const Footer = () => {
           </Button>
         </div>
         <Socials>
+          <IconButton
+            as="a"
+            target="_blank"
+            href="https://www.justinrusso.dev/"
+          >
+            <FontAwesomeIcon icon={faUser} />
+          </IconButton>
           <IconButton
             as="a"
             target="_blank"
