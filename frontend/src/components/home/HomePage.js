@@ -22,11 +22,21 @@ const Hero = styled.div`
   background-size: cover;
   height: 570px;
   padding-top: 30px;
+  position: relative;
   width: 100%;
+
+  .hero-background-overlay {
+    background-color: #000000;
+    opacity: 0.5;
+    position: absolute;
+    inset: 0;
+  }
 `;
 
 const HeroContentWrapper = styled.div`
+  inset: 0;
   padding-top: ${(props) => props.theme.spacing.gen(10)};
+  position: absolute;
 `;
 
 const LogoContainer = styled.div`
@@ -83,6 +93,7 @@ const HomePage = () => {
     <>
       <NestedThemeProvider inverted={theme.palette.mode === "dark"}>
         <Hero image="https://static.slurp.justinrusso.dev/images/hero.jfif">
+          <div className="hero-background-overlay" />
           <HeroContentWrapper>
             <Container>
               <LogoContainer>

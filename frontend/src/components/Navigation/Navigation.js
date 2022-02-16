@@ -17,6 +17,7 @@ const Nav = styled.div`
   padding: 2px 0;
   position: ${(props) => props.position};
   width: 100%;
+  z-index: 1;
 `;
 
 const NavContent = styled(Container)`
